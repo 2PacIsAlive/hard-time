@@ -1,14 +1,114 @@
 <script setup lang="ts">
+  import { ref, onUnmounted, computed } from 'vue'
   import { useStore } from '../../store'
-  import { NSpace } from 'naive-ui'
+  import { NSpace, NInput, NIcon, NProgress } from 'naive-ui'
+  import { PencilOutline } from '@vicons/ionicons5'
+  import { EscapeProject } from '../../store/jails'
+  import Sentiment from 'sentiment'
 
   const store = useStore()
+  console.log(store.escapeProject)
+
+  const  sentiment = new Sentiment(),
+    niceToggle = ref(true),
+    submission = ref(""),
+    correctAnswers = ref(0),
+    incorrectAnswers = ref(0),
+    timeElapsed = ref(0),
+    timeLimit = computed(() =>
+      (store.escapeProject.settings.minTimeSeconds) +
+      (store.stats.charisma)
+    ),
+    timeRemainingPercentage = computed(() => 
+      100 - (timeElapsed.value / timeLimit.value) * 100
+    ),
+    timeRemainingFormatted = computed(() => 
+      `${timeLimit.value - timeElapsed.value}s`
+    ),
+    requiredCorrectAnswers = computed(() => 
+      Math.max(1, 
+      store.escapeProject.settings.maxRequiredCorrectAnswers - 
+      (store.stats.charisma * .1))
+    )
+
+
+  function finish (complete: boolean) {
+    clearInterval(timer)
+    store.jails[store.currentJail].escapeProjects
+      .find((e: EscapeProject ) => e.name === store.escapeProject.name)
+      .complete = complete
+    store.escapeProject = false  
+  }
+
+  function submit () {
+    let correct = false
+    if (submission.value) {
+      const analysis = sentiment.analyze(submission.value)
+      console.log(analysis.score, analysis.score < 0)
+      if (analysis.score > 0) {
+        if (niceToggle.value) correct = true
+      }
+      else if (analysis.score < 0) {
+        if (!niceToggle.value) correct = true
+      }
+    }
+    if (correct) {
+      correctAnswers.value += 1
+      if (correctAnswers.value >= requiredCorrectAnswers.value) 
+        finish(true)
+    } else {
+      correctAnswers.value -= 1
+    }
+    if (Math.random() > .5) niceToggle.value = !niceToggle.value
+    submission.value = ""
+  }
+
+  function doCommand(e: any) {
+    if (e.keyCode === 13) submit()
+  }
+
+  function msToTime (ms: number) {
+    const seconds = (ms / 1000),
+      minutes = (ms / (1000 * 60)),
+      hours = (ms / (1000 * 60 * 60)),
+      days = (ms / (1000 * 60 * 60 * 24))
+    if (seconds < 60) return seconds.toFixed(1) + " seconds"
+    else if (minutes < 60) return minutes.toFixed(1) + " minutes"
+    else if (hours < 24) return hours.toFixed(1) + " hours"
+    else return days.toFixed(1) + " days"
+  }
+
+  window.addEventListener('keydown', doCommand)
+  onUnmounted(() => {
+    window.removeEventListener('keydown', doCommand)
+  })
+
+  const timer = setInterval(() => {
+    if (timeElapsed.value >= timeLimit.value) finish(false)
+    else timeElapsed.value += 1
+  }, 1000)
 </script>
 
 <template>
   <n-space align="center" justify="center" vertical size="large">
-    <p>cool minigame will go here (maybe difficulty is based on charisma stat?)</p>
+    <p>say something <span style="color: green;" v-if="niceToggle">nice</span><span style="color: red;" v-else>mean</span></p>
+    <n-input autofocus type="textarea" v-model:value="submission" round placeholder="type your message here and press enter to submit" >
+      <!-- <template #suffix>
+        <n-icon>
+          <pencil-outline />
+        </n-icon>
+      </template> -->
+    </n-input>
+    <p>correct responses: {{ correctAnswers }} / {{ requiredCorrectAnswers }}</p>
+    <!-- <p>incorrect responses: {{ incorrectAnswers }}</p> -->
+    <n-progress color="#D32D3FFF" type="circle" :percentage="timeRemainingPercentage">
+      <span style="text-align: center;">{{ timeRemainingFormatted }}</span>
+    </n-progress>
+    <!-- <span style="font-variant-numeric: tabular-nums">
+      <n-countdown :on-finish="finish(false)" :duration="timeLimit" />
+    </span> -->
   </n-space>
+
 </template>
 
 <style scoped>

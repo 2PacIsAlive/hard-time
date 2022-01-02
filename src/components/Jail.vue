@@ -74,7 +74,7 @@ const fullSentence = setInterval(() => {
       >
         {{ escapeProject.name }}
       </n-button>
-      <p v-else>{{ escapeProject.result }}</p>
+      <p v-else><span style="color: green;">{{ escapeProject.result }}</span></p>
     </template>
     <n-button
       @click="leaveJail()" 
