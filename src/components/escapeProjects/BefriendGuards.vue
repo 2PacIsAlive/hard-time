@@ -1,7 +1,7 @@
 <script setup lang="ts">
   import { ref, onUnmounted, computed } from 'vue'
   import { useStore } from '../../store'
-  import { NSpace, NInput, NIcon, NProgress } from 'naive-ui'
+  import { NSpace, NInput, NIcon, NProgress, NPopover } from 'naive-ui'
   import { PencilOutline } from '@vicons/ionicons5'
   import { EscapeProject } from '../../store/jails'
   import Sentiment from 'sentiment'
@@ -13,11 +13,10 @@
     niceToggle = ref(true),
     submission = ref(""),
     correctAnswers = ref(0),
-    incorrectAnswers = ref(0),
     timeElapsed = ref(0),
     timeLimit = computed(() =>
       (store.escapeProject.settings.minTimeSeconds) +
-      (store.stats.charisma)
+      (store.stats.charisma * .5)
     ),
     timeRemainingPercentage = computed(() => 
       100 - (timeElapsed.value / timeLimit.value) * 100
@@ -99,11 +98,27 @@
         </n-icon>
       </template> -->
     </n-input>
-    <p>correct responses: {{ correctAnswers }} / {{ requiredCorrectAnswers }}</p>
-    <!-- <p>incorrect responses: {{ incorrectAnswers }}</p> -->
-    <n-progress color="#D32D3FFF" type="circle" :percentage="timeRemainingPercentage">
-      <span style="text-align: center;">{{ timeRemainingFormatted }}</span>
-    </n-progress>
+    <p>correct responses: {{ correctAnswers }} /   
+      <n-popover placement="right" trigger="hover">
+        <template #trigger>
+          <span>{{ requiredCorrectAnswers }}</span>
+        </template>
+        <p>
+          max(1, {{ store.escapeProject.settings.maxRequiredCorrectAnswers }} - charisma * .1)
+        </p>
+      </n-popover>
+    </p>
+    <n-popover placement="right" trigger="hover">
+      <template #trigger>
+        <n-progress color="#D32D3FFF" type="circle" :percentage="timeRemainingPercentage">
+          <span style="text-align: center;">{{ timeRemainingFormatted }}</span>
+        </n-progress>      
+      </template>
+      <p>
+       {{ store.escapeProject.settings.minTimeSeconds }} + charisma * .5
+      </p>
+    </n-popover>
+
     <!-- <span style="font-variant-numeric: tabular-nums">
       <n-countdown :on-finish="finish(false)" :duration="timeLimit" />
     </span> -->
