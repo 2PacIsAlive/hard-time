@@ -3,16 +3,27 @@
 // Check out https://v3.vuejs.org/api/sfc-script-setup.html#sfc-script-setup
 // @ts-ignore
 import Game from './components/Game.vue'
+// @ts-ignore
+import AppFooter from './components/AppFooter.vue'
 import { useStore } from './store'
-import { darkTheme, NConfigProvider, GlobalThemeOverrides, NLoadingBarProvider, NThemeEditor, NGlobalStyle, NModal, NButton, NCard, NMessageProvider } from 'naive-ui'
+import { darkTheme, NConfigProvider, GlobalThemeOverrides, NLoadingBarProvider, NThemeEditor, NGlobalStyle, NModal, NButton, NCard, NMessageProvider, useMessage } from 'naive-ui'
 
 const store = useStore(),
+  // message = useMessage(),
   themeOverrides: GlobalThemeOverrides = {
-    // "Notification": {
-    //   "width": "220px"
-    // }
+    "common": {
+      "primaryColor": "#E31E33FF",
+      "primaryColorHover": "#D32D3FFF",
+      "primaryColorPressed": "#B40D1FFF",
+      "primaryColorSuppl": "#ED142BFF"
+    }
   }
-
+function saveGame () {
+  store.save()
+  // TODO why doesn't message work here :(
+  // message.info('game saved')
+  console.log('saved')
+}
 </script>
 
 <template>
@@ -24,11 +35,7 @@ const store = useStore(),
           <div id="content-wrap">
             <Game />
           </div>
-          <footer id="footer">
-            <span id="saveddisplay" v-if="store.displaySaved">saved </span>
-            <span>lag: {{ store.lag.toFixed(0) }}ms </span>
-            <span id="reset" @click="store.reset()">reset </span>
-          </footer>
+          <app-footer />
           <n-modal :show="store.showDeathModal">
             <n-card style="width: 300px;" title="you died" :bordered="false" size="small">
               <template #footer>
@@ -67,13 +74,6 @@ body, html {
   flex: 1
 }
 
-#footer {
-  position: absolute;
-  bottom: 8px;
-  right: 16px;
-  font-size: 18px;
-}
-
 #saveddisplay {
   color: green;
 }
@@ -88,5 +88,15 @@ body, html {
 }
 #reset:hover {
   cursor: pointer;
+  color: rgb(85, 20, 20);
+}
+#save {
+  text-align: right;
+  color: green;
+}
+#save:hover {
+  cursor: pointer;
+  color: rgb(13, 77, 13);
+
 }
 </style>

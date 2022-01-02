@@ -4,6 +4,12 @@ import { Decimal } from 'decimal.js'
 import { Incrementor } from './incrementors'
 import { useStore } from '../store'
 // @ts-ignore
+import Launcher from './Launcher.vue'
+// @ts-ignore
+import Jail from './Jail.vue'
+// @ts-ignore
+import EscapeProject from './EscapeProject.vue'
+// @ts-ignore
 import Streets from './Streets.vue'
 // @ts-ignore
 import Pad from './Pad.vue'
@@ -93,14 +99,15 @@ gameLoop()
 
 <template>
   <n-space vertical>
-    <n-layout has-sider position="absolute">
+    <n-layout :has-sider="store.gameStarted && !store.inJail" position="absolute">
       <n-layout-sider
+        v-if="store.gameStarted && !store.inJail"
         bordered
         collapse-mode="width"
         :collapsed-width="64"
         :width="190"
         :collapsed="collapsed"
-        show-trigger
+        show-trigger="bar"
         @collapse="collapsed = true"
         @expand="collapsed = false"
       >
@@ -115,7 +122,10 @@ gameLoop()
         />
       </n-layout-sider>
       <n-layout>
-        <Pad class="game-screen" v-if="store.openScreen === 'the pad'" />
+        <Launcher class="small-game-screen" v-if="!store.gameStarted" />
+        <EscapeProject class="game-screen" v-else-if="store.escapeProject" />
+        <Jail class="med-game-screen" v-else-if="store.inJail" />
+        <Pad class="game-screen" v-else-if="store.openScreen === 'the pad'" />
         <Streets class="game-screen" v-else-if="store.openScreen === 'the streets'" />
         <Gym class="game-screen" v-else-if="store.openScreen === 'the gym'" />
         <Space class="game-screen" v-else-if="store.openScreen === 'the stars'" />
@@ -130,6 +140,13 @@ gameLoop()
 }
 
 .game-screen {
-  margin-top: 3%
+  margin-top: 3%;
+}
+.small-game-screen {
+  margin-top: 20%;
+}
+
+.med-game-screen {
+  margin-top: 15%;
 }
 </style>

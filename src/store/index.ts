@@ -2,6 +2,7 @@ import { defineStore } from 'pinia'
 import { Decimal } from 'decimal.js'
 import { Incrementor, incrementors } from '../components/incrementors'
 import { firstMap } from './maps'
+import jails from './jails'
 
 const defaultMenu = [
   {
@@ -28,13 +29,20 @@ const defaultCars = ['1993 Ford Aspire', '2020 Subaru BRZ', 'Lamborghini Aventad
 export const useStore = defineStore('main', {
   // arrow function recommended for full type inference
   state: () => {
-    const localStorageSave = localStorage.getItem('savev3')
+    const localStorageSave = localStorage.getItem('savev4')
     const savedState = localStorageSave 
       ? JSON.parse(localStorageSave)
       : undefined
     // all these properties will have their type inferred automatically
     return {
-      money: savedState?.money || new Decimal(999999),
+      gameStarted: savedState?.gameStarted || false,
+      inJail: savedState !== undefined && savedState.inJail === false ? false : true,
+      jailtime: savedState?.jailtime || 1000 * 60,
+      timeServed: savedState?.timeServed || 0,
+      sentenceStarted: savedState?.sentenceStarted || undefined,
+      jails: savedState?.jails || jails,
+      currentJail: savedState?.currentJail || 0,
+      money: savedState?.money || new Decimal(0),
       lastMoney: savedState?.lastMoney || new Decimal(0),
       pay: savedState?.pay || new Decimal(100),
       payIncrementType: savedState?.payIncrementType || 'sqrt',
@@ -63,6 +71,7 @@ export const useStore = defineStore('main', {
       playerAutoSkill: savedState?.playerAutoSkill || 0,
       planetsAvailable: savedState?.planetsAvailable || 60,
       currentPlanet: savedState?.currentPlanet || 0,
+      escapeProject: savedState?.escapeProject || false,
       aiMovementRoutineStarted: false,
       playerMovementRoutineStarted: false,
       starSpawnerStarted: false,
@@ -70,7 +79,14 @@ export const useStore = defineStore('main', {
   },
   actions: {
     save () {
-      localStorage.setItem('savev3', JSON.stringify({
+      localStorage.setItem('savev4', JSON.stringify({
+        gameStarted: this.gameStarted,
+        inJail: this.inJail,
+        jailtime: this.jailtime,
+        timeServed: this.timeServed,
+        sentenceStarted: this.sentenceStarted,
+        jails: this.jails,
+        currentJail: this.currentJail,
         money: this.money,
         lastMoney: this.lastMoney,
         pay: this.pay,
@@ -94,10 +110,11 @@ export const useStore = defineStore('main', {
         playerAutoSkill: this.playerAutoSkill,
         planetsAvailable: this.planetsAvailable,
         currentPlanet: this.currentPlanet,
+        escapeProject: this.escapeProject,
       }))
     },
     reset () {
-      localStorage.removeItem('savev3')
+      localStorage.removeItem('savev4')
       this.$reset()
     },
   },

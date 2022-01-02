@@ -147,7 +147,6 @@ function findNextMove (entity: string, direction: string) {
 }
 
 function doMovePlayer (current: number, next: number, nextChar: string): void {
-  console.log('tryna move player from', current, next, nextChar)
   if (isLegalMove(nextChar, playerIllegalMoves)) {
     if (isStar(nextChar)) {
       store.stars += 1
