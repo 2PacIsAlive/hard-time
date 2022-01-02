@@ -1,13 +1,19 @@
 <script setup lang="ts">
 import { useStore } from '../store'
-import { useMessage } from 'naive-ui'
+import { useMessage, useLoadingBar } from 'naive-ui'
 
 const store = useStore(),
-  message = useMessage()
+  message = useMessage(),
+  loadingBar = useLoadingBar()
 
 function saveGame () {
   store.save()
   message.info('game saved')
+}
+
+function resetGame () {
+  loadingBar.finish()
+  store.reset()
 }
 
 function exportSave () {
@@ -26,7 +32,7 @@ function importSave () {
     <span>lag: {{ store.lag.toFixed(0) }}ms </span>
     <span class="footer-action" id="export" @click="exportSave()">export </span>
     <span class="footer-action" id="import" @click="importSave()">import </span>
-    <span class="footer-action" id="reset" @click="store.reset()">reset </span>
+    <span class="footer-action" id="reset" @click="resetGame()">reset </span>
     <span class="footer-action" id="save" @click="saveGame()">save </span>
   </footer>
 </template>

@@ -44,7 +44,7 @@ export const useStore = defineStore('main', {
       sentenceStarted: savedState?.sentenceStarted || undefined,
       jails: savedState?.jails || jails,
       currentJail: savedState?.currentJail || 0,
-      money: savedState?.money || new Decimal(0),
+      money: savedState?.money || new Decimal(100000000),
       lastMoney: savedState?.lastMoney || new Decimal(0),
       pay: savedState?.pay || new Decimal(100),
       payIncrementType: savedState?.payIncrementType || 'sqrt',

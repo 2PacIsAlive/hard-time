@@ -11,7 +11,7 @@ import { secondMap } from '../store/maps'
 const store = useStore()
 const { money } = storeToRefs(store)
 const coloredMap = computed(() => {
-  return store.map
+  return store.map.current
     // note: need to do this one first because "span" has a p in it lmao
     .replace(/\p/g, coloredSpace('p', '#09f8f6'))
     .replace(/\P/g, coloredSpace('P', '#09f8f6'))
@@ -20,6 +20,9 @@ const coloredMap = computed(() => {
     .replace(/\?/g, coloredSpace(exit, 'fuchsia'))
     .replace(/\*/g, coloredSpace('*', '#b39700'))
 })
+const width = computed(() => 
+  store.map.current.split('\n')[0].length
+)
 
 const playbackRate = ref(1)
 const { play, sound } = useSound(sfx, { 
@@ -32,14 +35,14 @@ const { play, sound } = useSound(sfx, {
   playbackRate,
 })
 
-const width = 59
+// const width = 59
 const height = 31
 
 const exitSpace = 1798
 const exit = '?'
 
 const player = '@'
-const playerDefaultLocation = 1172
+// const playerDefaultLocation = 1172
 const playerIllegalMoves: string[] = []
 const autoSkillMarks = {
   0: 'lame',
@@ -49,7 +52,7 @@ const autoSkillMarks = {
 
 const ai = 'C'
 const aiRegex = /C/g
-const aiSpeed = ref(50)
+// const aiSpeed = ref(0)
 const aiSearching = ref(true)
 const aiExists = ref(true)
 const aiIllegalMoves: string[] = [ 
@@ -57,7 +60,7 @@ const aiIllegalMoves: string[] = [
   'p', 'P'
 ]
 
-const starSpawnInterval = 5000
+const starSpawnInterval = 30000
 
 let lastAiDirection = 'D'
 const aiPath: Ref<number[]> = ref([])
@@ -83,15 +86,15 @@ function coloredSpace(char: string, color: string): string {
 }
 
 function isLegalMove (char: string, extraIllegals: string[]): boolean {
-  return !(['│','┌','┐','└','┘','─','\n'].concat(extraIllegals)
+  return !(['│','┌','┐','└','┘','─','┤','├','┴','┬','\n'].concat(extraIllegals)
     .includes(char))
 }
 
 function isValidMove(current: number, next: number): boolean {
   if (next === current+1
     || next === current-1
-    || next === current-width-1
-    || next === current+width+1) return true
+    || next === current-width.value-1
+    || next === current+width.value+1) return true
   return false
 }
 
@@ -113,18 +116,18 @@ function isExit (char: string): boolean {
 
 // NOTE: will always teleport to the right of the exit portal so that it doesn't get overwritten
 function nextPortal (char: string): number {
-  if (char === 'p') return store.map.indexOf('P') + 1
-  else return store.map.indexOf('p') + 1
+  if (char === 'p') return store.map.current.indexOf('P') + 1
+  else return store.map.current.indexOf('p') + 1
 }
 
 function setSpace (char: string, location: number): void {
-  const mapCopy = store.map // this helps..? ai freaks out without it?
-  store.map = mapCopy.substring(0, location) + char + mapCopy.substring(location + 1)
+  const mapCopy = store.map.current // this helps..? ai freaks out without it?
+  store.map.current = mapCopy.substring(0, location) + char + mapCopy.substring(location + 1)
 }
 
 function moveEntity (entity: string, current: number, next: number, isJump: boolean): void {
   if (!isJump && !isValidMove(current, next)) {
-    console.warn(entity, 'attempted invalid move from', current, 'to', next)
+    // console.warn(entity, 'attempted invalid move from', current, 'to', next)
   } else {
     setSpace(entity, next)
     setSpace(' ', current) 
@@ -132,17 +135,17 @@ function moveEntity (entity: string, current: number, next: number, isJump: bool
 }
 
 function findNextMove (entity: string, direction: string) {
-  const current: number = store.map.indexOf(entity)
+  const current: number = store.map.current.indexOf(entity)
   let next: number = current
   if (direction === 'U')
-    next = current - width - 1
+    next = current - width.value - 1
   else if (direction === 'D')
-    next = current + width + 1
+    next = current + width.value + 1
   else if (direction === 'L')
     next = current - 1
   else if (direction === 'R')
     next = current + 1
-  const nextChar = store.map[next]
+  const nextChar = store.map.current[next]
   return { current, next, nextChar }
 }
 
@@ -179,7 +182,7 @@ function doCommand(e: any) {
 function nextMap () {
   // @ts-ignore
   play({id: 'nextMap'})
-  store.map = secondMap
+  store.map.current = secondMap
 }
 
 // TODO this is super flawed, need to find a better way of doing this
@@ -190,8 +193,8 @@ function isAiPathAccurate (playerSpace: number) {
 
 function findStars(aiSpace: number, playerSpace: number, avoidAi: boolean): number[] {
   const availableStars = []
-  for(let i=0; i<store.map.length; i++) {
-    if (store.map[i] === "*") {
+  for(let i=0; i<store.map.current.length; i++) {
+    if (store.map.current[i] === "*") {
       if (avoidAi && i >= aiSpace-100 && i <= aiSpace+100)
         continue
       else availableStars.push(i)
@@ -209,8 +212,8 @@ async function movePlayer() {
     store.playerMovementRoutineStarted = true
     while (store.playerMovementRoutineStarted) {
       const avoidAi = store.playerAutoSkill > 33 
-      const aiSpace = store.map.indexOf(ai)
-      const playerSpace = store.map.indexOf(player)
+      const aiSpace = store.map.current.indexOf(ai)
+      const playerSpace = store.map.current.indexOf(player)
       // const stars = findStars(aiSpace, playerSpace, avoidAi)
       while (playerPath.value.length === 0) {
         await dijkstras(playerSpace, '*', 'player')
@@ -221,7 +224,7 @@ async function movePlayer() {
       }
       const next = playerPath.value.pop()
       if (next) {
-        const nextChar = store.map[next]
+        const nextChar = store.map.current[next]
         doMovePlayer(playerSpace, next, nextChar)
       }
       await new Promise(resolve => setTimeout(resolve, 100-store.playerAutoSkill))
@@ -234,29 +237,29 @@ async function moveAi() {
   while (1==1) {
     store.aiMovementRoutineStarted = true
     // aiPath.value.forEach((space, i) => {
-    //   if (i !== aiPath.value.length-1 && store.map[space] === ' ') setSpace('.', space)
+    //   if (i !== aiPath.value.length-1 && store.map.current[space] === ' ') setSpace('.', space)
     // })
-    if ((store.map.match(aiRegex)||[]).length > 1) {
+    if ((store.map.current.match(aiRegex)||[]).length > 1) {
       console.log('something fucky happened', aiPath.value)
       aiPath.value = []
-      setSpace(' ', store.map.indexOf(ai))
+      setSpace(' ', store.map.current.indexOf(ai))
     }
-    const aiSpace = store.map.indexOf(ai)
-    const playerSpace = store.map.indexOf(player)
+    const aiSpace = store.map.current.indexOf(ai)
+    const playerSpace = store.map.current.indexOf(player)
     if (aiSpace !== -1) {
       let current = aiSpace
       let next = current
       let nextChar
       if (isAiPathAccurate(playerSpace)) { // our path is good enough, let's take it without searching again
         next = aiPath.value.pop()
-        nextChar = store.map[next]
+        nextChar = store.map.current[next]
       } else { // player has moved, need to find a new path
         aiSearching.value = true
         const foundPath = await dijkstras(aiSpace, playerSpace, 'ai')
         if (foundPath && aiPath.value.length > 0) {
           aiSearching.value = false
           next = aiPath.value.pop()
-          nextChar = store.map[next]
+          nextChar = store.map.current[next]
         } else { // couldn't find a path to player
           let direction = lastAiDirection
           if (Math.random() > .8) { // most of the time, try to go the same direction as the last move
@@ -267,15 +270,20 @@ async function moveAi() {
         }
       }
       if (isPlayer(nextChar)) {
+        console.log('death')
+        aiPath.value = []
         // @ts-ignore
         play({id: 'death'})
         // store.showDeathModal = true
         store.playerMovementRoutineStarted = false
+        store.aiMovementRoutineStarted = false
         // alert('YOU DIED')
         store.deaths += 1
         store.menuOptions[2].disabled = false
-        moveEntity(player, current, playerDefaultLocation, true)
+        store.map.current = store.map.default
+        // moveEntity(player, current, store.map.playerDefaultLocation, true)
         store.inJail = true
+        return
       }
       if (isValidMove(current, next)) {
         if (isLegalMove(nextChar, aiIllegalMoves)) {
@@ -286,16 +294,17 @@ async function moveAi() {
         console.log('ai path got hosed, nuking from orbit')
         aiPath.value = []
       }
-      await new Promise(resolve => setTimeout(resolve, 100 - aiSpeed.value))
+      await new Promise(resolve => setTimeout(resolve, 100 - store.map.aiSpeed))
     } else {
-      spawnNewAi()
+      return
+      // spawnNewAi()
     }
   }
 }
 
 function randomSpace(): number {
-    const min = Math.ceil(width + 1)
-    const max = Math.floor(store.map.length - width - 1)
+    const min = Math.ceil(width.value + 1)
+    const max = Math.floor(store.map.current.length - width.value - 1)
     return Math.floor(Math.random() * (max - min + 1)) + min
 }
 
@@ -304,7 +313,7 @@ function spawnNewAi(): void {
   let attempts = 0
   while (!foundAvailableSpace && attempts < 1000) {
     space = randomSpace()
-    if (store.map[space] === ' ') {
+    if (store.map.current[space] === ' ') {
       setSpace(ai, space)
       foundAvailableSpace = true
     }
@@ -317,7 +326,7 @@ function spawnNewStar(): void {
   let attempts = 0
   while (!foundAvailableSpace && attempts < 1000) {
     space = randomSpace()
-    if (store.map[space] === ' ') {
+    if (store.map.current[space] === ' ') {
       setSpace('*', space)
       foundAvailableSpace = true
     }
@@ -333,9 +342,9 @@ function getLegalNeighbors (space: number, nodes: any[]): any[] {
   return [
     space + 1,
     space - 1,
-    space - width - 1,
-    space + width + 1
-  ].filter(s => isLegalMove(store.map[s], []))
+    space - width.value - 1,
+    space + width.value + 1
+  ].filter(s => isLegalMove(store.map.current[s], []))
     .map(s => nodes.find(n => n.i === s))
 }
 
@@ -344,15 +353,16 @@ function getLegalNeighbors (space: number, nodes: any[]): any[] {
 // }
 
 function savePath (endingNode: any, aiOrPlayer: string): void {
-  console.log('ending node of path for', aiOrPlayer, endingNode)
+  // console.log('ending node of path for', aiOrPlayer, endingNode)
   let currentNode = endingNode
   const path: any[] = []
   while (currentNode.parent !== null) {
     if (currentNode.char !== ai) {
       path.push(currentNode.i)
       currentNode = currentNode.parent
-      // if (currentNode.char !== ai)
+      // if (currentNode.char !== ai) {
       //   setSpace('!', currentNode.i)
+      // }
     }
   }
   // gross..
@@ -360,14 +370,14 @@ function savePath (endingNode: any, aiOrPlayer: string): void {
     // @ts-ignore
     aiPath.value = path
   } else {
-    console.log('saving player path', path)
+    // console.log('saving player path', path)
     // @ts-ignore
     playerPath.value = path
   }
 }
 
 async function dijkstras (startingSpace: number, destinationSpace: number | string, aiOrPlayer: string): Promise<any> {
-  const nodes = store.map.split('')
+  const nodes = store.map.current.split('')
     .map((space: string, i: number) => {
       return {
         char: space,
@@ -387,7 +397,7 @@ async function dijkstras (startingSpace: number, destinationSpace: number | stri
       const currentNode = unexploredNodes[0]
       currentNode.explored = true
       const reachedDestination = typeof destinationSpace === 'string' 
-        ? store.map[currentNode.i] === destinationSpace
+        ? store.map.current[currentNode.i] === destinationSpace
         : currentNode.i === destinationSpace
       if (reachedDestination) {
         // console.log('found path!')
