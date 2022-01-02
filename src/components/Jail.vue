@@ -35,6 +35,9 @@ function msToTime (ms: number) {
 function leaveJail () {
   clearInterval(fullSentence)
   loadingBar.finish()
+  for (let eProj of store.jails[store.currentJail].escapeProjects) {
+    eProj.complete = false
+  }
   store.inJail = false
   store.escapeProject = false
   store.timeServed = 0
@@ -42,9 +45,9 @@ function leaveJail () {
   store.save()
 }
 
-function launchEscapeProject (eReq: EscapeProject) {
-  // store.escapeProject = eReq
-  eReq.effect()
+function launchEscapeProject (eProj: EscapeProject) {
+  store.escapeProject = eProj
+  // eProj.complete = true
 }
 
 if (!store.sentenceStarted) store.sentenceStarted = new Date().getTime()
@@ -61,13 +64,18 @@ const fullSentence = setInterval(() => {
   <n-space align="center" justify="center" vertical size="large">
     <p>you are in <span style="color: red">{{ store.jails[store.currentJail].name }}</span></p>
     <p id="sentencetime" @click="timeFormatToggle = !timeFormatToggle">{{ formattedSentenceTime }}</p>
-    <n-button
-      @click="launchEscapeProject(escapeProject)"
+    <template
       v-for="escapeProject in store.jails[store.currentJail].escapeProjects"
       :key="escapeProject.name"
     >
-      {{ escapeProject.name }}
-    </n-button>
+      <n-button
+        v-if="!escapeProject.complete"
+        @click="launchEscapeProject(escapeProject)"
+      >
+        {{ escapeProject.name }}
+      </n-button>
+      <p v-else>{{ escapeProject.result }}</p>
+    </template>
     <n-button
       @click="leaveJail()" 
       :disabled="escapeDisabled"

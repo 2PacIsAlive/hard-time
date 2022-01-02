@@ -8,7 +8,7 @@ import Launcher from './Launcher.vue'
 // @ts-ignore
 import Jail from './Jail.vue'
 // @ts-ignore
-import EscapeProject from './EscapeProject.vue'
+import EscapeProject from './escapeProjects/EscapeProject.vue'
 // @ts-ignore
 import Streets from './Streets.vue'
 // @ts-ignore
@@ -17,6 +17,8 @@ import Pad from './Pad.vue'
 import Gym from './Gym.vue'
 // @ts-ignore
 import Space from './Space.vue'
+// @ts-ignore
+import GameError from './GameError.vue'
 import { NIcon, NSpace, NSwitch, NLayout, NLayoutSider, NMenu, useMessage } from 'naive-ui'
 import { HomeOutline, CaretDownOutline, SkullOutline, SubwayOutline, StorefrontOutline, BarbellOutline, StarOutline } from '@vicons/ionicons5'
 
@@ -129,6 +131,7 @@ gameLoop()
         <Streets class="game-screen" v-else-if="store.openScreen === 'the streets'" />
         <Gym class="game-screen" v-else-if="store.openScreen === 'the gym'" />
         <Space class="game-screen" v-else-if="store.openScreen === 'the stars'" />
+        <game-error v-else msg="unknown open screen" />
       </n-layout>
     </n-layout>
   </n-space>

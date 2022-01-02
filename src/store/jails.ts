@@ -1,23 +1,32 @@
 
 export interface EscapeProject {
   name: string
+  result: string
   complete: boolean
 }
 
-export class EscapeProject {
-  constructor(name: string) {
-    this.name = name
-    this.complete = false
+function escapeProject (name: string, result: string): EscapeProject {
+  return {
+    name, result, complete: false
   }
+}
 
-  effect () {
-    this.complete = true
-  }
+function befriendGuardsProject() {
+  return escapeProject('befriend the guards', 
+    'you made friends on the inside'
+  )
+}
+
+function digProject() {
+  return escapeProject('dig a tunnel', 
+    'you dug a few holes'
+  )
 }
 
 export default [{
   name: 'california state prison',
   escapeProjects: [
-    new EscapeProject('befriend the guards'),
+    befriendGuardsProject(),
+    digProject(),
   ],
 }]

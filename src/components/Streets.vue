@@ -269,12 +269,13 @@ async function moveAi() {
       if (isPlayer(nextChar)) {
         // @ts-ignore
         play({id: 'death'})
-        store.showDeathModal = true
+        // store.showDeathModal = true
         store.playerMovementRoutineStarted = false
         // alert('YOU DIED')
         store.deaths += 1
         store.menuOptions[2].disabled = false
         moveEntity(player, current, playerDefaultLocation, true)
+        store.inJail = true
       }
       if (isValidMove(current, next)) {
         if (isLegalMove(nextChar, aiIllegalMoves)) {
