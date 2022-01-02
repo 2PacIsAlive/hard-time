@@ -22,8 +22,10 @@
   <n-space align="center" justify="center" vertical size="large">
     <p>you are attempting to <span style="color: red">{{ store.escapeProject.name }}</span></p>
     <befriend-guards v-if="store.escapeProject.name === 'befriend the guards'"/>
-    <game-error v-else msg="unknown escape project type" />
-    <n-button @click="finish()">finish</n-button>
+    <template v-else>
+      <game-error msg="unknown escape project type" />
+      <n-button @click="finish()">finish</n-button>
+    </template>
   </n-space>
 </template>
 

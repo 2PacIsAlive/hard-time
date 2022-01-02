@@ -39,7 +39,7 @@ export const useStore = defineStore('main', {
     return {
       gameStarted: savedState?.gameStarted || false,
       inJail: savedState !== undefined && savedState.inJail === false ? false : true,
-      jailtime: savedState?.jailtime || 1000 * 60,
+      jailtime: savedState?.jailtime || 1000 * 60 * 5,
       timeServed: savedState?.timeServed || 0,
       sentenceStarted: savedState?.sentenceStarted || undefined,
       jails: savedState?.jails || jails,
@@ -74,6 +74,9 @@ export const useStore = defineStore('main', {
       planetsAvailable: savedState?.planetsAvailable || 60,
       currentPlanet: savedState?.currentPlanet || 0,
       escapeProject: savedState?.escapeProject || false,
+      stats: savedState?.stats || {
+        charisma: 0
+      },
       aiMovementRoutineStarted: false,
       playerMovementRoutineStarted: false,
       starSpawnerStarted: false,
@@ -117,6 +120,7 @@ export const useStore = defineStore('main', {
         planetsAvailable: this.planetsAvailable,
         currentPlanet: this.currentPlanet,
         escapeProject: this.escapeProject,
+        stats: this.stats,
       })
       return encoded
         ? btoa(unescape(encodeURIComponent(saveString)))

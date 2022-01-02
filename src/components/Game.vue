@@ -125,7 +125,7 @@ gameLoop()
       </n-layout-sider>
       <n-layout>
         <Launcher class="small-game-screen" v-if="!store.gameStarted" />
-        <EscapeProject class="game-screen" v-else-if="store.escapeProject" />
+        <EscapeProject class="med-game-screen" v-else-if="store.escapeProject" />
         <Jail class="med-game-screen" v-else-if="store.inJail" />
         <Pad class="game-screen" v-else-if="store.openScreen === 'the pad'" />
         <Streets class="game-screen" v-else-if="store.openScreen === 'the streets'" />
