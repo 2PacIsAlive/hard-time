@@ -182,7 +182,7 @@ function doCommand(e: any) {
 function nextMap () {
   // @ts-ignore
   play({id: 'nextMap'})
-  store.map.current = secondMap
+  store.map = secondMap
 }
 
 // TODO this is super flawed, need to find a better way of doing this
@@ -283,6 +283,7 @@ async function moveAi() {
         store.map.current = store.map.default
         // moveEntity(player, current, store.map.playerDefaultLocation, true)
         store.inJail = true
+        store.openScreen = 'the pad'
         return
       }
       if (isValidMove(current, next)) {
