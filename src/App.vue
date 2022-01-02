@@ -5,6 +5,10 @@
 import Game from './components/Game.vue'
 // @ts-ignore
 import AppFooter from './components/AppFooter.vue'
+// @ts-ignore
+import ExportModal from './components/ExportModal.vue'
+// @ts-ignore
+import ImportModal from './components/ImportModal.vue'
 import { useStore } from './store'
 import { darkTheme, NConfigProvider, GlobalThemeOverrides, NLoadingBarProvider, NThemeEditor, NGlobalStyle, NModal, NButton, NCard, NMessageProvider, useMessage } from 'naive-ui'
 
@@ -18,12 +22,7 @@ const store = useStore(),
       "primaryColorSuppl": "#ED142BFF"
     }
   }
-function saveGame () {
-  store.save()
-  // TODO why doesn't message work here :(
-  // message.info('game saved')
-  console.log('saved')
-}
+
 </script>
 
 <template>
@@ -36,13 +35,8 @@ function saveGame () {
             <Game />
           </div>
           <app-footer />
-          <n-modal :show="store.showDeathModal">
-            <n-card style="width: 300px;" title="you died" :bordered="false" size="small">
-              <template #footer>
-                <n-button @click="store.showDeathModal = false">respawn</n-button>
-              </template>
-            </n-card>
-          </n-modal>
+          <export-modal />
+          <import-modal />
         </div>
       </n-message-provider>
     </n-loading-bar-provider>
@@ -72,31 +66,5 @@ body, html {
 
 #content-wrap {
   flex: 1
-}
-
-#saveddisplay {
-  color: green;
-}
-
-.button-with-margin {
-  margin-left:10px;
-}
-
-#reset {
-  text-align: right;
-  color: red;
-}
-#reset:hover {
-  cursor: pointer;
-  color: rgb(85, 20, 20);
-}
-#save {
-  text-align: right;
-  color: green;
-}
-#save:hover {
-  cursor: pointer;
-  color: rgb(13, 77, 13);
-
 }
 </style>

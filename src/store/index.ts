@@ -26,10 +26,12 @@ const defaultMenu = [
 
 const defaultCars = ['1993 Ford Aspire', '2020 Subaru BRZ', 'Lamborghini Aventador']
 
+const saveKey = 'hardtimesavefile'
+
 export const useStore = defineStore('main', {
   // arrow function recommended for full type inference
   state: () => {
-    const localStorageSave = localStorage.getItem('savev4')
+    const localStorageSave = localStorage.getItem(saveKey)
     const savedState = localStorageSave 
       ? JSON.parse(localStorageSave)
       : undefined
@@ -75,11 +77,15 @@ export const useStore = defineStore('main', {
       aiMovementRoutineStarted: false,
       playerMovementRoutineStarted: false,
       starSpawnerStarted: false,
+      showExportModal: false,
+      showImportModal: false,
+      exportString: "",
+      importString: "",
     }
   },
   actions: {
-    save () {
-      localStorage.setItem('savev4', JSON.stringify({
+    buildSave (encoded: boolean) {
+      const saveString = JSON.stringify({
         gameStarted: this.gameStarted,
         inJail: this.inJail,
         jailtime: this.jailtime,
@@ -111,10 +117,23 @@ export const useStore = defineStore('main', {
         planetsAvailable: this.planetsAvailable,
         currentPlanet: this.currentPlanet,
         escapeProject: this.escapeProject,
-      }))
+      })
+      return encoded
+        ? btoa(unescape(encodeURIComponent(saveString)))
+        : saveString
+    },
+    save () {
+      localStorage.setItem(saveKey, this.buildSave(false))
+    },
+    decodeImport () {
+      return decodeURIComponent(escape(window.atob(this.importString)))
+    },
+    importSave () {
+      localStorage.setItem(saveKey, this.decodeImport())
+      this.$reset()
     },
     reset () {
-      localStorage.removeItem('savev4')
+      localStorage.removeItem(saveKey)
       this.$reset()
     },
   },
