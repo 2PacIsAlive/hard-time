@@ -2,20 +2,20 @@
 import { ref, computed } from 'vue'
 import { useStore } from '../store'
 // @ts-ignore
-import * as numberformat from 'swarm-numberformat'
-import { Decimal } from 'decimal.js'
-import { incrementors } from './incrementors'
+// import * as numberformat from 'swarm-numberformat'
+// import { Decimal } from 'decimal.js'
+// import { incrementors } from './incrementors'
 
-const backend = { backend: 'decimal.js', Decimal: Decimal }
-import { NButton, NIcon, useLoadingBar, NSpace, NCard, NGrid, NGi, NStatistic, NRow, NCol, NDivider } from 'naive-ui'
-import { LogoBitcoin, EarOutline, CarOutline, CarSportOutline, RocketOutline, PeopleOutline, BarbellOutline, SparklesOutline, DiceOutline } from '@vicons/ionicons5'
+// const backend = { backend: 'decimal.js', Decimal: Decimal }
+import { NButton, NIcon, useLoadingBar, NSpace, NCard, NGrid, NGi, NStatistic, NRow, NCol, NDivider, NPopover } from 'naive-ui'
+import { LogoBitcoin, EarOutline, CarOutline, CarSportOutline, RocketOutline, PeopleOutline, BarbellOutline, SparklesOutline, DiceOutline, FastFoodOutline } from '@vicons/ionicons5'
 
 const store = useStore(),
   loadingBar = useLoadingBar(),
   loadingBegForCredits = ref(false),
   loadingLoiter = ref(false),
   formattedMoney = computed(() =>
-    `₿${numberformat.format(store.money, backend)}`
+    `₿${store.money}`
   ),
   formattedPay = computed(() =>
     `₿${store.pay}`
@@ -35,8 +35,8 @@ async function begForCredits(): Promise<void> {
   loadingBegForCredits.value = true
   loadingBar.start()
   await new Promise(resolve => setTimeout(resolve, store.workDuration))
-  store.money = Decimal.add(store.money, store.pay)
-  store.pay = incrementors[store.payIncrementType](store.pay as Decimal)
+  store.money += store.pay
+  store.pay = store.pay + 1
   store.workDuration = store.workDuration - 100
   loadingBegForCredits.value = false
   loadingBar.finish()
@@ -45,8 +45,9 @@ async function begForCredits(): Promise<void> {
 async function loiter(): Promise<void> {
   loadingLoiter.value = true
   loadingBar.start()
-  await new Promise(resolve => setTimeout(resolve, 3000))
-  store.stats['street cred'] += 1
+  await new Promise(resolve => setTimeout(resolve, store.loiterDuration))
+  store.loiterDuration -= store.stats['street cred'] * 10
+  store.stats['street cred'] += 1 + (store.stats['street cred'] * .07 )
   loadingLoiter.value = false
   loadingBar.finish()
 }
@@ -56,6 +57,14 @@ function buyCar(): void {
   store.posessions.car = store.cars.shift()
   store.carCost *= 100
   store.menuOptions[1].disabled = false
+}
+
+function buyDonutShop(): void {
+  store.money -= store.donutShop.cost
+  if (store.posessions['donut shop'])
+    store.posessions['donut shop'] += 1
+  else store.posessions['donut shop'] = 1
+  store.donutShop.cost *= 1.75
 }
 
 function buySpaceship(): void {
@@ -84,13 +93,30 @@ function clearAutomators (): void {
       <n-grid x-gap="120" :cols="3">
         <n-gi span="1">
           <n-divider>posessions</n-divider>
-          <n-statistic v-if="'car' in store.posessions" label="car" :value="store.posessions['car']">
-            <template #prefix>
-              <n-icon>
-                <car-outline />
-              </n-icon>
+          <n-popover v-if="'car' in store.posessions" placement="top-start" trigger="hover">
+            <template #trigger>
+              <n-statistic label="car" :value="store.posessions['car']">
+                <template #prefix>
+                  <n-icon>
+                    <car-outline />
+                  </n-icon>
+                </template>
+              </n-statistic>
             </template>
-          </n-statistic>
+              allows you to access <a @click="store.openScreen ==='the streets'">the streets</a>
+          </n-popover>
+          <n-popover v-if="'donut shop' in store.posessions" placement="top-start" trigger="hover">
+            <template #trigger>
+              <n-statistic label="donut shops" :value="store.posessions['donut shop']">
+                <template #prefix>
+                  <n-icon>
+                    <fast-food-outline />
+                  </n-icon>
+                </template>
+              </n-statistic>
+            </template>
+              ₿{{ store.donutShop.output * store.posessions['donut shop'] }}/s, {{ store.donutShop.aiSpeedReduction }}% cop speed reduction
+          </n-popover>
         </n-gi>
         <n-gi span="1">
           <n-divider>actions</n-divider>
@@ -113,7 +139,18 @@ function clearAutomators (): void {
                   <car-sport-outline v-else />
                 </n-icon>
               </template>
-              buy a new car (-₿{{ store.carCost }})
+              buy a new car (-₿{{ store.carCost.toFixed(9) }})
+            </n-button> 
+          </n-row>
+          <n-row>
+            <!-- <n-button v-if="store.cars.length > 0 && store.money >= 100" :disabled="store.carCost > store.money" @click="buyCar"> -->
+            <n-button class="centered-button" @click="buyDonutShop">
+              <template #icon>
+                <n-icon>
+                  <fast-food-outline />
+                </n-icon>
+              </template>
+              open a donut shop (-₿0.00837234)
             </n-button> 
           </n-row>
           <n-row>

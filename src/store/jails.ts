@@ -40,8 +40,8 @@ export default [{
   name: 'california state prison',
   escapeProjects: [
     befriendGuardsProject({
-      maxRequiredCorrectAnswers: 10,
-      minTimeSeconds: 60,
+      maxRequiredCorrectAnswers: 5,
+      minTimeSeconds: 30,
     }),
     digProject({
 

@@ -83,10 +83,12 @@ function saveGameIntermittently(): void {
 async function gameLoop() {
   while (1==1) {
     store.lastMoney = store.money
-    store.automators.forEach((automator: Incrementor) =>
-      store.money = automator(store.money as Decimal)
-    )
-    await new Promise(resolve => setTimeout(resolve, 0))
+    if (store.posessions['donut shop']) {
+      store.money += store.posessions['donut shop'] * store.donutShop.output
+      console.log(`dshop: ${store.posessions['donut shop'] * store.donutShop.output}`)
+    }
+    // TODO do we really want to cap this at 1s?
+    await new Promise(resolve => setTimeout(resolve, 1000))
   }
 }
 

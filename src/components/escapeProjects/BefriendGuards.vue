@@ -15,7 +15,7 @@
     correctAnswers = ref(0),
     timeElapsed = ref(0),
     timeLimit = computed(() =>
-      (store.escapeProject.settings.minTimeSeconds) +
+      (store.escapeProject.settings.minTimeSeconds || 10) +
       (store.stats['street cred'] * .5)
     ),
     timeRemainingPercentage = computed(() => 
@@ -103,9 +103,7 @@
         <template #trigger>
           <span>{{ requiredCorrectAnswers }}</span>
         </template>
-        <p>
-          max(1, floor({{ store.escapeProject.settings.maxRequiredCorrectAnswers }} - street cred * .1))
-        </p>
+        max(1, floor({{ store.escapeProject.settings.maxRequiredCorrectAnswers }} - street cred * .1))
       </n-popover>
     </p>
     <n-popover placement="right" trigger="hover">
@@ -114,9 +112,7 @@
           <span style="text-align: center;">{{ timeRemainingFormatted }}</span>
         </n-progress>      
       </template>
-      <p>
-       {{ store.escapeProject.settings.minTimeSeconds }} + street cred * .5
-      </p>
+      {{ store.escapeProject.settings.minTimeSeconds }} + street cred * .5
     </n-popover>
 
     <!-- <span style="font-variant-numeric: tabular-nums">

@@ -48,12 +48,13 @@ export const useStore = defineStore('main', {
       lastMoney: savedState?.lastMoney || 0,
       pay: savedState?.pay || 0.00000001,
       payIncrementType: savedState?.payIncrementType || 'sqrt',
-      carCost: savedState?.carCost || 0.00001,
+      carCost: savedState?.carCost || 0.00001589,
       spaceshipCost: savedState?.spaceshipCost || 1000000,
       cars: savedState?.cars || defaultCars,
       strength: savedState?.strength || 0,
       gainz: savedState?.gainz || 1,
       workoutDuration: savedState?.workoutDuration || 3000,
+      loiterDuration: savedState?.loiterDuration || 2000,
       posessions: savedState?.posessions || {},
       workDuration: savedState?.workDuration || 3000,
       automators: savedState?.automators 
@@ -74,6 +75,11 @@ export const useStore = defineStore('main', {
       planetsAvailable: savedState?.planetsAvailable || 60,
       currentPlanet: savedState?.currentPlanet || 0,
       escapeProject: savedState?.escapeProject || false,
+      donutShop: savedState?.donutShop || {
+        cost: 0.00837234,
+        output: .000000006,
+        aiSpeedReduction: 25,
+      },
       stats: savedState?.stats || {
         'street cred': 0,
         strength: 0,
@@ -109,6 +115,7 @@ export const useStore = defineStore('main', {
         strength: this.strength,
         gainz: this.gainz,
         workoutDuration: this.workoutDuration,
+        loiterDuration: this.loiterDuration,
         posessions: this.posessions,
         automators: this.automators
           .map((a: Incrementor) => a.name),
@@ -123,6 +130,7 @@ export const useStore = defineStore('main', {
         planetsAvailable: this.planetsAvailable,
         currentPlanet: this.currentPlanet,
         escapeProject: this.escapeProject,
+        donutShop: this.donutShop,
         stats: this.stats,
       })
       return encoded
