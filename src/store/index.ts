@@ -48,7 +48,7 @@ export const useStore = defineStore('main', {
       lastMoney: savedState?.lastMoney || 0,
       pay: savedState?.pay || 0.00000001,
       payIncrementType: savedState?.payIncrementType || 'sqrt',
-      carCost: savedState?.carCost || 500,
+      carCost: savedState?.carCost || 0.00001,
       spaceshipCost: savedState?.spaceshipCost || 1000000,
       cars: savedState?.cars || defaultCars,
       strength: savedState?.strength || 0,

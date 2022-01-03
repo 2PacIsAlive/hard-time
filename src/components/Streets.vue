@@ -183,6 +183,8 @@ function nextMap () {
   // @ts-ignore
   play({id: 'nextMap'})
   store.map = secondMap
+  aiExists.value = true
+  if (!store.aiMovementRoutineStarted) moveAi()
 }
 
 // TODO this is super flawed, need to find a better way of doing this
@@ -297,6 +299,8 @@ async function moveAi() {
       }
       await new Promise(resolve => setTimeout(resolve, 100 - store.map.aiSpeed))
     } else {
+      aiExists.value = false
+      store.aiMovementRoutineStarted = false
       return
       // spawnNewAi()
     }
@@ -437,6 +441,7 @@ if (!store.starSpawnerStarted) spawnNewStarsIntermittently()
   <div id="streets">
     <p v-if="aiExists && aiSearching">the <span style="color: red">cops</span> are looking for you</p>
     <p id="run" v-else-if="aiExists && !aiSearching">you should probably run</p>
+    <p v-else>you are safe for now</p>
     <pre v-html="coloredMap"></pre>
     <p>nab <span style="color: #b39700">stars</span> to earn dough (arrow keys or wasd)</p>
     <p>use <span style="color: #09f8f6">portals</span> to access other parts of the map</p>

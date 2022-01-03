@@ -113,7 +113,7 @@ function clearAutomators (): void {
                   <car-sport-outline v-else />
                 </n-icon>
               </template>
-              buy a new car (-${{ store.carCost }})
+              buy a new car (-₿{{ store.carCost }})
             </n-button> 
           </n-row>
           <n-row>
