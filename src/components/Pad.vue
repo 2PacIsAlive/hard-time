@@ -103,7 +103,7 @@ function clearAutomators (): void {
                 </template>
               </n-statistic>
             </template>
-              allows you to access <a @click="store.openScreen ==='the streets'">the streets</a>
+              allows you to access the streets
           </n-popover>
           <n-popover v-if="'donut shop' in store.posessions" placement="top-start" trigger="hover">
             <template #trigger>

@@ -85,7 +85,6 @@ async function gameLoop() {
     store.lastMoney = store.money
     if (store.posessions['donut shop']) {
       store.money += store.posessions['donut shop'] * store.donutShop.output
-      console.log(`dshop: ${store.posessions['donut shop'] * store.donutShop.output}`)
     }
     // TODO do we really want to cap this at 1s?
     await new Promise(resolve => setTimeout(resolve, 1000))

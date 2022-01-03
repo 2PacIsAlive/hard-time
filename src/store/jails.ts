@@ -36,6 +36,17 @@ function digProject(settings: DigProjectSettings) {
   )
 }
 
+export interface ArrangeGetawaySettings {
+
+}
+
+function arrangeAGetaway(settings: ArrangeGetawaySettings) {
+  return escapeProject('arrange a getaway',
+    'you made some calls',
+    settings
+  )
+}
+
 export default [{
   name: 'california state prison',
   escapeProjects: [
@@ -44,6 +55,9 @@ export default [{
       minTimeSeconds: 30,
     }),
     digProject({
+
+    }),
+    arrangeAGetaway({
 
     }),
   ],
