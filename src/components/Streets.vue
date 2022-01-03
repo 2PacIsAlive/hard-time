@@ -5,7 +5,7 @@ import { storeToRefs } from 'pinia'
 import { useSound } from '@vueuse/sound'
 import sfx from '../assets/sfx.mp3'
 import { NButton, NSlider, NSpace, NLayout } from 'naive-ui'
-import { Decimal } from 'decimal.js'
+// import { Decimal } from 'decimal.js'
 import { secondMap } from '../store/maps'
 
 const store = useStore()
@@ -153,10 +153,10 @@ function doMovePlayer (current: number, next: number, nextChar: string): void {
   if (isLegalMove(nextChar, playerIllegalMoves)) {
     if (isStar(nextChar)) {
       store.stars += 1
-      store.money = Decimal.add(store.money, 100 * store.stars)
+      store.money += store.starMoney
       // @ts-ignore
       play({id: 'star'})
-      if (playbackRate.value < 4) playbackRate.value += 0.001
+      // if (playbackRate.value < 4) playbackRate.value += 0.001
     }
     let isJump = false
     if (isPortal(nextChar)) {
@@ -297,7 +297,12 @@ async function moveAi() {
         console.log('ai path got hosed, nuking from orbit')
         aiPath.value = []
       }
-      await new Promise(resolve => setTimeout(resolve, 100 - store.map.aiSpeed))
+      const donutShopSpeedReduction = store.posessions['donut shop'] 
+        ? store.map.aiSpeed * store.donutShop.aiSpeedReduction
+        : 0
+      const aiMovementDelay = (100 - store.map.aiSpeed) + donutShopSpeedReduction
+      console.log(aiMovementDelay)
+      await new Promise(resolve => setTimeout(resolve, aiMovementDelay))
     } else {
       aiExists.value = false
       store.aiMovementRoutineStarted = false

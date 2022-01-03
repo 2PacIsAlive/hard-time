@@ -46,7 +46,7 @@ async function loiter(): Promise<void> {
   loadingLoiter.value = true
   loadingBar.start()
   await new Promise(resolve => setTimeout(resolve, store.loiterDuration))
-  store.loiterDuration -= store.stats['street cred'] * 2
+  store.loiterDuration -= store.stats['street cred'] * 50
   store.stats['street cred'] += 1
   loadingLoiter.value = false
   loadingBar.finish()
@@ -90,7 +90,7 @@ function clearAutomators (): void {
         </template>
         beg for sats (+{{ formattedPay }})
       </n-button>  -->
-      <n-grid x-gap="120" :cols="3">
+      <n-grid x-gap="40" :cols="3">
         <n-gi span="1">
           <n-divider>posessions</n-divider>
           <n-popover v-if="'car' in store.posessions" placement="top-start" trigger="hover">
@@ -115,7 +115,7 @@ function clearAutomators (): void {
                 </template>
               </n-statistic>
             </template>
-              ₿{{ store.donutShop.output * store.posessions['donut shop'] }}/s, {{ store.donutShop.aiSpeedReduction }}% cop speed reduction
+              {{ store.donutShop.output * store.posessions['donut shop'] }} ₿/s<br />{{ store.donutShop.aiSpeedReduction * 100 }}% cop speed reduction
           </n-popover>
         </n-gi>
         <n-gi span="1">
@@ -150,7 +150,7 @@ function clearAutomators (): void {
                   <fast-food-outline />
                 </n-icon>
               </template>
-              open a donut shop (-₿0.00837234)
+              open a donut shop (-₿{{ store.donutShop.cost }})
             </n-button> 
           </n-row>
           <n-row>

@@ -52,7 +52,7 @@ export default [{
   escapeProjects: [
     befriendGuardsProject({
       maxRequiredCorrectAnswers: 5,
-      minTimeSeconds: 30,
+      minTimeSeconds: 15,
     }),
     digProject({
 

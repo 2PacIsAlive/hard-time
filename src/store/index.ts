@@ -76,9 +76,9 @@ export const useStore = defineStore('main', {
       currentPlanet: savedState?.currentPlanet || 0,
       escapeProject: savedState?.escapeProject || false,
       donutShop: savedState?.donutShop || {
-        cost: 0.00837234,
-        output: .000000006,
-        aiSpeedReduction: 25,
+        cost: 0.00015, // 15k$ if btc 100m
+        output: 0.000000050, // 5$ if btc 100m
+        aiSpeedReduction: 4.5,
       },
       stats: savedState?.stats || {
         'street cred': 0,
@@ -86,6 +86,7 @@ export const useStore = defineStore('main', {
         dexterity: 0,
         luck: 0,
       },
+      starMoney: savedState?.starMoney || 0.000003200,
       aiMovementRoutineStarted: false,
       playerMovementRoutineStarted: false,
       starSpawnerStarted: false,
@@ -132,6 +133,7 @@ export const useStore = defineStore('main', {
         escapeProject: this.escapeProject,
         donutShop: this.donutShop,
         stats: this.stats,
+        starMoney: this.starMoney,
       })
       return encoded
         ? btoa(unescape(encodeURIComponent(saveString)))
