@@ -23,7 +23,7 @@ import { NIcon, NSpace, NSwitch, NLayout, NLayoutSider, NMenu, useMessage } from
 import { HomeOutline, CaretDownOutline, SkullOutline, SubwayOutline, StorefrontOutline, BarbellOutline, StarOutline } from '@vicons/ionicons5'
 
 const store = useStore(),
-  collapsed = ref(false),
+  collapsed = ref(true),
   message = useMessage(),
   saveInterval = 20000
 

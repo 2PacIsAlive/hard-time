@@ -1,5 +1,5 @@
 import { defineStore } from 'pinia'
-import { Decimal } from 'decimal.js'
+// import { Decimal } from 'decimal.js'
 import { Incrementor, incrementors } from '../components/incrementors'
 import { firstMap } from './maps'
 import jails from './jails'
@@ -44,9 +44,9 @@ export const useStore = defineStore('main', {
       sentenceStarted: savedState?.sentenceStarted || undefined,
       jails: savedState?.jails || jails,
       currentJail: savedState?.currentJail || 0,
-      money: savedState?.money || new Decimal(100000000),
-      lastMoney: savedState?.lastMoney || new Decimal(0),
-      pay: savedState?.pay || new Decimal(100),
+      money: savedState?.money || 0,
+      lastMoney: savedState?.lastMoney || 0,
+      pay: savedState?.pay || 0.00000001,
       payIncrementType: savedState?.payIncrementType || 'sqrt',
       carCost: savedState?.carCost || 500,
       spaceshipCost: savedState?.spaceshipCost || 1000000,
@@ -75,7 +75,10 @@ export const useStore = defineStore('main', {
       currentPlanet: savedState?.currentPlanet || 0,
       escapeProject: savedState?.escapeProject || false,
       stats: savedState?.stats || {
-        charisma: 0
+        'street cred': 0,
+        strength: 0,
+        dexterity: 0,
+        luck: 0,
       },
       aiMovementRoutineStarted: false,
       playerMovementRoutineStarted: false,

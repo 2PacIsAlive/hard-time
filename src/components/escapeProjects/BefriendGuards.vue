@@ -2,7 +2,7 @@
   import { ref, onUnmounted, computed } from 'vue'
   import { useStore } from '../../store'
   import { NSpace, NInput, NIcon, NProgress, NPopover } from 'naive-ui'
-  import { PencilOutline } from '@vicons/ionicons5'
+  import { PencilOutline, PeopleOutline } from '@vicons/ionicons5'
   import { EscapeProject } from '../../store/jails'
   import Sentiment from 'sentiment'
 
@@ -16,7 +16,7 @@
     timeElapsed = ref(0),
     timeLimit = computed(() =>
       (store.escapeProject.settings.minTimeSeconds) +
-      (store.stats.charisma * .5)
+      (store.stats['street cred'] * .5)
     ),
     timeRemainingPercentage = computed(() => 
       100 - (timeElapsed.value / timeLimit.value) * 100
@@ -26,8 +26,8 @@
     ),
     requiredCorrectAnswers = computed(() => 
       Math.max(1, 
-      store.escapeProject.settings.maxRequiredCorrectAnswers - 
-      (store.stats.charisma * .1))
+      Math.floor(store.escapeProject.settings.maxRequiredCorrectAnswers - 
+      (store.stats['street cred'] * .1)))
     )
 
 
@@ -104,7 +104,7 @@
           <span>{{ requiredCorrectAnswers }}</span>
         </template>
         <p>
-          max(1, {{ store.escapeProject.settings.maxRequiredCorrectAnswers }} - charisma * .1)
+          max(1, floor({{ store.escapeProject.settings.maxRequiredCorrectAnswers }} - street cred * .1))
         </p>
       </n-popover>
     </p>
@@ -115,7 +115,7 @@
         </n-progress>      
       </template>
       <p>
-       {{ store.escapeProject.settings.minTimeSeconds }} + charisma * .5
+       {{ store.escapeProject.settings.minTimeSeconds }} + street cred * .5
       </p>
     </n-popover>
 
