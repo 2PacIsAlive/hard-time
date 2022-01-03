@@ -54,7 +54,7 @@ export const useStore = defineStore('main', {
       strength: savedState?.strength || 0,
       gainz: savedState?.gainz || 1,
       workoutDuration: savedState?.workoutDuration || 3000,
-      loiterDuration: savedState?.loiterDuration || 2000,
+      loiterDuration: savedState?.loiterDuration || 3000,
       posessions: savedState?.posessions || {},
       workDuration: savedState?.workDuration || 3000,
       automators: savedState?.automators 

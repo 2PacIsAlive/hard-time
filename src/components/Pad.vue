@@ -46,8 +46,8 @@ async function loiter(): Promise<void> {
   loadingLoiter.value = true
   loadingBar.start()
   await new Promise(resolve => setTimeout(resolve, store.loiterDuration))
-  store.loiterDuration -= store.stats['street cred'] * 10
-  store.stats['street cred'] += 1 + (store.stats['street cred'] * .07 )
+  store.loiterDuration -= store.stats['street cred'] * 2
+  store.stats['street cred'] += 1
   loadingLoiter.value = false
   loadingBar.finish()
 }
@@ -168,7 +168,7 @@ function clearAutomators (): void {
           <n-divider>stats</n-divider>
           <n-row align-items="center" justify-content="center">
             <n-col :span="12">
-              <n-statistic label="street cred" :value="store.stats['street cred']">
+              <n-statistic label="street cred" :value="store.stats['street cred'].toFixed(0)">
                 <template #prefix>
                   <n-icon>
                     <people-outline />
@@ -177,7 +177,7 @@ function clearAutomators (): void {
               </n-statistic>
             </n-col>
             <n-col :span="12">
-              <n-statistic label="strength" :value="store.stats['strength']">
+              <n-statistic label="strength" :value="store.stats['strength'].toFixed(0)">
                 <template #prefix>
                   <n-icon>
                     <barbell-outline />
@@ -186,7 +186,7 @@ function clearAutomators (): void {
               </n-statistic>            
             </n-col>
             <n-col :span="12">
-              <n-statistic label="dexterity" :value="store.stats['dexterity']">
+              <n-statistic label="dexterity" :value="store.stats['dexterity'].toFixed(0)">
                 <template #prefix>
                   <n-icon>
                     <sparkles-outline />
@@ -195,7 +195,7 @@ function clearAutomators (): void {
               </n-statistic>
             </n-col>
             <n-col :span="12">
-              <n-statistic label="luck" :value="store.stats['luck']">
+              <n-statistic label="luck" :value="store.stats['luck'].toFixed(0)">
                 <template #prefix>
                   <n-icon>
                     <dice-outline />

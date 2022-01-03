@@ -1,17 +1,17 @@
 <script setup lang="ts">
-  import { ref, onUnmounted, computed } from 'vue'
+  import { ref, onUnmounted, computed, Ref } from 'vue'
   import { useStore } from '../../store'
-  import { NSpace, NInput, NIcon, NProgress, NPopover } from 'naive-ui'
+  import { NSpace, NInput, NIcon, NProgress, NPopover, useMessage } from 'naive-ui'
   import { PencilOutline, PeopleOutline } from '@vicons/ionicons5'
   import { EscapeProject } from '../../store/jails'
   import Sentiment from 'sentiment'
 
-  const store = useStore()
-  console.log(store.escapeProject)
-
-  const  sentiment = new Sentiment(),
+  const store = useStore(),
+    message = useMessage(),
+    sentiment = new Sentiment(),
     niceToggle = ref(true),
     submission = ref(""),
+    submissions: Ref<string[]> = ref([]),
     correctAnswers = ref(0),
     timeElapsed = ref(0),
     timeLimit = computed(() =>
@@ -22,14 +22,13 @@
       100 - (timeElapsed.value / timeLimit.value) * 100
     ),
     timeRemainingFormatted = computed(() => 
-      `${timeLimit.value - timeElapsed.value}s`
+      `${(timeLimit.value - timeElapsed.value).toFixed(0)}s`
     ),
     requiredCorrectAnswers = computed(() => 
       Math.max(1, 
       Math.floor(store.escapeProject.settings.maxRequiredCorrectAnswers - 
       (store.stats['street cred'] * .1)))
     )
-
 
   function finish (complete: boolean) {
     clearInterval(timer)
@@ -42,13 +41,18 @@
   function submit () {
     let correct = false
     if (submission.value) {
-      const analysis = sentiment.analyze(submission.value)
-      console.log(analysis.score, analysis.score < 0)
-      if (analysis.score > 0) {
-        if (niceToggle.value) correct = true
-      }
-      else if (analysis.score < 0) {
-        if (!niceToggle.value) correct = true
+      if (submissions.value.includes(submission.value)) {
+        message.error('you said that already')
+      } else {
+        submissions.value.push(submission.value)
+        const analysis = sentiment.analyze(submission.value)
+        console.log(analysis.score, analysis.score < 0)
+        if (analysis.score > 0) {
+          if (niceToggle.value) correct = true
+        }
+        else if (analysis.score < 0) {
+          if (!niceToggle.value) correct = true
+        }
       }
     }
     if (correct) {
@@ -91,7 +95,7 @@
 <template>
   <n-space align="center" justify="center" vertical size="large">
     <p>say something <span style="color: green;" v-if="niceToggle">nice</span><span style="color: red;" v-else>mean</span></p>
-    <n-input autofocus type="textarea" v-model:value="submission" round placeholder="type your message here and press enter to submit" >
+    <n-input autofocus v-model:value="submission" round placeholder="" >
       <!-- <template #suffix>
         <n-icon>
           <pencil-outline />
