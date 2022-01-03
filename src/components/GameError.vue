@@ -6,6 +6,6 @@
 
 <template>
   <n-alert title="oops" type="error">
-    {{ msg }}, export ur savefile and tell a dev pls
+    {{ msg }}
   </n-alert>
 </template>

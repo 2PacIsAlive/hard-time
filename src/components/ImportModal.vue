@@ -22,7 +22,7 @@ function importSave () {
 </script>
 
 <template>
-  <n-modal :show="store.showImportModal">
+  <n-modal v-model:show="store.showImportModal">
     <n-card style="width: 600px;" title="import a save file:" :bordered="false" hoverable size="large">
       <n-input v-model:value="store.importString" type="textarea" placeholder="paste save file here" />
       <template #footer>

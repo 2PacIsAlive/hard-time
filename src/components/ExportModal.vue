@@ -13,7 +13,7 @@ function copyToClipboard () {
 </script>
 
 <template>
-  <n-modal :show="store.showExportModal">
+  <n-modal v-model:show="store.showExportModal">
     <n-card style="width: 600px;" title="stash your save file:" :bordered="false" hoverable size="large">
       <pre><code>{{ store.exportString }}</code></pre>
       <template #footer>
