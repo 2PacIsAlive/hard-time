@@ -65,7 +65,7 @@ const fullSentence = setInterval(() => {
 
 <template>
   <n-space align="center" justify="center" vertical size="large">
-    <p>you are in <span style="color: red">{{ jail?.name }}</span></p>
+    <p>you are doing <strong>hard time</strong> in <span style="color: red">{{ jail?.name }}</span></p>
     <p id="sentencetime" @click="timeFormatToggle = !timeFormatToggle">{{ formattedSentenceTime }}</p>
     <template
       v-for="escapeProject in jail?.escapeProjects"

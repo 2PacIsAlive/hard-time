@@ -9,6 +9,8 @@ import AppFooter from './components/AppFooter.vue'
 import ExportModal from './components/ExportModal.vue'
 // @ts-ignore
 import ImportModal from './components/ImportModal.vue'
+// @ts-ignore
+import SettingsModal from './components/SettingsModal.vue'
 import { useStore } from './store'
 import { darkTheme, NConfigProvider, GlobalThemeOverrides, NLoadingBarProvider, NThemeEditor, NGlobalStyle, NModal, NButton, NCard, NMessageProvider, useMessage } from 'naive-ui'
 
@@ -37,7 +39,7 @@ const store = useStore(),
           <app-footer />
           <export-modal />
           <import-modal />
-          <!-- <enable-sound-modal /> -->
+          <settings-modal />
         </div>
       </n-message-provider>
     </n-loading-bar-provider>

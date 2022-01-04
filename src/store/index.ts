@@ -22,6 +22,9 @@ export const useStore = defineStore('main', {
     // all these properties will have their type inferred automatically
     return {
       gameStarted: savedState?.gameStarted || false,
+      settings: savedState?.settings || {
+        musicVolume: 1,
+      },
       inJail: savedState !== undefined && savedState.inJail === false ? false : true,
       world: savedState?.world
         ? getWorld(savedState.world)
@@ -86,6 +89,7 @@ export const useStore = defineStore('main', {
     buildSave (encoded: boolean) {
       const saveString = JSON.stringify({
         gameStarted: this.gameStarted,
+        settings: this.settings,
         inJail: this.inJail,
         world: this.world?.name,
         currentCity: this.currentCity,

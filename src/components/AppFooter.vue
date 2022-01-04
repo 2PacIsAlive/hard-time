@@ -26,7 +26,7 @@ function importSave () {
 }
 
 function openSettings () {
-  console.log('TODO open settings')
+  store.showSettingsModal = true
 }
 </script>
 
