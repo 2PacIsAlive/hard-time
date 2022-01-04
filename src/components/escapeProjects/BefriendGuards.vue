@@ -46,7 +46,6 @@
       } else {
         submissions.value.push(submission.value)
         const analysis = sentiment.analyze(submission.value)
-        console.log(analysis.score, analysis.score < 0)
         if (analysis.score > 0) {
           if (niceToggle.value) correct = true
         }

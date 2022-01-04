@@ -1,14 +1,8 @@
 <script setup lang="ts">
 import { ref, computed } from 'vue'
 import { useStore } from '../store'
-// @ts-ignore
-// import * as numberformat from 'swarm-numberformat'
-// import { Decimal } from 'decimal.js'
-// import { incrementors } from './incrementors'
-
-// const backend = { backend: 'decimal.js', Decimal: Decimal }
 import { NButton, NIcon, useLoadingBar, NSpace, NCard, NGrid, NGi, NStatistic, NRow, NCol, NDivider, NPopover } from 'naive-ui'
-import { LogoBitcoin, EarOutline, CarOutline, CarSportOutline, RocketOutline, PeopleOutline, BarbellOutline, SparklesOutline, DiceOutline, FastFoodOutline } from '@vicons/ionicons5'
+import { LogoBitcoin, EarOutline, CarOutline, CarSportOutline, RocketOutline, PeopleOutline, BarbellOutline, SparklesOutline, DiceOutline, FastFoodOutline, AirplaneOutline } from '@vicons/ionicons5'
 
 const store = useStore(),
   loadingBar = useLoadingBar(),
@@ -20,16 +14,6 @@ const store = useStore(),
   formattedPay = computed(() =>
     `₿${store.pay}`
   )
-
-// async function increment (): Promise<void> {
-//   store.count = await incrementors[incrementType.value](store.count as Decimal)
-// }
-
-// function addAutomators (): void {
-//   for (let i=0; i<automatorsToAdd.value; i++) {
-//     store.automators.push(incrementors[incrementType.value])
-//   }
-// }
 
 async function begForCredits(): Promise<void> {
   loadingBegForCredits.value = true
@@ -53,10 +37,11 @@ async function loiter(): Promise<void> {
 }
 
 function buyCar(): void {
-  store.money -= store.carCost
-  store.posessions.car = store.cars.shift()
-  store.carCost *= 100
-  store.menuOptions[1].disabled = false
+  if (store.cars.length > 0) {
+    store.posessions.car = store.cars.shift()
+    store.money -= store.posessions.car.cost
+    store.menuOptions[1].disabled = false
+  }
 }
 
 function buyDonutShop(): void {
@@ -65,16 +50,23 @@ function buyDonutShop(): void {
     store.posessions['donut shop'] += 1
   else store.posessions['donut shop'] = 1
   store.donutShop.cost *= 1.75
-}
-
-function buySpaceship(): void {
-  store.money -= store.spaceshipCost
-  store.posessions.spaceship = "millenium falcon"
   store.menuOptions[3].disabled = false
 }
 
-function clearAutomators (): void {
-  store.automators = []
+function buyPlane(): void {
+  if (store.planes.length > 0) {
+    store.posessions.plane = store.planes.shift()
+    store.money -= store.posessions.plane.cost
+    store.menuOptions[4].disabled = false
+  }
+}
+
+function buySpaceship(): void {
+  if (store.spaceships.length > 0) {
+    store.posessions.spaceship = store.spaceships.shift()
+    store.money -= store.posessions.spaceship.cost
+    store.menuOptions[5].disabled = false
+  }
 }
 </script>
 
@@ -95,7 +87,7 @@ function clearAutomators (): void {
           <n-divider>posessions</n-divider>
           <n-popover v-if="'car' in store.posessions" placement="top-start" trigger="hover">
             <template #trigger>
-              <n-statistic label="car" :value="store.posessions['car']">
+              <n-statistic label="car" :value="store.posessions['car'].name">
                 <template #prefix>
                   <n-icon>
                     <car-outline />
@@ -103,7 +95,7 @@ function clearAutomators (): void {
                 </template>
               </n-statistic>
             </template>
-              allows you to access the streets
+            allows you to access the streets
           </n-popover>
           <n-popover v-if="'donut shop' in store.posessions" placement="top-start" trigger="hover">
             <template #trigger>
@@ -115,13 +107,37 @@ function clearAutomators (): void {
                 </template>
               </n-statistic>
             </template>
-              {{ store.donutShop.output * store.posessions['donut shop'] }} ₿/s<br />{{ store.donutShop.aiSpeedReduction * 100 }}% cop speed reduction
+            {{ store.donutShop.output * store.posessions['donut shop'] }} ₿/s<br />{{ store.donutShop.aiSpeedReduction * 100 }}% cop speed reduction
+          </n-popover>
+          <n-popover v-if="'plane' in store.posessions" placement="top-start" trigger="hover">
+            <template #trigger>
+              <n-statistic label="plane" :value="store.posessions['plane'].name">
+                <template #prefix>
+                  <n-icon>
+                    <airplane-outline />
+                  </n-icon>
+                </template>
+              </n-statistic>
+            </template>
+            allows you to access the skies
+          </n-popover>
+          <n-popover v-if="'spaceship' in store.posessions" placement="top-start" trigger="hover">
+            <template #trigger>
+              <n-statistic label="spaceship" :value="store.posessions['spaceship'].name">
+                <template #prefix>
+                  <n-icon>
+                    <rocket-outline />
+                  </n-icon>
+                </template>
+              </n-statistic>
+            </template>
+            allows you to access the stars
           </n-popover>
         </n-gi>
         <n-gi span="1">
           <n-divider>actions</n-divider>
           <n-row>
-            <n-button class="centered-button" :loading="loadingLoiter" :disabled="loadingLoiter" @click="loiter()">
+            <n-button block class="centered-button" :loading="loadingLoiter" :disabled="loadingLoiter" @click="loiter()">
               <template #icon>
                 <n-icon>
                   <ear-outline />
@@ -130,37 +146,45 @@ function clearAutomators (): void {
               loiter (+1 street cred)
             </n-button> 
           </n-row>
-          <n-row>
-            <!-- <n-button v-if="store.cars.length > 0 && store.money >= 100" :disabled="store.carCost > store.money" @click="buyCar"> -->
-            <n-button class="centered-button" @click="buyCar">
+          <n-row v-if="store.cars.length > 0 && store.money >= store.cars[0].cost / 10">
+            <n-button block class="centered-button" :disabled="store.cars[0].cost > store.money" @click="buyCar">
               <template #icon>
                 <n-icon>
                   <car-outline v-if="store.carCost <= 500" />
                   <car-sport-outline v-else />
                 </n-icon>
               </template>
-              buy a new car (-₿{{ store.carCost.toFixed(9) }})
+              buy a new car (-₿{{ store.cars[0].cost.toFixed(8) }})
             </n-button> 
           </n-row>
-          <n-row>
-            <!-- <n-button v-if="store.cars.length > 0 && store.money >= 100" :disabled="store.carCost > store.money" @click="buyCar"> -->
-            <n-button class="centered-button" @click="buyDonutShop">
+          <n-row v-if="store.money >= store.donutShop.cost / 10">
+            <n-button block class="centered-button" :disabled="store.donutShop.cost > store.money" @click="buyDonutShop">
               <template #icon>
                 <n-icon>
                   <fast-food-outline />
                 </n-icon>
               </template>
-              open a donut shop (-₿{{ store.donutShop.cost }})
+              open a donut shop (-₿{{ store.donutShop.cost.toFixed(8) }})
             </n-button> 
           </n-row>
-          <n-row>
-            <n-button v-if="store.money >= 500000" :disabled="store.spaceshipCost > store.money" @click="buySpaceship">
+          <n-row v-if="store.planes.length > 0 && store.money >= store.planes[0].cost / 10">
+            <n-button block class="centered-button" :disabled="store.planes[0].cost > store.money" @click="buyPlane">
+              <template #icon>
+                <n-icon>
+                  <airplane-outline />
+                </n-icon>
+              </template>
+              buy a plane (-₿{{ store.planes[0].cost.toFixed(8) }})
+            </n-button> 
+          </n-row>
+          <n-row v-if="store.spaceships.length > 0 && store.money >= store.spaceships[0].cost / 10">
+            <n-button block class="centered-button" :disabled="store.spaceships[0].cost > store.money" @click="buySpaceship">
               <template #icon>
                 <n-icon>
                   <rocket-outline />
                 </n-icon>
               </template>
-              buy a spaceship (-${{ store.spaceshipCost }})
+              buy a spaceship (-${{ store.spaceships[0].cost.toFixed(8) }})
             </n-button>
           </n-row>
         </n-gi>

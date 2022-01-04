@@ -2,29 +2,11 @@ import { defineStore } from 'pinia'
 // import { Decimal } from 'decimal.js'
 import { Incrementor, incrementors } from '../components/incrementors'
 import { firstMap } from './maps'
+import defaultCars from './cars'
+import defaultPlanes from './planes'
+import defaultSpaceships from './spaceships'
+import defaultMenu from './menu'
 import jails from './jails'
-
-const defaultMenu = [
-  {
-    label: 'the pad',
-    key: 'the pad',
-    disabled: false,
-  }, {
-    label: 'the streets',
-    key: 'the streets',
-    disabled: true
-  }, {
-    label: 'the gym',
-    key: 'the gym',
-    disabled: true
-  }, {
-    label: 'the stars',
-    key: 'the stars',
-    disabled: true
-  }
-]
-
-const defaultCars = ['1993 Ford Aspire', '2020 Subaru BRZ', 'Lamborghini Aventador']
 
 const saveKey = 'hardtimesavefile'
 
@@ -51,6 +33,8 @@ export const useStore = defineStore('main', {
       carCost: savedState?.carCost || 0.000005,
       spaceshipCost: savedState?.spaceshipCost || 1000000,
       cars: savedState?.cars || defaultCars,
+      planes: savedState?.planes || defaultPlanes,
+      spaceships: savedState?.spaceships || defaultSpaceships,
       strength: savedState?.strength || 0,
       gainz: savedState?.gainz || 1,
       workoutDuration: savedState?.workoutDuration || 3000,
@@ -113,6 +97,8 @@ export const useStore = defineStore('main', {
         carCost: this.carCost,
         spaceshipCost: this.spaceshipCost,
         cars: this.cars,
+        planes: this.planes,
+        spaceships: this.spaceships,
         strength: this.strength,
         gainz: this.gainz,
         workoutDuration: this.workoutDuration,

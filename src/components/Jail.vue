@@ -26,10 +26,10 @@ function msToTime (ms: number) {
     minutes = (ms / (1000 * 60)),
     hours = (ms / (1000 * 60 * 60)),
     days = (ms / (1000 * 60 * 60 * 24))
-  if (seconds < 60) return seconds.toFixed(1) + " seconds"
-  else if (minutes < 60) return minutes.toFixed(1) + " minutes"
-  else if (hours < 24) return hours.toFixed(1) + " hours"
-  else return days.toFixed(1) + " days"
+  if (seconds < 60) return seconds.toFixed(4) + " seconds"
+  else if (minutes < 60) return minutes.toFixed(4) + " minutes"
+  else if (hours < 24) return hours.toFixed(4) + " hours"
+  else return days.toFixed(4) + " days"
 }
 
 function leaveJail () {

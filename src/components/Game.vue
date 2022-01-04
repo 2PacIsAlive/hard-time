@@ -1,7 +1,5 @@
 <script setup lang="ts">
-import { Component, h, onMounted, ref } from 'vue'
-import { Decimal } from 'decimal.js'
-import { Incrementor } from './incrementors'
+import { h, onMounted, ref } from 'vue'
 import { useStore } from '../store'
 // @ts-ignore
 import Launcher from './Launcher.vue'
@@ -20,7 +18,7 @@ import Space from './Space.vue'
 // @ts-ignore
 import GameError from './GameError.vue'
 import { NIcon, NSpace, NSwitch, NLayout, NLayoutSider, NMenu, useMessage } from 'naive-ui'
-import { HomeOutline, CaretDownOutline, SkullOutline, SubwayOutline, StorefrontOutline, BarbellOutline, StarOutline } from '@vicons/ionicons5'
+import { HomeOutline, CaretDownOutline, SkullOutline, SubwayOutline, StorefrontOutline, BarbellOutline, StarOutline, EarthOutline, FastFoodOutline } from '@vicons/ionicons5'
 
 const store = useStore(),
   collapsed = ref(true),
@@ -38,6 +36,8 @@ function renderMenuIcon (option: any) {
   if (option.key === 'the streets') icon = SkullOutline
   else if (option.key === 'the gym') icon = BarbellOutline
   else if (option.key === 'the stars') icon = StarOutline
+  else if (option.key === 'the skies') icon = EarthOutline
+  else if (option.key === 'the shop') icon = FastFoodOutline
   return option.disabled
     ? false
     : h(NIcon, { onClick: function () { openScreen(option.label) } }, { default: () => 
@@ -65,15 +65,6 @@ function measureLag(): void {
 function saveGame(): void {
   store.save()
   message.info('game saved')
-  // notification.info({
-  //   title: 'game saved',
-  //   // content: `game saved`,
-  //   meta: new Date().toLocaleTimeString(),
-  //   duration: 2500,
-  //   closable: true,
-  // })
-  // store.displaySaved = true
-  // setTimeout(() => store.displaySaved = false, 2000)
 }
 
 function saveGameIntermittently(): void {
