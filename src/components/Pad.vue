@@ -192,40 +192,60 @@ function buySpaceship(): void {
           <n-divider>stats</n-divider>
           <n-row align-items="center" justify-content="center">
             <n-col :span="12">
-              <n-statistic label="street cred" :value="store.stats['street cred'].toFixed(0)">
-                <template #prefix>
-                  <n-icon>
-                    <people-outline />
-                  </n-icon>
+              <n-popover placement="top-start" trigger="hover">
+                <template #trigger>
+                  <n-statistic label="street cred" :value="store.stats['street cred'].toFixed(0)">
+                    <template #prefix>
+                      <n-icon>
+                        <people-outline />
+                      </n-icon>
+                    </template>
+                  </n-statistic>
                 </template>
-              </n-statistic>
+                be cool, watch your back
+              </n-popover>
             </n-col>
             <n-col :span="12">
-              <n-statistic label="strength" :value="store.stats['strength'].toFixed(0)">
-                <template #prefix>
-                  <n-icon>
-                    <barbell-outline />
-                  </n-icon>
+              <n-popover placement="top-start" trigger="hover">
+                <template #trigger>
+                  <n-statistic label="strength" :value="store.stats['strength'].toFixed(0)">
+                    <template #prefix>
+                      <n-icon>
+                        <barbell-outline />
+                      </n-icon>
+                    </template>
+                  </n-statistic>  
                 </template>
-              </n-statistic>            
+                stay tough, they are watching
+              </n-popover>          
             </n-col>
             <n-col :span="12">
-              <n-statistic label="dexterity" :value="store.stats['dexterity'].toFixed(0)">
-                <template #prefix>
-                  <n-icon>
-                    <sparkles-outline />
-                  </n-icon>
+              <n-popover placement="top-start" trigger="hover">
+                <template #trigger>
+                  <n-statistic label="dexterity" :value="store.stats['dexterity'].toFixed(0)">
+                    <template #prefix>
+                      <n-icon>
+                        <sparkles-outline />
+                      </n-icon>
+                    </template>
+                  </n-statistic>
                 </template>
-              </n-statistic>
+                move with intent, or else
+              </n-popover> 
             </n-col>
             <n-col :span="12">
-              <n-statistic label="luck" :value="store.stats['luck'].toFixed(0)">
-                <template #prefix>
-                  <n-icon>
-                    <dice-outline />
-                  </n-icon>
+              <n-popover placement="top-start" trigger="hover">
+                <template #trigger>
+                  <n-statistic label="luck" :value="store.stats['luck'].toFixed(0)">
+                    <template #prefix>
+                      <n-icon>
+                        <dice-outline />
+                      </n-icon>
+                    </template>
+                  </n-statistic> 
                 </template>
-              </n-statistic>            
+                call it, friendo
+              </n-popover>            
             </n-col>
           </n-row>
         </n-gi>

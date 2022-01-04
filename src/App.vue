@@ -67,6 +67,10 @@ body, html {
   height: 100vh;
 }
 
+.n-popover, .n-card, .n-message {
+  font-family: Inconsolata;
+}
+
 #content-wrap {
   flex: 1
 }
