@@ -3,7 +3,6 @@
   import { useStore } from '../../store'
   import { NSpace, NInput, NIcon, NProgress, NPopover, useMessage } from 'naive-ui'
   import { PencilOutline, PeopleOutline } from '@vicons/ionicons5'
-  import { EscapeProject } from '../../store/jails'
   import Sentiment from 'sentiment'
 
   const store = useStore(),
@@ -28,13 +27,19 @@
       Math.max(1, 
       Math.floor(store.escapeProject.settings.maxRequiredCorrectAnswers - 
       (store.stats['street cred'] * .1)))
+    ),
+    jail = computed(() => 
+      store.world.cities[store.currentCity].prisons[store.currentPrison]
     )
 
   function finish (complete: boolean) {
     clearInterval(timer)
-    store.jails[store.currentJail].escapeProjects
-      .find((e: EscapeProject ) => e.name === store.escapeProject.name)
-      .complete = complete
+    if (jail.value) {
+      const eProj = jail.value
+        .escapeProjects
+        .find((e: EscapeProject ) => e.name === store.escapeProject.name)
+      if (eProj) eProj.complete = complete
+    }
     store.escapeProject = false  
   }
 

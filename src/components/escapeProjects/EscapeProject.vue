@@ -1,19 +1,22 @@
 <script setup lang="ts">
+  import { computed } from 'vue'
   import { useStore } from '../../store'
-  import { EscapeProject } from '../../store/jails'
   import { NSpace, NAlert, NButton } from 'naive-ui'
   // @ts-ignore
   import BefriendGuards from './BefriendGuards.vue'
   // @ts-ignore
   import GameError from '../GameError.vue'
 
-  const store = useStore()
+  const store = useStore(),
+    jail = computed(() => 
+      store.world.cities[store.currentCity].prisons[store.currentPrison]
+    )
 
   function finish () {
-    store.jails[store.currentJail].escapeProjects
+    const eProj = jail.value
+      .escapeProjects
       .find((e: EscapeProject ) => e.name === store.escapeProject.name)
-      // TODO only mark complete if actually complete
-      .complete = true
+    if (eProj) eProj.complete = true
     store.escapeProject = false
   }
 </script>

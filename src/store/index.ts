@@ -1,14 +1,16 @@
 import { defineStore } from 'pinia'
-// import { Decimal } from 'decimal.js'
-import { Incrementor, incrementors } from '../components/incrementors'
-import { firstMap } from './maps'
 import defaultCars from './cars'
 import defaultPlanes from './planes'
 import defaultSpaceships from './spaceships'
 import defaultMenu from './menu'
-import jails from './jails'
+import { earth } from './worlds'
 
 const saveKey = 'hardtimesavefile'
+
+function getWorld(name: string) {
+  // TODO
+  return earth
+}
 
 export const useStore = defineStore('main', {
   // arrow function recommended for full type inference
@@ -21,10 +23,15 @@ export const useStore = defineStore('main', {
     return {
       gameStarted: savedState?.gameStarted || false,
       inJail: savedState !== undefined && savedState.inJail === false ? false : true,
+      world: savedState?.world
+        ? getWorld(savedState.world)
+        : earth,
+      currentCity: savedState?.currentCity || 'california',
+      currentPrison: savedState?.currentPrison || 0,
+      currentMap: savedState?.currentMap || 0,
       jailtime: savedState?.jailtime || 1000 * 60 * 5,
       timeServed: savedState?.timeServed || 0,
       sentenceStarted: savedState?.sentenceStarted || undefined,
-      jails: savedState?.jails || jails,
       currentJail: savedState?.currentJail || 0,
       money: savedState?.money || 0,
       lastMoney: savedState?.lastMoney || 0,
@@ -41,14 +48,8 @@ export const useStore = defineStore('main', {
       loiterDuration: savedState?.loiterDuration || 3000,
       posessions: savedState?.posessions || {},
       workDuration: savedState?.workDuration || 3000,
-      automators: savedState?.automators 
-        ? savedState.automators.map((a: string) =>
-            incrementors[a] as Incrementor
-          )
-        : <Incrementor[]> [],
       lag: 0,
       displaySaved: false,
-      map: savedState?.map || firstMap,
       stars: savedState?.stars || 0,
       aiStars: savedState?.aiStars || 0,
       deaths: savedState?.deaths || 0,
@@ -76,6 +77,7 @@ export const useStore = defineStore('main', {
       starSpawnerStarted: false,
       showExportModal: false,
       showImportModal: false,
+      showSettingsModal: false,
       exportString: "",
       importString: "",
     }
@@ -85,10 +87,13 @@ export const useStore = defineStore('main', {
       const saveString = JSON.stringify({
         gameStarted: this.gameStarted,
         inJail: this.inJail,
+        world: this.world?.name,
+        currentCity: this.currentCity,
+        currentPrison: this.currentPrison,
+        currentMap: this.currentMap,
         jailtime: this.jailtime,
         timeServed: this.timeServed,
         sentenceStarted: this.sentenceStarted,
-        jails: this.jails,
         currentJail: this.currentJail,
         money: this.money,
         lastMoney: this.lastMoney,
@@ -104,9 +109,6 @@ export const useStore = defineStore('main', {
         workoutDuration: this.workoutDuration,
         loiterDuration: this.loiterDuration,
         posessions: this.posessions,
-        automators: this.automators
-          .map((a: Incrementor) => a.name),
-        map: this.map,
         stars: this.stars,
         aiStars: this.stars,
         deaths: this.deaths,

@@ -2,7 +2,6 @@
 import { computed, ref } from 'vue'
 import { useStore } from '../store'
 import { useLoadingBar, NSpace, NButton } from 'naive-ui'
-import { EscapeProject } from '../store/jails'
 
 const store = useStore(),
   loadingBar = useLoadingBar(),
@@ -14,11 +13,15 @@ const store = useStore(),
     ? `you have ${timeLeftToServe} of your sentence left to serve`
     : 'you have served ' + msToTime(store.timeServed) + ', ' + percentageServed + '% of your sentence'
   }),
+  jail = computed(() => 
+    store.world.cities[store.currentCity].prisons[store.currentPrison]
+  ),
   escapeDisabled = computed(() =>
-    store.jails[store.currentJail]
+    jail.value
       .escapeProjects
       .filter((eReq: EscapeProject) => !eReq.complete)
       .length > 0
+
   )
 
 function msToTime (ms: number) {
@@ -35,7 +38,7 @@ function msToTime (ms: number) {
 function leaveJail () {
   clearInterval(fullSentence)
   loadingBar.finish()
-  for (let eProj of store.jails[store.currentJail].escapeProjects) {
+  for (let eProj of jail.value?.escapeProjects || []) {
     eProj.complete = false
   }
   store.inJail = false
@@ -62,10 +65,10 @@ const fullSentence = setInterval(() => {
 
 <template>
   <n-space align="center" justify="center" vertical size="large">
-    <p>you are in <span style="color: red">{{ store.jails[store.currentJail].name }}</span></p>
+    <p>you are in <span style="color: red">{{ jail?.name }}</span></p>
     <p id="sentencetime" @click="timeFormatToggle = !timeFormatToggle">{{ formattedSentenceTime }}</p>
     <template
-      v-for="escapeProject in store.jails[store.currentJail].escapeProjects"
+      v-for="escapeProject in jail?.escapeProjects"
       :key="escapeProject.name"
     >
       <n-button

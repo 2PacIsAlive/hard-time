@@ -37,6 +37,7 @@ const store = useStore(),
           <app-footer />
           <export-modal />
           <import-modal />
+          <!-- <enable-sound-modal /> -->
         </div>
       </n-message-provider>
     </n-loading-bar-provider>

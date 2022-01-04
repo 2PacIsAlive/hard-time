@@ -5,7 +5,6 @@ import { storeToRefs } from 'pinia'
 import { useSound } from '@vueuse/sound'
 import sfx from '../assets/sfx.mp3'
 import { NButton, NSlider, NSpace, NLayout } from 'naive-ui'
-import { Decimal } from 'decimal.js'
 import { galaxy } from '../store/maps'
 import planets from  './planets.json'
 // @ts-ignore

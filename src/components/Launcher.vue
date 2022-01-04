@@ -2,22 +2,17 @@
 import { useStore } from '../store'
 import { NSpace, NButton } from 'naive-ui'
 import { useSound } from '@vueuse/sound'
-import sfx from '../assets/sfx.mp3'
-
+import hardTimeTitle from '../assets/hard-time-title.mp3'
 const store = useStore()
 
-const playbackRate = 1
-const { play, sound } = useSound(sfx, { 
-  sprite: {
-    nextMap: [2000, 4000],
-  },
-  playbackRate
+const { play } = useSound(hardTimeTitle, {
+  // @ts-ignore
+  loop: true
 })
 
 function startGame() {
-  // @ts-ignore
-  play({id: 'nextMap'})
   store.gameStarted = true
+  play()
 }
 </script>
 
@@ -31,5 +26,9 @@ function startGame() {
 <style scoped>
 * {
   box-sizing: border-box;
+}
+pre {
+  line-height: 1; 
+  /* text-align: center;  */
 }
 </style>

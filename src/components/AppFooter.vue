@@ -24,12 +24,17 @@ function exportSave () {
 function importSave () {
   store.showImportModal = true
 }
+
+function openSettings () {
+  console.log('TODO open settings')
+}
 </script>
 
 <template>
   <footer v-if="store.gameStarted" id="footer">
     <span id="saveddisplay" v-if="store.displaySaved">saved </span>
     <span>lag: {{ store.lag.toFixed(0) }}ms </span>
+    <span class="footer-action" id="settings" @click="openSettings()">settings </span>
     <span class="footer-action" id="export" @click="exportSave()">export </span>
     <span class="footer-action" id="import" @click="importSave()">import </span>
     <span class="footer-action" id="reset" @click="resetGame()">reset </span>
@@ -73,5 +78,11 @@ function importSave () {
   }
   #import:hover {
     color: rgb(134, 124, 26);
+  }
+  #settings {
+    color: rgb(156, 66, 197);
+  }
+  #settings:hover {
+    color: rgb(90, 23, 121);
   }
 </style>
