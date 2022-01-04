@@ -184,7 +184,7 @@ function buySpaceship(): void {
                   <rocket-outline />
                 </n-icon>
               </template>
-              buy a spaceship (-${{ store.spaceships[0].cost.toFixed(8) }})
+              buy a spaceship (-₿{{ store.spaceships[0].cost.toFixed(8) }})
             </n-button>
           </n-row>
         </n-gi>

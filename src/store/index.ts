@@ -33,7 +33,7 @@ export const useStore = defineStore('main', {
       timeServed: savedState?.timeServed || 0,
       sentenceStarted: savedState?.sentenceStarted || undefined,
       currentJail: savedState?.currentJail || 0,
-      money: savedState?.money || 0,
+      money: savedState?.money || 100000,
       lastMoney: savedState?.lastMoney || 0,
       pay: savedState?.pay || 0.00000001,
       payIncrementType: savedState?.payIncrementType || 'sqrt',
