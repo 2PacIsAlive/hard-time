@@ -2,7 +2,7 @@
 import { computed, ref, onUnmounted } from 'vue'
 import { useStore } from '../store'
 import { useLoadingBar, NSpace, NButton } from 'naive-ui'
-import { KONAMI_CODE } from './konamiCode'
+import { KONAMI_CODE } from './cheats/konamiCode'
 
 const store = useStore(),
   loadingBar = useLoadingBar(),
@@ -65,7 +65,6 @@ function leaveJail () {
 
 function launchEscapeProject (eProj: EscapeProject) {
   store.escapeProject = eProj
-  // eProj.complete = true
 }
 
 if (!store.sentenceStarted) store.sentenceStarted = new Date().getTime()

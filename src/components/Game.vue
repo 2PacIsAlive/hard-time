@@ -17,6 +17,8 @@ import Gym from './Gym.vue'
 import Space from './Space.vue'
 // @ts-ignore
 import GameError from './GameError.vue'
+// @ts-ignore
+import Skies from './Skies.vue'
 import { NIcon, NSpace, NSwitch, NLayout, NLayoutSider, NMenu, useMessage } from 'naive-ui'
 import { HomeOutline, CaretDownOutline, SkullOutline, SubwayOutline, StorefrontOutline, BarbellOutline, StarOutline, EarthOutline, FastFoodOutline } from '@vicons/ionicons5'
 
@@ -118,6 +120,7 @@ gameLoop()
         <Pad class="game-screen" v-else-if="store.openScreen === 'the pad'" />
         <Streets class="game-screen" v-else-if="store.openScreen === 'the streets'" />
         <Gym class="game-screen" v-else-if="store.openScreen === 'the gym'" />
+        <Skies class="game-screen" v-else-if="store.openScreen === 'the skies'" />
         <Space class="game-screen" v-else-if="store.openScreen === 'the stars'" />
         <game-error v-else msg="unknown open screen" />
       </n-layout>

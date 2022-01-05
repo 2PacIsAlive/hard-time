@@ -8,24 +8,18 @@ import { NButton, NSlider, NSpace, NLayout } from 'naive-ui'
 import { galaxy } from '../store/maps'
 import planets from  './planets.json'
 // @ts-ignore
-import PlanetDescription from './PlanetDescription.vue'
+import CityDescription from './CityDescription.vue'
 
 const store = useStore()
 const { money } = storeToRefs(store)
 
-const hoveredPlanet = ref({})
+const hoveredCity = ref("")
 
 const coloredMap = computed(() => {
-  let colored = galaxy
-  for (let i=0; i<store.planetsAvailable; i++) {
-    const oldLength = colored.length
-    colored = colored.substring(0, planets[i]["loc"]) + coloredSpace('*', planets[i].color, `planetDetails(${i})`, `planet-${i}`) + colored.substring(planets[i]["loc"] + 1)
-    const lengthDelta = colored.length - oldLength
-    for (let ii=0; ii<planets.length; ii++) {
-      if (planets[ii].loc > planets[i].loc) {
-        planets[ii].loc += lengthDelta
-      }
-    } 
+  let colored = store.world.map
+  for (const [name, city] of Object.entries(store.world.cities)) {
+    const location = colored.indexOf(city.slug)
+    colored = colored.substring(0, location) + coloredSpace(city.slug, city.color, `planetDetails(${name})`, `city-${name}`) + colored.substring(location + 1)
   }
   return colored
 })
@@ -48,32 +42,31 @@ function coloredSpace(char: string, color: string, onClickFn: string, id: string
 function handleClick(e: any) {
   if (e.target.id) {
     const planetId = e.target.id.split('-')[1]
-    store.currentPlanet = planetId
+    store.currentCity = planetId
   }
 }
 
 function handleMouseover(e: any) {
   if (e.target.id) {
-    const planetId = e.target.id.split('-')[1]
-    hoveredPlanet.value = planets[planetId]
-    // console.log(planets[planetId])
+    const cityName = e.target.id.split('-')[1]
+    hoveredCity.value = cityName
   } else {
-    // hoveredPlanet.value = {}
+    hoveredCity.value = ""
   }
 }
 
-function getStyle(planet: any) {
-  return `color: ${planet.color}`
+function getStyle(city: City) {
+  return `color: ${city?.color || 'white'}`
 }
 </script>
 
 <template>
-  <div id="space">
-    <p>you are on <span :style="getStyle(planets[store.currentPlanet])">{{ planets[store.currentPlanet]['Object\n'] }}</span></p>
+  <div id="skies">
+    <p>you are in <span :style="getStyle(store.world.cities[store.currentCity])">{{ store.currentCity }}</span></p>
     <pre v-html="coloredMap" @click="handleClick" @mouseover="handleMouseover" @mouseleave="handleMouseover"></pre>
-    <planet-description :planet="hoveredPlanet" v-if="'loc' in hoveredPlanet">
-      {{ hoveredPlanet}}
-    </planet-description>
+    <city-description :city="store.world.cities[hoveredCity]" :name="hoveredCity" v-if="hoveredCity">
+      {{ hoveredCity }}
+    </city-description>
   </div>
 </template>
 
@@ -82,7 +75,8 @@ pre {
   line-height: 1; 
   cursor: pointer;
 }
-#space {
-  text-align: center; 
+#skies {
+  /* TODO lol */
+  margin-left: 25%; 
 }
 </style>

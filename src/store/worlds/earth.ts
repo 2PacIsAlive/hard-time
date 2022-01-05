@@ -11,7 +11,7 @@ export const earth: World = {
   ~/-'~\\_,       '-,| '|. '   ~  ,\\ /'~      m         /    /_  /~
 .-~      '|        '',\\~|\\       _\\~     ,_  ,               /|
           '\\        /'~          |_/~\\\\,-,~  \\ "         ,_,/ |
-           | c     /            ._-~'\\_ _~|              \\ ) /
+           | l     /            ._-~'\\_ _~|              \\ ) /
             \\   __-\\           '/      ~ |\\  \\_          /  ~
   .,         '\\ |,  ~-_      - |          \\\\_' ~|  /\\  \\~ ,
                ~-_'  _;       '\\           '-,   \\,' /\\/  |
@@ -27,20 +27,9 @@ export const earth: World = {
                     ',|  ~
                       ~'`,
   cities: {
-    'california': {
-      slug: 'c',
-      maps: [
-        maps.earth1,
-        maps.earth2,
-        maps.earth3,
-      ],
-      prisons: [
-        jails.californiaStatePrison,
-        jails.alcatraz,
-      ]
-    },
     'rio de janeiro': {
-      slug: 'b',
+      color: '#8338ec',
+      slug: 'r',
       maps: [
         maps.earth4,
         maps.earth5,
@@ -50,8 +39,22 @@ export const earth: World = {
         jails.sanPedroPrison,
         jails.penitenciariaDeSantiago,
       ]
+    },
+    'los angeles': {
+      color: '#ff006e',
+      slug: 'l',
+      maps: [
+        maps.earth1,
+        maps.earth2,
+        maps.earth3,
+      ],
+      prisons: [
+        jails.californiaStatePrison,
+        jails.alcatraz,
+      ]
     }, 
     'moscow': {
+      color: '#ffbe0b',
       slug: 'm',
       maps: [
         maps.earth7,
@@ -62,6 +65,6 @@ export const earth: World = {
         jails.blackDolphinPrison,
         jails.butyrkaPrison,
       ]
-    }
+    },
   }                    
 }

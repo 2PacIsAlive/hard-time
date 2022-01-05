@@ -30,7 +30,7 @@ export const useStore = defineStore('main', {
       world: savedState?.world
         ? getWorld(savedState.world)
         : earth,
-      currentCity: savedState?.currentCity || 'california',
+      currentCity: savedState?.currentCity || 'los angeles',
       currentPrison: savedState?.currentPrison || 0,
       currentMap: savedState?.currentMap || 0,
       jailtime: savedState?.jailtime || 1000 * 60 * 5,

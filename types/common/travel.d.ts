@@ -1,5 +1,6 @@
 interface City {
   slug: string,
+  color: string,
   maps: GameMap[],
   prisons: Prison[],
 }
