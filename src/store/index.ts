@@ -24,6 +24,7 @@ export const useStore = defineStore('main', {
       gameStarted: savedState?.gameStarted || false,
       settings: savedState?.settings || {
         musicVolume: 1,
+        cheatsEnabled: false,
       },
       inJail: savedState !== undefined && savedState.inJail === false ? false : true,
       world: savedState?.world

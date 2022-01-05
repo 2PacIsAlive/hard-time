@@ -5,13 +5,13 @@ export interface Plane {
 }
 
 const allPlanes: Plane[] = [{
-  name: 'Old Cessna 150',
+  name: 'old cessna 150',
   cost: 0.000279,
 }, {
-  name: '2023 PIPER M350',
+  name: '2023 piper m350',
   cost: 0.00003,
 }, {
-  name: '2019 Gulfstream G700',
+  name: '2019 gulfstream g700',
   cost: 0.73,
 }]
 

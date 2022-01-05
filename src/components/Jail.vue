@@ -1,10 +1,12 @@
 <script setup lang="ts">
-import { computed, ref } from 'vue'
+import { computed, ref, onUnmounted } from 'vue'
 import { useStore } from '../store'
 import { useLoadingBar, NSpace, NButton } from 'naive-ui'
+import { KONAMI_CODE } from './konamiCode'
 
 const store = useStore(),
   loadingBar = useLoadingBar(),
+  currentKonamiPos = ref(0),
   timeFormatToggle = ref(true),
   formattedSentenceTime = computed(() => {
     const timeLeftToServe = msToTime(store.jailtime - store.timeServed),
@@ -35,6 +37,24 @@ function msToTime (ms: number) {
   else return days.toFixed(4) + " days"
 }
 
+function konamiCodeEntered() {
+  store.inJail = false
+  loadingBar.finish()
+}
+
+function konamiCodeListener(event: any) {
+  if (store.settings.cheatsEnabled) {
+    if (event.key === KONAMI_CODE[currentKonamiPos.value++]) {
+      if (currentKonamiPos.value === KONAMI_CODE.length) {
+          konamiCodeEntered()
+          currentKonamiPos.value = 0
+      }
+    } else {
+        currentKonamiPos.value = 0
+    }
+  }
+}
+
 function leaveJail () {
   clearInterval(fullSentence)
   loadingBar.finish()
@@ -61,6 +81,11 @@ const fullSentence = setInterval(() => {
   if (store.timeServed >= store.jailtime)
     leaveJail()
 }, 1)
+
+document.addEventListener('keydown', konamiCodeListener)
+onUnmounted(() => {
+	window.removeEventListener('keydown', konamiCodeListener)
+})
 </script>
 
 <template>

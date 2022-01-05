@@ -5,7 +5,7 @@ export interface Spaceship {
 }
 
 const allSpaceships: Spaceship[] = [{
-  name: 'X-042',
+  name: 'gravlab X-042',
   cost: 3,
 }]
 

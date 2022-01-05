@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { h, onMounted, ref } from 'vue'
+import { h, ref } from 'vue'
 import { useStore } from '../store'
 // @ts-ignore
 import Launcher from './Launcher.vue'
@@ -81,10 +81,6 @@ async function gameLoop() {
     await new Promise(resolve => setTimeout(resolve, 1000))
   }
 }
-
-onMounted(() => {
-  document.getElementById('defaulttab')?.click()
-})
 
 measureLag()
 saveGameIntermittently()

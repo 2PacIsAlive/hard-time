@@ -19,6 +19,7 @@ const coloredMap = computed(() => {
     .replace(/\@/g, coloredSpace(player, '#36AD6AFF')) // TODO how to interpolate 
     .replace(/\C/g, coloredSpace(ai, 'red'))
     .replace(/\?/g, coloredSpace(exit, 'fuchsia'))
+    .replace(/\¿/g, coloredSpace(entrance, 'fuchsia'))
     .replace(/\*/g, coloredSpace('*', '#b39700'))
 })
 const width = computed(() => 
@@ -41,6 +42,7 @@ const height = 31
 
 const exitSpace = 1798
 const exit = '?'
+const entrance = '¿'
 
 const player = '@'
 // const playerDefaultLocation = 1172
@@ -57,7 +59,7 @@ const aiRegex = /C/g
 const aiSearching = ref(true)
 const aiExists = ref(true)
 const aiIllegalMoves: string[] = [ 
-  exit,
+  exit, entrance,
   'p', 'P'
 ]
 
@@ -115,6 +117,10 @@ function isExit (char: string): boolean {
   return char === exit
 }
 
+function isEntrance (char: string): boolean {
+  return char === entrance
+}
+
 // NOTE: P exit is to the left, p exit is to the right
 function nextPortal (char: string): number {
   if (char === 'p') return map.value.current.indexOf('P') + 1
@@ -167,6 +173,7 @@ function doMovePlayer (current: number, next: number, nextChar: string): void {
       play({id: 'portal'})
     }
     if (isExit(nextChar)) nextMap()
+    else if (isEntrance(nextChar)) prevMap()
     else moveEntity(player, current, next, isJump)    
   }
 }
@@ -183,9 +190,19 @@ function doCommand(e: any) {
 function nextMap () {
   // @ts-ignore
   play({id: 'nextMap'})
+  store.currentMap += 1
   // store.map = secondMap
-  // aiExists.value = true
-  // if (!store.aiMovementRoutineStarted) moveAi()
+  aiExists.value = true
+  if (!store.aiMovementRoutineStarted) moveAi()
+}
+
+function prevMap () {
+  // @ts-ignore
+  play({id: 'nextMap'})
+  store.currentMap -= 1
+  // store.map = secondMap
+  aiExists.value = true
+  if (!store.aiMovementRoutineStarted) moveAi()
 }
 
 // TODO this is super flawed, need to find a better way of doing this

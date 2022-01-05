@@ -5,13 +5,13 @@ export interface Car {
 }
 
 const allCars: Car[] = [{
-  name: '1993 Ford Aspire',
+  name: '1993 ford aspire',
   cost: 0.000005,
 }, {
-  name: '2020 Subaru BRZ',
+  name: '2020 subaru brz',
   cost: 0.00003,
 }, {
-  name: 'Lamborghini Aventador',
+  name: 'lamborghini aventador',
   cost: 0.001,
 }]
 
