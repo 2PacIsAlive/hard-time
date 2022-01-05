@@ -5,7 +5,7 @@ import defaultSpaceships from './spaceships'
 import defaultMenu from './menu'
 import { earth } from './worlds'
 
-const saveKey = 'hardtimesavefile'
+const saveKey = 'hard-time-savefile'
 
 function getWorld(name: string) {
   // TODO
@@ -24,6 +24,11 @@ export const useStore = defineStore('main', {
       gameStarted: savedState?.gameStarted || false,
       settings: savedState?.settings || {
         musicVolume: 1,
+        sfxVolume: 1,
+        autosaveInterval: 20,
+        musicEnabled: true,
+        sfxEnabled: true,
+        autosaveEnabled: true,
         cheatsEnabled: false,
       },
       inJail: savedState !== undefined && savedState.inJail === false ? false : true,
@@ -48,7 +53,7 @@ export const useStore = defineStore('main', {
       gainz: savedState?.gainz || 1,
       workoutDuration: savedState?.workoutDuration || 3000,
       loiterDuration: savedState?.loiterDuration || 3000,
-      posessions: savedState?.posessions || {},
+      possessions: savedState?.possessions || {},
       workDuration: savedState?.workDuration || 3000,
       lag: 0,
       displaySaved: false,
@@ -110,7 +115,7 @@ export const useStore = defineStore('main', {
         gainz: this.gainz,
         workoutDuration: this.workoutDuration,
         loiterDuration: this.loiterDuration,
-        posessions: this.posessions,
+        possessions: this.possessions,
         stars: this.stars,
         aiStars: this.stars,
         deaths: this.deaths,

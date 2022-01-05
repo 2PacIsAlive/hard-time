@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { h, ref } from 'vue'
+import { h, ref, watch, computed } from 'vue'
 import { useStore } from '../store'
 // @ts-ignore
 import Launcher from './Launcher.vue'
@@ -25,7 +25,9 @@ import { HomeOutline, CaretDownOutline, SkullOutline, SubwayOutline, StorefrontO
 const store = useStore(),
   collapsed = ref(true),
   message = useMessage(),
-  saveInterval = 20000
+  autosaveInterval = computed(() => 
+    store.settings.autosaveInterval
+  )
 
 function renderMenuLabel (option: any) {
   return option.disabled
@@ -65,27 +67,30 @@ function measureLag(): void {
 }
 
 function saveGame(): void {
-  store.save()
-  message.info('game saved')
+  if (store.settings.autosaveEnabled) {
+    store.save()
+    message.info('game saved')
+  }
 }
-
-function saveGameIntermittently(): void {
-  setInterval(saveGame, saveInterval)
-} 
 
 async function gameLoop() {
   while (1==1) {
     store.lastMoney = store.money
-    if (store.posessions['donut shop']) {
-      store.money += store.posessions['donut shop'] * store.donutShop.output
+    if (store.possessions['donut shop']) {
+      store.money += store.possessions['donut shop'] * store.donutShop.output
     }
     // TODO do we really want to cap this at 1s?
     await new Promise(resolve => setTimeout(resolve, 1000))
   }
 }
 
+let saveGameInterval = setInterval(saveGame, store.settings.autosaveInterval * 1000)
+watch(autosaveInterval, () => {
+  clearInterval(saveGameInterval)
+  saveGameInterval = setInterval(saveGame, store.settings.autosaveInterval * 1000)
+})
+
 measureLag()
-saveGameIntermittently()
 gameLoop()
 </script>
 
@@ -120,7 +125,7 @@ gameLoop()
         <Pad class="game-screen" v-else-if="store.openScreen === 'the pad'" />
         <Streets class="game-screen" v-else-if="store.openScreen === 'the streets'" />
         <Gym class="game-screen" v-else-if="store.openScreen === 'the gym'" />
-        <Skies class="game-screen" v-else-if="store.openScreen === 'the skies'" />
+        <Skies class="small-med-game-screen" v-else-if="store.openScreen === 'the skies'" />
         <Space class="game-screen" v-else-if="store.openScreen === 'the stars'" />
         <game-error v-else msg="unknown open screen" />
       </n-layout>
@@ -140,6 +145,9 @@ gameLoop()
   margin-top: 20%;
 }
 
+.small-med-game-screen {
+  margin-top: 8%;
+}
 .med-game-screen {
   margin-top: 15%;
 }

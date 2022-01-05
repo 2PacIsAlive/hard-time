@@ -316,7 +316,7 @@ async function moveAi() {
           aiPath.value = []
         }
       }
-      const donutShopSpeedReduction = store.posessions['donut shop'] 
+      const donutShopSpeedReduction = store.possessions['donut shop'] 
         ? map.value.aiSpeed * store.donutShop.aiSpeedReduction
         : 0
       const aiMovementDelay = (100 - map.value.aiSpeed) + donutShopSpeedReduction

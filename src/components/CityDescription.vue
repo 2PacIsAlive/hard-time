@@ -7,7 +7,7 @@ defineProps<{ city: City, name: string }>()
 </script>
 
 <template>
-  <n-thing id="planetdescription">
+  <n-thing id="citydescription">
     <template #avatar>
       <!-- <n-avatar> -->
         <n-icon size="75" :color="city.color">
@@ -30,9 +30,9 @@ defineProps<{ city: City, name: string }>()
 </template>
 
 <style scoped>
-#planetdescription {
+#citydescription {
   /* TODO: how to center properly? */
-  width: 26%;
+  width: 36%;
   margin: auto;
 }
 </style>
