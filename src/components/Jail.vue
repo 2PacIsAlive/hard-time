@@ -37,16 +37,11 @@ function msToTime (ms: number) {
   else return days.toFixed(4) + " days"
 }
 
-function konamiCodeEntered() {
-  store.inJail = false
-  loadingBar.finish()
-}
-
 function konamiCodeListener(event: any) {
   if (store.settings.cheatsEnabled) {
     if (event.key === KONAMI_CODE[currentKonamiPos.value++]) {
       if (currentKonamiPos.value === KONAMI_CODE.length) {
-          konamiCodeEntered()
+          leaveJail()
           currentKonamiPos.value = 0
       }
     } else {
