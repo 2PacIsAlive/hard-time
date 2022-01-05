@@ -4,7 +4,7 @@ import { useStore } from '../store'
 import { NButton, NIcon, useLoadingBar, NSpace, NCard, NGrid, NGi, NStatistic, NRow, NCol, NDivider, NPopover } from 'naive-ui'
 import { LogoBitcoin, EarOutline, CarOutline, CarSportOutline, RocketOutline, PeopleOutline, BarbellOutline, SparklesOutline, DiceOutline, FastFoodOutline, AirplaneOutline } from '@vicons/ionicons5'
 // @ts-ignore
-import Posession from './Posession.vue'
+import Possession from './Possession.vue'
 
 const store = useStore(),
   loadingBar = useLoadingBar(),
@@ -17,7 +17,7 @@ const store = useStore(),
     `₿${store.pay}`
   ),
   formattedDonutShopAbout = computed(() =>
-    `${store.donutShop.output * store.posessions['donut shop']} ₿/s<br />
+    `${store.donutShop.output * store.possessions['donut shop']} ₿/s<br />
     ${store.donutShop.aiSpeedReduction * 100 }% cop speed reduction`
   )
 
@@ -44,33 +44,33 @@ async function loiter(): Promise<void> {
 
 function buyCar(): void {
   if (store.cars.length > 0) {
-    store.posessions.car = store.cars.shift()
-    store.money -= store.posessions.car.cost
+    store.possessions.car = store.cars.shift()
+    store.money -= store.possessions.car.cost
     store.menuOptions[1].disabled = false
   }
 }
 
 function buyDonutShop(): void {
   store.money -= store.donutShop.cost
-  if (store.posessions['donut shop'])
-    store.posessions['donut shop'] += 1
-  else store.posessions['donut shop'] = 1
+  if (store.possessions['donut shop'])
+    store.possessions['donut shop'] += 1
+  else store.possessions['donut shop'] = 1
   store.donutShop.cost *= 1.75
   store.menuOptions[3].disabled = false
 }
 
 function buyPlane(): void {
   if (store.planes.length > 0) {
-    store.posessions.plane = store.planes.shift()
-    store.money -= store.posessions.plane.cost
+    store.possessions.plane = store.planes.shift()
+    store.money -= store.possessions.plane.cost
     store.menuOptions[4].disabled = false
   }
 }
 
 function buySpaceship(): void {
   if (store.spaceships.length > 0) {
-    store.posessions.spaceship = store.spaceships.shift()
-    store.money -= store.posessions.spaceship.cost
+    store.possessions.spaceship = store.spaceships.shift()
+    store.money -= store.possessions.spaceship.cost
     store.menuOptions[5].disabled = false
   }
 }
@@ -82,11 +82,11 @@ function buySpaceship(): void {
       <h1>{{ formattedMoney }}</h1>
       <n-grid x-gap="40" :cols="3">
         <n-gi span="1">
-          <n-divider>posessions</n-divider>
-          <posession posession="car" about="allows you to access the streets" :plural="false" />
-          <posession posession="donut shop" :about="formattedDonutShopAbout" :plural="true" />
-          <posession posession="plane" about="allows you to access the skies" :plural="false" />
-          <posession posession="spaceship" about="allows you to access the stars" :plural="false" />
+          <n-divider>possessions</n-divider>
+          <possession possession="car" about="allows you to access the streets" :plural="false" />
+          <possession possession="donut shop" :about="formattedDonutShopAbout" :plural="true" />
+          <possession possession="plane" about="allows you to access the skies" :plural="false" />
+          <possession possession="spaceship" about="allows you to access the stars" :plural="false" />
         </n-gi>
         <n-gi span="1">
           <n-divider>actions</n-divider>

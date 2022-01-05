@@ -6,11 +6,11 @@ import { CarOutline, CarSportOutline, RocketOutline, FastFoodOutline, AirplaneOu
 
 const store = useStore(),
   carIsCheap = computed(() =>
-    store.posessions.car.cost <= 0.000005
+    store.possessions.car.cost <= 0.000005
   )
 
 defineProps<{ 
-  posession: string,
+  possession: string,
   about: string,
   plural: boolean,
 }>()
@@ -19,28 +19,28 @@ defineProps<{
 
 <template>
   <n-popover 
-    v-if="posession in store.posessions"
+    v-if="possession in store.possessions"
     placement="top-start"
     trigger="hover"
   >
     <template #trigger>
       <n-statistic 
         :label="plural 
-          ? `${posession}s` 
-          : posession" 
+          ? `${possession}s` 
+          : possession" 
         :value="plural 
-          ? store.posessions[posession] 
-          : store.posessions[posession].name"
+          ? store.possessions[possession] 
+          : store.possessions[possession].name"
       >
         <template #prefix>
           <n-icon>
-            <template v-if="posession === 'car'">
+            <template v-if="possession === 'car'">
               <car-outline v-if="carIsCheap" />
               <car-sport-outline v-else />
             </template>
-            <fast-food-outline v-else-if="posession === 'donut shop'" />
-            <airplane-outline v-else-if="posession === 'plane'" />
-            <rocket-outline v-else-if="posession === 'spaceship'" />
+            <fast-food-outline v-else-if="possession === 'donut shop'" />
+            <airplane-outline v-else-if="possession === 'plane'" />
+            <rocket-outline v-else-if="possession === 'spaceship'" />
           </n-icon>
         </template>
       </n-statistic>
