@@ -125,7 +125,7 @@ gameLoop()
         <Pad class="game-screen" v-else-if="store.openScreen === 'the pad'" />
         <Streets class="game-screen" v-else-if="store.openScreen === 'the streets'" />
         <Gym class="game-screen" v-else-if="store.openScreen === 'the gym'" />
-        <Skies class="game-screen" v-else-if="store.openScreen === 'the skies'" />
+        <Skies class="small-med-game-screen" v-else-if="store.openScreen === 'the skies'" />
         <Space class="game-screen" v-else-if="store.openScreen === 'the stars'" />
         <game-error v-else msg="unknown open screen" />
       </n-layout>
@@ -145,6 +145,9 @@ gameLoop()
   margin-top: 20%;
 }
 
+.small-med-game-screen {
+  margin-top: 8%;
+}
 .med-game-screen {
   margin-top: 15%;
 }
