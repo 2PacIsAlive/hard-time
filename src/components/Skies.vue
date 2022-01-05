@@ -41,8 +41,8 @@ function coloredSpace(char: string, color: string, onClickFn: string, id: string
 
 function handleClick(e: any) {
   if (e.target.id) {
-    const planetId = e.target.id.split('-')[1]
-    store.currentCity = planetId
+    const cityId = e.target.id.split('-')[1]
+    store.currentCity = cityId
   }
 }
 
