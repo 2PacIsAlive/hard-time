@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { h, ref } from 'vue'
+import { h, ref, watch, computed } from 'vue'
 import { useStore } from '../store'
 // @ts-ignore
 import Launcher from './Launcher.vue'
@@ -25,7 +25,9 @@ import { HomeOutline, CaretDownOutline, SkullOutline, SubwayOutline, StorefrontO
 const store = useStore(),
   collapsed = ref(true),
   message = useMessage(),
-  saveInterval = 20000
+  autosaveInterval = computed(() => 
+    store.settings.autosaveInterval
+  )
 
 function renderMenuLabel (option: any) {
   return option.disabled
@@ -65,13 +67,11 @@ function measureLag(): void {
 }
 
 function saveGame(): void {
-  store.save()
-  message.info('game saved')
+  if (store.settings.autosaveEnabled) {
+    store.save()
+    message.info('game saved')
+  }
 }
-
-function saveGameIntermittently(): void {
-  setInterval(saveGame, saveInterval)
-} 
 
 async function gameLoop() {
   while (1==1) {
@@ -84,8 +84,13 @@ async function gameLoop() {
   }
 }
 
+let saveGameInterval = setInterval(saveGame, store.settings.autosaveInterval * 1000)
+watch(autosaveInterval, () => {
+  clearInterval(saveGameInterval)
+  saveGameInterval = setInterval(saveGame, store.settings.autosaveInterval * 1000)
+})
+
 measureLag()
-saveGameIntermittently()
 gameLoop()
 </script>
 
