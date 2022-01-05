@@ -3,6 +3,8 @@ import { ref, computed } from 'vue'
 import { useStore } from '../store'
 import { NButton, NIcon, useLoadingBar, NSpace, NCard, NGrid, NGi, NStatistic, NRow, NCol, NDivider, NPopover } from 'naive-ui'
 import { LogoBitcoin, EarOutline, CarOutline, CarSportOutline, RocketOutline, PeopleOutline, BarbellOutline, SparklesOutline, DiceOutline, FastFoodOutline, AirplaneOutline } from '@vicons/ionicons5'
+// @ts-ignore
+import Posession from './Posession.vue'
 
 const store = useStore(),
   loadingBar = useLoadingBar(),
@@ -13,6 +15,10 @@ const store = useStore(),
   ),
   formattedPay = computed(() =>
     `₿${store.pay}`
+  ),
+  formattedDonutShopAbout = computed(() =>
+    `${store.donutShop.output * store.posessions['donut shop']} ₿/s<br />
+    ${store.donutShop.aiSpeedReduction * 100 }% cop speed reduction`
   )
 
 async function begForCredits(): Promise<void> {
@@ -74,65 +80,13 @@ function buySpaceship(): void {
   <div id="pad">
     <n-space align="center" justify="center" vertical size="large">
       <h1>{{ formattedMoney }}</h1>
-      <!-- <n-button :loading="loadingBegForCredits" :disabled="loadingBegForCredits" @click="begForCredits">
-        <template #icon>
-          <n-icon>
-            <logo-bitcoin />
-          </n-icon>
-        </template>
-        beg for sats (+{{ formattedPay }})
-      </n-button>  -->
       <n-grid x-gap="40" :cols="3">
         <n-gi span="1">
           <n-divider>posessions</n-divider>
-          <n-popover v-if="'car' in store.posessions" placement="top-start" trigger="hover">
-            <template #trigger>
-              <n-statistic label="car" :value="store.posessions['car'].name">
-                <template #prefix>
-                  <n-icon>
-                    <car-outline />
-                  </n-icon>
-                </template>
-              </n-statistic>
-            </template>
-            allows you to access the streets
-          </n-popover>
-          <n-popover v-if="'donut shop' in store.posessions" placement="top-start" trigger="hover">
-            <template #trigger>
-              <n-statistic label="donut shops" :value="store.posessions['donut shop']">
-                <template #prefix>
-                  <n-icon>
-                    <fast-food-outline />
-                  </n-icon>
-                </template>
-              </n-statistic>
-            </template>
-            {{ store.donutShop.output * store.posessions['donut shop'] }} ₿/s<br />{{ store.donutShop.aiSpeedReduction * 100 }}% cop speed reduction
-          </n-popover>
-          <n-popover v-if="'plane' in store.posessions" placement="top-start" trigger="hover">
-            <template #trigger>
-              <n-statistic label="plane" :value="store.posessions['plane'].name">
-                <template #prefix>
-                  <n-icon>
-                    <airplane-outline />
-                  </n-icon>
-                </template>
-              </n-statistic>
-            </template>
-            allows you to access the skies
-          </n-popover>
-          <n-popover v-if="'spaceship' in store.posessions" placement="top-start" trigger="hover">
-            <template #trigger>
-              <n-statistic label="spaceship" :value="store.posessions['spaceship'].name">
-                <template #prefix>
-                  <n-icon>
-                    <rocket-outline />
-                  </n-icon>
-                </template>
-              </n-statistic>
-            </template>
-            allows you to access the stars
-          </n-popover>
+          <posession posession="car" about="allows you to access the streets" :plural="false" />
+          <posession posession="donut shop" :about="formattedDonutShopAbout" :plural="true" />
+          <posession posession="plane" about="allows you to access the skies" :plural="false" />
+          <posession posession="spaceship" about="allows you to access the stars" :plural="false" />
         </n-gi>
         <n-gi span="1">
           <n-divider>actions</n-divider>
@@ -150,7 +104,7 @@ function buySpaceship(): void {
             <n-button block class="centered-button" :disabled="store.cars[0].cost > store.money" @click="buyCar">
               <template #icon>
                 <n-icon>
-                  <car-outline v-if="store.carCost <= 500" />
+                  <car-outline v-if="store.carCost <= 0.000005" />
                   <car-sport-outline v-else />
                 </n-icon>
               </template>
