@@ -8,9 +8,11 @@ import { NButton, NSlider, NSpace, NLayout } from 'naive-ui'
 
 const store = useStore()
 const { money } = storeToRefs(store)
-const map = computed(() => 
-  store.world.cities[store.currentCity].maps[store.currentMap]
-)
+const map = computed(() => {
+  const c = store.currentCity
+  const m = store.currentMap
+  return store.world.cities[c].maps[m]
+})
 const coloredMap = computed(() => {
   return map.value.current
     // note: need to do this one first because "span" has a p in it lmao
