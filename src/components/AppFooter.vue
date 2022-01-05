@@ -18,7 +18,13 @@ function resetGame () {
 
 function exportSave () {
   store.exportString = store.buildSave(true)
-  store.showExportModal = true
+  const blob = new Blob([store.exportString], { type: 'application/text' })
+  const link = document.createElement('a')
+  link.href = URL.createObjectURL(blob)
+  link.download = `hard-time-savefile_${new Date().toISOString()}.txt`
+  link.click()
+  URL.revokeObjectURL(link.href)
+  message.success('savefile exported')
 }
 
 function importSave () {

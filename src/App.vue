@@ -6,8 +6,6 @@ import Game from './components/Game.vue'
 // @ts-ignore
 import AppFooter from './components/AppFooter.vue'
 // @ts-ignore
-import ExportModal from './components/ExportModal.vue'
-// @ts-ignore
 import ImportModal from './components/ImportModal.vue'
 // @ts-ignore
 import SettingsModal from './components/SettingsModal.vue'
@@ -37,7 +35,6 @@ const store = useStore(),
             <Game />
           </div>
           <app-footer />
-          <export-modal />
           <import-modal />
           <settings-modal />
         </div>
