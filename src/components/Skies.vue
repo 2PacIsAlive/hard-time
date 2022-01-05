@@ -51,7 +51,7 @@ function handleMouseover(e: any) {
     const cityName = e.target.id.split('-')[1]
     hoveredCity.value = cityName
   } else {
-    hoveredCity.value = ""
+    // hoveredCity.value = ""
   }
 }
 
