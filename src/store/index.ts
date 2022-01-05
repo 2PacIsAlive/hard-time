@@ -27,9 +27,7 @@ export const useStore = defineStore('main', {
         cheatsEnabled: false,
       },
       inJail: savedState !== undefined && savedState.inJail === false ? false : true,
-      world: savedState?.world
-        ? getWorld(savedState.world)
-        : earth,
+      world: savedState?.world || earth,
       currentCity: savedState?.currentCity || 'los angeles',
       currentPrison: savedState?.currentPrison || 0,
       currentMap: savedState?.currentMap || 0,
@@ -92,7 +90,7 @@ export const useStore = defineStore('main', {
         gameStarted: this.gameStarted,
         settings: this.settings,
         inJail: this.inJail,
-        world: this.world?.name,
+        world: this.world,
         currentCity: this.currentCity,
         currentPrison: this.currentPrison,
         currentMap: this.currentMap,

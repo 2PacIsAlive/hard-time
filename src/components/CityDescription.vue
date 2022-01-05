@@ -21,7 +21,6 @@ defineProps<{ city: City, name: string }>()
     </template> -->
     <template #description>
       <div style="text-align: left;">
-        prisons:<br />
         <template v-for="prison in city.prisons" :key="prison.name">
           {{ prison.name }}<br />
         </template>
