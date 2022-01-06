@@ -40,7 +40,8 @@
     jail = computed(() => {
       const c = store.currentCity
       const p = store.currentPrison
-      return store.world.cities[c].prisons[p]
+      const w = store.currentWorld
+      return store.worlds[w].cities[c].prisons[p]
     })
 
   function finish (complete: boolean) {

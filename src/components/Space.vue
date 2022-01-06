@@ -4,37 +4,36 @@ import { useStore } from '../store'
 import { storeToRefs } from 'pinia'
 import { useSound } from '@vueuse/sound'
 import sfx from '../assets/sfx.mp3'
-import { NButton, NSlider, NSpace, NLayout } from 'naive-ui'
+import { NButton, NSlider, NSpace, NLayout, useMessage } from 'naive-ui'
 import { galaxy } from '../store/maps'
 // @ts-ignore
 import Planets from './Planets.vue'
 import planets from  './planets.json'
 // @ts-ignore
 import PlanetDescription from './PlanetDescription.vue'
+import { earth, kepler443b } from '../store/worlds'
 
 const store = useStore()
+const message = useMessage()
 const { money } = storeToRefs(store)
 
 const hoveredPlanet = ref({})
 
-/**
- * this is dumb, but if necessary, can reenable this and 
- * use it to copy the content for Planets.vue
- */
-// const coloredMap = computed(() => {
-//   let colored = galaxy
-//   for (let i=0; i<store.planetsAvailable; i++) {
-//     const oldLength = colored.length
-//     colored = colored.substring(0, planets[i]["loc"]) + coloredSpace('*', planets[i].color, `planetDetails(${i})`, `planet-${i}`) + colored.substring(planets[i]["loc"] + 1)
-//     const lengthDelta = colored.length - oldLength
-//     for (let ii=0; ii<planets.length; ii++) {
-//       if (planets[ii].loc > planets[i].loc) {
-//         planets[ii].loc += lengthDelta
-//       }
-//     } 
-//   }
-//   return colored
-// })
+let coloredMap = galaxy
+const planetsCopy = JSON.parse(JSON.stringify(planets))
+for (let i=0; i<store.planetsAvailable; i++) {
+  const oldLength = coloredMap.length
+  const color = i in store.worlds ? planetsCopy[i].color : 'grey'
+  coloredMap = coloredMap.substring(0, planetsCopy[i].loc) 
+    + coloredSpace('*', color, `planetDetails(${i})`, `planet-${i}`) 
+    + coloredMap.substring(planetsCopy[i].loc + 1)
+  const lengthDelta = coloredMap.length - oldLength
+  for (let ii=0; ii<planetsCopy.length; ii++) {
+    if (planetsCopy[ii].loc > planetsCopy[i].loc) {
+      planetsCopy[ii].loc += lengthDelta
+    }
+  } 
+}
 
 const playbackRate = ref(1)
 const { play, sound } = useSound(sfx, { 
@@ -54,7 +53,12 @@ function coloredSpace(char: string, color: string, onClickFn: string, id: string
 function handleClick(e: any) {
   if (e.target.id) {
     const planetId = e.target.id.split('-')[1]
-    store.currentPlanet = planetId
+    if (planetId in store.worlds) {
+      store.currentWorld = planetId
+      store.currentCity = Object.keys(store.worlds[planetId].cities)[0]
+    } else {
+      message.error(`can't reach ${planets[planetId]['Object\n'].toLowerCase()}`)
+    }
   }
 }
 
@@ -75,11 +79,10 @@ function getStyle(planet: any) {
 
 <template>
   <div id="space">
-    <p>you are on <span :style="getStyle(planets[store.currentPlanet])">{{ planets[store.currentPlanet]['Object\n'] }}</span></p>
-    <!-- <pre v-html="coloredMap" @click="handleClick" @mouseover="handleMouseover" @mouseleave="handleMouseover"></pre> -->
-    <planets @click="handleClick" @mouseover="handleMouseover" @mouseleave="handleMouseover" />
+    <p>you are on <span :style="getStyle(planets[store.currentWorld])">{{ planets[store.currentWorld]['Object\n'].toLowerCase() }}</span></p>
+    <pre v-html="coloredMap" @click="handleClick" @mouseover="handleMouseover" @mouseleave="handleMouseover"></pre>
+    <!-- <planets @click="handleClick" @mouseover="handleMouseover" @mouseleave="handleMouseover" /> -->
     <planet-description :planet="hoveredPlanet" v-if="'loc' in hoveredPlanet">
-      {{ hoveredPlanet}}
     </planet-description>
   </div>
 </template>

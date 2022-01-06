@@ -16,8 +16,9 @@ const { money } = storeToRefs(store)
 const hoveredCity = ref("")
 
 const coloredMap = computed(() => {
-  let colored = store.world.map
-  for (const [name, city] of Object.entries(store.world.cities)) {
+  const w = store.currentWorld
+  let colored = store.worlds[w].map
+  for (const [name, city] of Object.entries(store.worlds[w].cities)) {
     const location = colored.indexOf(city.slug)
     colored = colored.substring(0, location) + coloredSpace(city.slug, city.color, `planetDetails(${name})`, `city-${name}`) + colored.substring(location + 1)
   }
@@ -62,9 +63,9 @@ function getStyle(city: City) {
 
 <template>
   <div id="skies">
-    <p>you are in <span :style="getStyle(store.world.cities[store.currentCity])">{{ store.currentCity }}</span></p>
+    <p>you are in <span :style="getStyle(store.worlds[store.currentWorld].cities[store.currentCity])">{{ store.currentCity }}</span></p>
     <pre v-html="coloredMap" @click="handleClick" @mouseover="handleMouseover" @mouseleave="handleMouseover"></pre>
-    <city-description :city="store.world.cities[hoveredCity]" :name="hoveredCity" v-if="hoveredCity">
+    <city-description :city="store.worlds[store.currentWorld].cities[hoveredCity]" :name="hoveredCity" v-if="hoveredCity">
       {{ hoveredCity }}
     </city-description>
   </div>

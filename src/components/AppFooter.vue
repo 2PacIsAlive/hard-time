@@ -38,7 +38,6 @@ function openSettings () {
 
 <template>
   <footer v-if="store.gameStarted" id="footer">
-    <span id="saveddisplay" v-if="store.displaySaved">saved </span>
     <span>lag: {{ store.lag.toFixed(0) }}ms </span>
     <span class="footer-action" id="settings" @click="openSettings()">settings </span>
     <span class="footer-action" id="export" @click="exportSave()">export </span>

@@ -18,19 +18,19 @@ function display(info: string) {
         </n-icon>
       <!-- </n-avatar> -->
     </template>
-    <template #header> {{planet['Object\n']}} </template>
+    <template #header> {{ planet['Object\n'].toLowerCase() }} </template>
     <!-- <template #header-extra>
       visited
     </template> -->
     <template #description>
       <div style="text-align: left;">
-        Star type: {{planet['Star type\n']}}<br />
-        Mass (M⊕): {{display(planet['Mass (M⊕)\n'])}}<br />
-        Radius (R⊕): {{display(planet['Radius (R⊕)\n'])}}<br />
-        Density (g/cm3): {{display(planet['Density (g/cm3)\n'])}}<br />
-        Flux (F⊕): {{display(planet['Flux (F⊕)\n'])}}<br />
-        Teq (K): {{display(planet['Teq (K)\n'])}}<br />
-        Period (days): {{display(planet['Period (days)\n'])}}<br />
+        star type: {{planet['Star type\n']}}<br />
+        mass (M⊕): {{display(planet['Mass (M⊕)\n'])}}<br />
+        radius (R⊕): {{display(planet['Radius (R⊕)\n'])}}<br />
+        density (g/cm3): {{display(planet['Density (g/cm3)\n'])}}<br />
+        flux (F⊕): {{display(planet['Flux (F⊕)\n'])}}<br />
+        teq (K): {{display(planet['Teq (K)\n'])}}<br />
+        period (days): {{display(planet['Period (days)\n'])}}<br />
       </div>
     </template>
   </n-thing>

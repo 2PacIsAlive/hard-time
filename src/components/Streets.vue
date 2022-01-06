@@ -11,7 +11,8 @@ const { money } = storeToRefs(store)
 const map = computed(() => {
   const c = store.currentCity
   const m = store.currentMap
-  return store.world.cities[c].maps[m]
+  const w = store.currentWorld
+  return store.worlds[w].cities[c].maps[m]
 })
 const coloredMap = computed(() => {
   return map.value.current
@@ -306,10 +307,8 @@ async function moveAi() {
           aiPath.value = []
           // @ts-ignore
           play({id: 'death'})
-          // store.showDeathModal = true
           store.playerMovementRoutineStarted = false
           store.aiMovementRoutineStarted = false
-          // alert('YOU DIED')
           store.deaths += 1
           store.menuOptions[2].disabled = false
           map.value.current = map.value.default
