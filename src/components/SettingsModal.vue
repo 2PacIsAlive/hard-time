@@ -8,7 +8,7 @@ const store = useStore()
 
 <template>
   <n-modal v-model:show="store.showSettingsModal">
-    <n-card style="width: 600px;" title="settings:" :bordered="false" hoverable size="large">
+    <n-card style="width: 400px;" title="settings:" :bordered="false" hoverable size="large">
       <n-grid x-gap="40" :cols="2">
         <n-gi span="1">
           <div class="row">

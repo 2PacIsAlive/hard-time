@@ -28,9 +28,11 @@
       Math.floor(store.escapeProject.settings.maxRequiredCorrectAnswers - 
       (store.stats['street cred'] * .1)))
     ),
-    jail = computed(() => 
-      store.world.cities[store.currentCity].prisons[store.currentPrison]
-    )
+    jail = computed(() => {
+      const c = store.currentCity
+      const p = store.currentPrison
+      return store.world.cities[c].prisons[p]
+    })
 
   function finish (complete: boolean) {
     clearInterval(timer)

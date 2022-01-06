@@ -15,9 +15,11 @@ const store = useStore(),
     ? `you have ${timeLeftToServe} of your sentence left to serve`
     : 'you have served ' + msToTime(store.timeServed) + ', ' + percentageServed + '% of your sentence'
   }),
-  jail = computed(() => 
-    store.world.cities[store.currentCity].prisons[store.currentPrison]
-  ),
+  jail = computed(() => {
+    const c = store.currentCity
+    const p = store.currentPrison
+    return store.world.cities[c].prisons[p]
+  }),
   escapeDisabled = computed(() =>
     jail.value
       .escapeProjects

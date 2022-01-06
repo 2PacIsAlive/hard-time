@@ -9,6 +9,7 @@ const store = useStore(),
 
 function importSave () {
   try {
+    if (!store.importString) throw new Error('empty input')
     store.importSave()
     message.success('save imported')
     // TODO smarter way to do this? save loading in store?
@@ -23,13 +24,13 @@ function importSave () {
 
 <template>
   <n-modal v-model:show="store.showImportModal">
-    <n-card style="width: 600px;" title="import a save file:" :bordered="false" hoverable size="large">
+    <n-card style="width: 400px;" title="import a save file:" :bordered="false" hoverable size="large">
       <n-input v-model:value="store.importString" type="textarea" placeholder="paste save file here" />
       <template #footer>
         <n-button style="margin-right: 10px;" @click="store.showImportModal = false">
           close
         </n-button>
-        <n-button @click="importSave()">import</n-button>
+        <n-button type="success" @click="importSave()">import</n-button>
       </template>
     </n-card>
   </n-modal>

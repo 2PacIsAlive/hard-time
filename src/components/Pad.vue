@@ -80,15 +80,8 @@ function buySpaceship(): void {
   <div id="pad">
     <n-space align="center" justify="center" vertical size="large">
       <h1>{{ formattedMoney }}</h1>
-      <n-grid x-gap="40" :cols="3">
-        <n-gi span="1">
-          <n-divider>possessions</n-divider>
-          <possession possession="car" about="allows you to access the streets" :plural="false" />
-          <possession possession="donut shop" :about="formattedDonutShopAbout" :plural="true" />
-          <possession possession="plane" about="allows you to access the skies" :plural="false" />
-          <possession possession="spaceship" about="allows you to access the stars" :plural="false" />
-        </n-gi>
-        <n-gi span="1">
+      <n-grid x-gap="40" cols="3" item-responsive>
+        <n-gi span="1 400:3 600:1 800:1">
           <n-divider>actions</n-divider>
           <n-row>
             <n-button block class="centered-button" :loading="loadingLoiter" :disabled="loadingLoiter" @click="loiter()">
@@ -104,7 +97,7 @@ function buySpaceship(): void {
             <n-button block class="centered-button" :disabled="store.cars[0].cost > store.money" @click="buyCar">
               <template #icon>
                 <n-icon>
-                  <car-outline v-if="store.carCost <= 0.000005" />
+                  <car-outline v-if="store.cars[0].cost <= 0.000005" />
                   <car-sport-outline v-else />
                 </n-icon>
               </template>
@@ -142,7 +135,7 @@ function buySpaceship(): void {
             </n-button>
           </n-row>
         </n-gi>
-        <n-gi span="1">
+        <n-gi span="1 400:3 600:1 800:1" style="margin-bottom:15%;">
           <n-divider>stats</n-divider>
           <n-row align-items="center" justify-content="center">
             <n-col :span="12">
@@ -202,6 +195,13 @@ function buySpaceship(): void {
               </n-popover>            
             </n-col>
           </n-row>
+        </n-gi>
+        <n-gi span="1 400:1 600:1 800:1">
+          <n-divider>possessions</n-divider>
+          <possession possession="car" about="allows you to access the streets" :plural="false" />
+          <possession possession="donut shop" :about="formattedDonutShopAbout" :plural="true" />
+          <possession possession="plane" about="allows you to access the skies" :plural="false" />
+          <possession possession="spaceship" about="allows you to access the stars" :plural="false" />
         </n-gi>
       </n-grid>
     </n-space>

@@ -8,9 +8,11 @@
   import GameError from '../GameError.vue'
 
   const store = useStore(),
-    jail = computed(() => 
-      store.world.cities[store.currentCity].prisons[store.currentPrison]
-    )
+    jail = computed(() => {
+      const c = store.currentCity
+      const p = store.currentPrison
+      return store.world.cities[c].prisons[p]
+    })
 
   function finish () {
     const eProj = jail.value

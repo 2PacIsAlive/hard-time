@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { computed, onUnmounted, ref, watch, onActivated, Ref } from 'vue'
+import { computed, onMounted, onUnmounted, ref, watch, onActivated, Ref } from 'vue'
 import { useStore } from '../store'
 import { storeToRefs } from 'pinia'
 import { useSound } from '@vueuse/sound'
@@ -71,10 +71,20 @@ let lastAiDirection = 'D'
 const aiPath: Ref<number[]> = ref([])
 const playerPath: Ref<number[]> = ref([])
 
-window.addEventListener('keydown', doCommand)
+
+onMounted(() => {
+  window.addEventListener('keydown', doCommand)
+  console.log("street mounted")
+  if (!store.aiMovementRoutineStarted) moveAi()
+  if (!store.starSpawnerStarted) spawnNewStarsIntermittently()
+})
 
 onUnmounted(() => {
+  // TODO ai movement stops but star spawner continues in the background?
 	window.removeEventListener('keydown', doCommand)
+  // console.log("STOPPING STREET MOVEMENT ROUTINES")
+  // store.aiMovementRoutineStarted = false
+  // store.playerMovementRoutineStarted = false
 })
 
 const directionKeys: any = {
@@ -458,8 +468,6 @@ watch(money, (m: number, prevM: number) => {
     setSpace(exit, exitSpace)
 })
 
-if (!store.aiMovementRoutineStarted) moveAi()
-if (!store.starSpawnerStarted) spawnNewStarsIntermittently()
 </script>
 
 <template>
