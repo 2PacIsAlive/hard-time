@@ -55,7 +55,6 @@ function handleClick(e: any) {
     const planetId = e.target.id.split('-')[1]
     if (planetId in store.worlds) {
       store.currentWorld = planetId
-      store.currentCity = Object.keys(store.worlds[planetId].cities)[0]
     } else {
       message.error(`can't reach ${planets[planetId]['Object\n'].toLowerCase()}`)
     }

@@ -9,10 +9,9 @@
 
   const store = useStore(),
     jail = computed(() => {
-      const c = store.currentCity
-      const p = store.currentPrison
-      const w = store.currentWorld
-      return store.worlds[w].cities[c].prisons[p]
+    const world = store.worlds[store.currentWorld]
+    const city = world.cities[world.currentCity]
+    return city.jails[city.currentJail]
     })
 
   function finish () {

@@ -43,7 +43,8 @@ function coloredSpace(char: string, color: string, onClickFn: string, id: string
 function handleClick(e: any) {
   if (e.target.id) {
     const cityId = e.target.id.split('-')[1]
-    store.currentCity = cityId
+    store.worlds[store.currentWorld]
+      .currentCity = cityId
   }
 }
 
@@ -56,14 +57,16 @@ function handleMouseover(e: any) {
   }
 }
 
-function getStyle(city: City) {
+function getCurrentCityStyle() {
+  const world = store.worlds[store.currentWorld]
+  const city = world.cities[world.currentCity]
   return `color: ${city?.color || 'white'}`
 }
 </script>
 
 <template>
   <div id="skies">
-    <p>you are in <span :style="getStyle(store.worlds[store.currentWorld].cities[store.currentCity])">{{ store.currentCity }}</span></p>
+    <p>you are in <span :style="getCurrentCityStyle()">{{ store.worlds[store.currentWorld].currentCity }}</span></p>
     <pre v-html="coloredMap" @click="handleClick" @mouseover="handleMouseover" @mouseleave="handleMouseover"></pre>
     <city-description :city="store.worlds[store.currentWorld].cities[hoveredCity]" :name="hoveredCity" v-if="hoveredCity">
       {{ hoveredCity }}

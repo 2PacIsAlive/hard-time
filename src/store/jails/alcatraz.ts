@@ -4,7 +4,7 @@ import {
   buildARaft,
 } from '../escapeProjects'
 
-export const alcatraz: Prison = {
+export const alcatraz: Jail = {
   name: 'alcatraz',
   escapeProjects: [
     befriendGuardsProject({

@@ -4,7 +4,7 @@ import {
   buildARaft,
 } from '../escapeProjects'
 
-export const pelicanBayStatePrison: Prison = {
+export const pelicanBayStatePrison: Jail = {
   name: 'pelican bay state prison',
   escapeProjects: [
     befriendGuardsProject({

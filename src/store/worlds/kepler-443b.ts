@@ -3,6 +3,7 @@ import * as jails from '../jails'
 
 export const kepler443b: World = {
   name: 'kepler-443b',
+  currentCity: 'fort krastos',
   map: `           ██████████████████████████████████████████████████████████           
        ╚░╚╚╚ⁿ╙╙╙╙░╙╙╚╙▀▀▀▀███████████████████████████████████╙╙╚▀▀▀▀▀▀███       
     ....................^"└└╙╙▀████╣███▀▀▀██████████████╙▀▀╙░..^^^"""ⁿ└",,^"    
@@ -34,25 +35,29 @@ export const kepler443b: World = {
         maps.earth5,
         maps.earth6,
       ],
-      prisons: [
+      jails: [
         jails.sanPedroPrison,
         jails.penitenciariaDeSantiago,
         jails.laSabaneta,
-      ]
+      ],
+      currentMap: 0,
+      currentJail: 0,
     },
     'porto ganoli': {
       color: '#4f8af0',
       slug: 'p',
       maps: [
-        maps.earth1,
+        maps.kepler1,
         maps.earth2,
         maps.earth3,
       ],
-      prisons: [
+      jails: [
         jails.californiaStatePrison,
         jails.pelicanBayStatePrison,
         jails.alcatraz,
-      ]
+      ],
+      currentMap: 0,
+      currentJail: 0,
     }, 
     'fort krastos': {
       color: '#e010eb',
@@ -62,11 +67,13 @@ export const kepler443b: World = {
         maps.earth8,
         maps.earth9,
       ],
-      prisons: [
+      jails: [
         jails.blackDolphinPrison,
         jails.samaraPenitentiary,
         jails.butyrkaPrison,
-      ]
+      ],
+      currentMap: 0,
+      currentJail: 0,
     },
   }                    
 }

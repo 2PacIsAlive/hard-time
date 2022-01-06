@@ -9,10 +9,9 @@ import { NButton, NSlider, NSpace, NLayout } from 'naive-ui'
 const store = useStore()
 const { money } = storeToRefs(store)
 const map = computed(() => {
-  const c = store.currentCity
-  const m = store.currentMap
-  const w = store.currentWorld
-  return store.worlds[w].cities[c].maps[m]
+  const world = store.worlds[store.currentWorld]
+  const city = world.cities[world.currentCity]
+  return city.maps[city.currentMap]
 })
 const coloredMap = computed(() => {
   return map.value.current
@@ -202,8 +201,10 @@ function doCommand(e: any) {
 function nextMap () {
   // @ts-ignore
   play({id: 'nextMap'})
-  store.currentMap += 1
-  store.currentJail += 1
+  const world = store.worlds[store.currentWorld]
+  const city = world.cities[world.currentCity]
+  city.currentMap += 1
+  city.currentJail += 1
   // store.map = secondMap
   aiExists.value = true
   if (!store.aiMovementRoutineStarted) moveAi()
@@ -212,8 +213,10 @@ function nextMap () {
 function prevMap () {
   // @ts-ignore
   play({id: 'nextMap'})
-  store.currentMap -= 1
-  store.currentJail -= 1
+  const world = store.worlds[store.currentWorld]
+  const city = world.cities[world.currentCity]
+  city.currentMap -= 1
+  city.currentJail -= 1
   // store.map = secondMap
   aiExists.value = true
   if (!store.aiMovementRoutineStarted) moveAi()
