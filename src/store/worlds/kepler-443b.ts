@@ -3,7 +3,7 @@ import * as jails from '../jails'
 
 export const kepler443b: World = {
   name: 'kepler-443b',
-  currentCity: 'fort krastos',
+  currentCity: 'porto ganoli',
   map: `           ██████████████████████████████████████████████████████████           
        ╚░╚╚╚ⁿ╙╙╙╙░╙╙╚╙▀▀▀▀███████████████████████████████████╙╙╚▀▀▀▀▀▀███       
     ....................^"└└╙╙▀████╣███▀▀▀██████████████╙▀▀╙░..^^^"""ⁿ└",,^"    
@@ -48,8 +48,8 @@ export const kepler443b: World = {
       slug: 'p',
       maps: [
         maps.kepler1,
-        maps.earth2,
-        maps.earth3,
+        maps.kepler2,
+        maps.kepler3,
       ],
       jails: [
         jails.californiaStatePrison,
