@@ -204,6 +204,7 @@ function nextMap () {
   // @ts-ignore
   play({id: 'nextMap'})
   store.currentMap += 1
+  store.currentJail += 1
   // store.map = secondMap
   aiExists.value = true
   if (!store.aiMovementRoutineStarted) moveAi()
@@ -213,6 +214,7 @@ function prevMap () {
   // @ts-ignore
   play({id: 'nextMap'})
   store.currentMap -= 1
+  store.currentJail -= 1
   // store.map = secondMap
   aiExists.value = true
   if (!store.aiMovementRoutineStarted) moveAi()

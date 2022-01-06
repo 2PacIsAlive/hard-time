@@ -38,6 +38,7 @@ export const earth: World = {
       prisons: [
         jails.sanPedroPrison,
         jails.penitenciariaDeSantiago,
+        jails.laSabaneta,
       ]
     },
     'los angeles': {
@@ -50,6 +51,7 @@ export const earth: World = {
       ],
       prisons: [
         jails.californiaStatePrison,
+        jails.pelicanBayStatePrison,
         jails.alcatraz,
       ]
     }, 
@@ -63,6 +65,7 @@ export const earth: World = {
       ],
       prisons: [
         jails.blackDolphinPrison,
+        jails.samaraPenitentiary,
         jails.butyrkaPrison,
       ]
     },

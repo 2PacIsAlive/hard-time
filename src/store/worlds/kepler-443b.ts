@@ -37,6 +37,7 @@ export const kepler443b: World = {
       prisons: [
         jails.sanPedroPrison,
         jails.penitenciariaDeSantiago,
+        jails.laSabaneta,
       ]
     },
     'porto ganoli': {
@@ -49,6 +50,7 @@ export const kepler443b: World = {
       ],
       prisons: [
         jails.californiaStatePrison,
+        jails.pelicanBayStatePrison,
         jails.alcatraz,
       ]
     }, 
@@ -62,6 +64,7 @@ export const kepler443b: World = {
       ],
       prisons: [
         jails.blackDolphinPrison,
+        jails.samaraPenitentiary,
         jails.butyrkaPrison,
       ]
     },
