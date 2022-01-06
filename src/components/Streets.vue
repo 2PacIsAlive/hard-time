@@ -82,8 +82,8 @@ onUnmounted(() => {
   // TODO ai movement stops but star spawner continues in the background?
 	document.removeEventListener('keydown', doCommand)
   // console.log("STOPPING STREET MOVEMENT ROUTINES")
-  // store.aiMovementRoutineStarted = false
-  // store.playerMovementRoutineStarted = false
+  store.aiMovementRoutineStarted = false
+  store.playerMovementRoutineStarted = false
 })
 
 const directionKeys: any = {
