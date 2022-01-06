@@ -4,9 +4,18 @@
   import { NSpace, NInput, NIcon, NProgress, NPopover, useMessage } from 'naive-ui'
   import { PencilOutline, PeopleOutline } from '@vicons/ionicons5'
   import Sentiment from 'sentiment'
+  import { useSound } from '@vueuse/sound'
+  import Escape_Task_Fail from '../../assets/Escape_Task_Fail.mp3'
+  import Escape_Task_Success from '../../assets/Escape_Task_Success.mp3'
+  import REQ_Attempt_Fail from '../../assets/REQ_Attempt_Fail.mp3'
+  import REQ_Attempt_Success from '../../assets/REQ_Attempt_Success.mp3'
 
   const store = useStore(),
     message = useMessage(),
+    reqAttemptFailSound = useSound(REQ_Attempt_Fail),
+    reqAttemptSuccessSound = useSound(REQ_Attempt_Success),    
+    escapeTaskFailSound = useSound(Escape_Task_Fail),
+    escapeTaskSuccessSound = useSound(Escape_Task_Success),
     sentiment = new Sentiment(),
     niceToggle = ref(true),
     submission = ref(""),
@@ -35,6 +44,8 @@
     })
 
   function finish (complete: boolean) {
+    if (complete) reqAttemptSuccessSound.play()
+    else reqAttemptFailSound.play()
     clearInterval(timer)
     if (jail.value) {
       const eProj = jail.value
@@ -62,10 +73,12 @@
       }
     }
     if (correct) {
+      escapeTaskSuccessSound.play()
       correctAnswers.value += 1
       if (correctAnswers.value >= requiredCorrectAnswers.value) 
         finish(true)
     } else {
+      escapeTaskFailSound.play()
       correctAnswers.value -= 1
     }
     if (Math.random() > .5) niceToggle.value = !niceToggle.value
