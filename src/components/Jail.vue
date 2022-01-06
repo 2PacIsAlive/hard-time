@@ -1,10 +1,11 @@
 <script setup lang="ts">
 import { computed, ref, onUnmounted } from 'vue'
 import { useStore } from '../store'
-import { useLoadingBar, NSpace, NButton } from 'naive-ui'
+import { useLoadingBar, NSpace, NButton, useMessage } from 'naive-ui'
 import { KONAMI_CODE } from './cheats/konamiCode'
 
 const store = useStore(),
+  message = useMessage(),
   loadingBar = useLoadingBar(),
   currentKonamiPos = ref(0),
   timeFormatToggle = ref(true),
@@ -16,9 +17,9 @@ const store = useStore(),
     : 'you have served ' + msToTime(store.timeServed) + ', ' + percentageServed + '% of your sentence'
   }),
   jail = computed(() => {
-    const c = store.currentCity
-    const p = store.currentPrison
-    return store.world.cities[c].prisons[p]
+    const world = store.worlds[store.currentWorld]
+    const city = world.cities[world.currentCity]
+    return city.jails[city.currentJail]
   }),
   escapeDisabled = computed(() =>
     jail.value
@@ -39,10 +40,11 @@ function msToTime (ms: number) {
   else return days.toFixed(4) + " days"
 }
 
-function konamiCodeListener(event: any) {
+function konamiCodeJail(event: any) {
   if (store.settings.cheatsEnabled) {
     if (event.key === KONAMI_CODE[currentKonamiPos.value++]) {
       if (currentKonamiPos.value === KONAMI_CODE.length) {
+          message.success('you cheated')
           leaveJail()
           currentKonamiPos.value = 0
       }
@@ -78,9 +80,9 @@ const fullSentence = setInterval(() => {
     leaveJail()
 }, 1)
 
-document.addEventListener('keydown', konamiCodeListener)
+document.addEventListener('keydown', konamiCodeJail, true)
 onUnmounted(() => {
-	window.removeEventListener('keydown', konamiCodeListener)
+	document.removeEventListener('keydown', konamiCodeJail, true)
 })
 </script>
 

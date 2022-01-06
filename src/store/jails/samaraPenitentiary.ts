@@ -1,11 +1,12 @@
+
 import {
   befriendGuardsProject,
   digProject,
   arrangeAGetaway,
 } from '../escapeProjects'
 
-export const blackDolphinPrison: Jail = {
-  name: 'black dolphin prison',
+export const samaraPenitentiary: Jail = {
+  name: 'samara penitentiary',
   escapeProjects: [
     befriendGuardsProject({
       maxRequiredCorrectAnswers: 5,

@@ -3,7 +3,7 @@ import defaultCars from './cars'
 import defaultPlanes from './planes'
 import defaultSpaceships from './spaceships'
 import defaultMenu from './menu'
-import { earth } from './worlds'
+import { earth, kepler443b } from './worlds'
 
 const saveKey = 'hard-time-savefile'
 
@@ -32,15 +32,15 @@ export const useStore = defineStore('main', {
         cheatsEnabled: false,
       },
       inJail: savedState !== undefined && savedState.inJail === false ? false : true,
-      world: savedState?.world as World || earth,
-      currentCity: savedState?.currentCity || 'los angeles',
-      currentPrison: savedState?.currentPrison || 0,
-      currentMap: savedState?.currentMap || 0,
+      worlds: savedState?.worlds as { [worldIndex: number]: World } || {
+        36: earth, 
+        30: kepler443b,
+      },
+      currentWorld: savedState?.currentWorld || 36,
       jailtime: savedState?.jailtime || 1000 * 60 * 5,
       timeServed: savedState?.timeServed || 0,
       sentenceStarted: savedState?.sentenceStarted || undefined,
-      currentJail: savedState?.currentJail || 0,
-      money: savedState?.money || 100000,
+      money: savedState?.money || 0,
       lastMoney: savedState?.lastMoney || 0,
       pay: savedState?.pay || 0.00000001,
       payIncrementType: savedState?.payIncrementType || 'sqrt',
@@ -56,16 +56,13 @@ export const useStore = defineStore('main', {
       possessions: savedState?.possessions || {},
       workDuration: savedState?.workDuration || 3000,
       lag: 0,
-      displaySaved: false,
       stars: savedState?.stars || 0,
       aiStars: savedState?.aiStars || 0,
       deaths: savedState?.deaths || 0,
       openScreen: savedState?.openScreen || 'the pad',
       menuOptions: savedState?.menuOptions || defaultMenu,
-      showDeathModal: savedState?.showDeathModal || false,
       playerAutoSkill: savedState?.playerAutoSkill || 0,
       planetsAvailable: savedState?.planetsAvailable || 60,
-      currentPlanet: savedState?.currentPlanet || 0,
       escapeProject: savedState?.escapeProject || false,
       donutShop: savedState?.donutShop || {
         cost: 0.00015, // 15k$ if btc 100m
@@ -94,14 +91,11 @@ export const useStore = defineStore('main', {
         gameStarted: this.gameStarted,
         settings: this.settings,
         inJail: this.inJail,
-        world: this.world,
-        currentCity: this.currentCity,
-        currentPrison: this.currentPrison,
-        currentMap: this.currentMap,
+        worlds: this.worlds,
+        currentWorld: this.currentWorld,
         jailtime: this.jailtime,
         timeServed: this.timeServed,
         sentenceStarted: this.sentenceStarted,
-        currentJail: this.currentJail,
         money: this.money,
         lastMoney: this.lastMoney,
         pay: this.pay,
@@ -121,10 +115,8 @@ export const useStore = defineStore('main', {
         deaths: this.deaths,
         openScreen: this.openScreen,
         menuOptions: this.menuOptions,
-        showDeathModal: this.showDeathModal,
         playerAutoSkill: this.playerAutoSkill,
         planetsAvailable: this.planetsAvailable,
-        currentPlanet: this.currentPlanet,
         escapeProject: this.escapeProject,
         donutShop: this.donutShop,
         stats: this.stats,

@@ -4,8 +4,8 @@ import {
   buildARaft,
 } from '../escapeProjects'
 
-export const alcatraz: Jail = {
-  name: 'alcatraz',
+export const pelicanBayStatePrison: Jail = {
+  name: 'pelican bay state prison',
   escapeProjects: [
     befriendGuardsProject({
       maxRequiredCorrectAnswers: 8,

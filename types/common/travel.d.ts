@@ -2,7 +2,9 @@ interface City {
   slug: string,
   color: string,
   maps: GameMap[],
-  prisons: Prison[],
+  jails: Jail[],
+  currentMap: number,
+  currentJail: number,
 }
 
 interface World {
@@ -11,4 +13,5 @@ interface World {
   cities: {
     [name: string]: City
   },
+  currentCity: string,
 }

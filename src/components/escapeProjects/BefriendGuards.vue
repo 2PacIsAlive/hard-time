@@ -38,9 +38,12 @@
       (store.stats['street cred'] * .1)))
     ),
     jail = computed(() => {
-      const c = store.currentCity
-      const p = store.currentPrison
-      return store.world.cities[c].prisons[p]
+      console.log(store.currentWorld)
+      const world = store.worlds[store.currentWorld]
+      console.log(world.currentCity)
+      const city = world.cities[world.currentCity]
+      console.log(city.currentJail)
+      return city.jails[city.currentJail]
     })
 
   function finish (complete: boolean) {
@@ -100,9 +103,9 @@
     else return days.toFixed(1) + " days"
   }
 
-  window.addEventListener('keydown', doCommand)
+  document.addEventListener('keydown', doCommand)
   onUnmounted(() => {
-    window.removeEventListener('keydown', doCommand)
+    document.removeEventListener('keydown', doCommand)
   })
 
   const timer = setInterval(() => {

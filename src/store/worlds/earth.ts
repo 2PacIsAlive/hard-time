@@ -3,6 +3,7 @@ import * as jails from '../jails'
 
 export const earth: World = {
   name: 'earth',
+  currentCity: 'los angeles',
   map: `
                ,_   .  ._. _.  .
            , _-\\','|~\\~      ~/      ;-'_   _-'     ,;_;_,    ~~-
@@ -35,10 +36,13 @@ export const earth: World = {
         maps.earth5,
         maps.earth6,
       ],
-      prisons: [
+      jails: [
         jails.sanPedroPrison,
         jails.penitenciariaDeSantiago,
-      ]
+        jails.laSabaneta,
+      ],
+      currentMap: 0,
+      currentJail: 0,
     },
     'los angeles': {
       color: '#ff006e',
@@ -48,10 +52,13 @@ export const earth: World = {
         maps.earth2,
         maps.earth3,
       ],
-      prisons: [
+      jails: [
         jails.californiaStatePrison,
+        jails.pelicanBayStatePrison,
         jails.alcatraz,
-      ]
+      ],
+      currentMap: 0,
+      currentJail: 0,
     }, 
     'moscow': {
       color: '#ffbe0b',
@@ -61,10 +68,13 @@ export const earth: World = {
         maps.earth8,
         maps.earth9,
       ],
-      prisons: [
+      jails: [
         jails.blackDolphinPrison,
+        jails.samaraPenitentiary,
         jails.butyrkaPrison,
-      ]
+      ],
+      currentMap: 0,
+      currentJail: 0,
     },
   }                    
 }

@@ -4,8 +4,8 @@ import {
   arrangeAGetaway,
 } from '../escapeProjects'
 
-export const blackDolphinPrison: Jail = {
-  name: 'black dolphin prison',
+export const laSabaneta: Jail = {
+  name: 'la sabaneta',
   escapeProjects: [
     befriendGuardsProject({
       maxRequiredCorrectAnswers: 5,

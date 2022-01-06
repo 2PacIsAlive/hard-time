@@ -4,7 +4,7 @@ import {
   arrangeAGetaway,
 } from '../escapeProjects'
 
-export const penitenciariaDeSantiago: Prison = {
+export const penitenciariaDeSantiago: Jail = {
   name: 'penitenciaría de santiago',
   escapeProjects: [
     befriendGuardsProject({

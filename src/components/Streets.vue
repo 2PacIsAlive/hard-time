@@ -9,9 +9,9 @@ import { NButton, NSlider, NSpace, NLayout } from 'naive-ui'
 const store = useStore()
 const { money } = storeToRefs(store)
 const map = computed(() => {
-  const c = store.currentCity
-  const m = store.currentMap
-  return store.world.cities[c].maps[m]
+  const world = store.worlds[store.currentWorld]
+  const city = world.cities[world.currentCity]
+  return city.maps[city.currentMap]
 })
 const coloredMap = computed(() => {
   return map.value.current
@@ -73,18 +73,17 @@ const playerPath: Ref<number[]> = ref([])
 
 
 onMounted(() => {
-  window.addEventListener('keydown', doCommand)
-  console.log("street mounted")
+  document.addEventListener('keydown', doCommand)
   if (!store.aiMovementRoutineStarted) moveAi()
   if (!store.starSpawnerStarted) spawnNewStarsIntermittently()
 })
 
 onUnmounted(() => {
   // TODO ai movement stops but star spawner continues in the background?
-	window.removeEventListener('keydown', doCommand)
+	document.removeEventListener('keydown', doCommand)
   // console.log("STOPPING STREET MOVEMENT ROUTINES")
-  // store.aiMovementRoutineStarted = false
-  // store.playerMovementRoutineStarted = false
+  store.aiMovementRoutineStarted = false
+  store.playerMovementRoutineStarted = false
 })
 
 const directionKeys: any = {
@@ -202,7 +201,10 @@ function doCommand(e: any) {
 function nextMap () {
   // @ts-ignore
   play({id: 'nextMap'})
-  store.currentMap += 1
+  const world = store.worlds[store.currentWorld]
+  const city = world.cities[world.currentCity]
+  city.currentMap += 1
+  city.currentJail += 1
   // store.map = secondMap
   aiExists.value = true
   if (!store.aiMovementRoutineStarted) moveAi()
@@ -211,7 +213,10 @@ function nextMap () {
 function prevMap () {
   // @ts-ignore
   play({id: 'nextMap'})
-  store.currentMap -= 1
+  const world = store.worlds[store.currentWorld]
+  const city = world.cities[world.currentCity]
+  city.currentMap -= 1
+  city.currentJail -= 1
   // store.map = secondMap
   aiExists.value = true
   if (!store.aiMovementRoutineStarted) moveAi()
@@ -306,10 +311,8 @@ async function moveAi() {
           aiPath.value = []
           // @ts-ignore
           play({id: 'death'})
-          // store.showDeathModal = true
           store.playerMovementRoutineStarted = false
           store.aiMovementRoutineStarted = false
-          // alert('YOU DIED')
           store.deaths += 1
           store.menuOptions[2].disabled = false
           map.value.current = map.value.default
