@@ -74,15 +74,14 @@ const playerPath: Ref<number[]> = ref([])
 
 
 onMounted(() => {
-  window.addEventListener('keydown', doCommand)
-  console.log("street mounted")
+  document.addEventListener('keydown', doCommand)
   if (!store.aiMovementRoutineStarted) moveAi()
   if (!store.starSpawnerStarted) spawnNewStarsIntermittently()
 })
 
 onUnmounted(() => {
   // TODO ai movement stops but star spawner continues in the background?
-	window.removeEventListener('keydown', doCommand)
+	document.removeEventListener('keydown', doCommand)
   // console.log("STOPPING STREET MOVEMENT ROUTINES")
   // store.aiMovementRoutineStarted = false
   // store.playerMovementRoutineStarted = false

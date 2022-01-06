@@ -39,6 +39,7 @@ function openSettings () {
 <template>
   <footer v-if="store.gameStarted" id="footer">
     <span>lag: {{ store.lag.toFixed(0) }}ms </span>
+    <span id="cheater" v-if="store.settings.cheatsEnabled">cheater </span>
     <span class="footer-action" id="settings" @click="openSettings()">settings </span>
     <span class="footer-action" id="export" @click="exportSave()">export </span>
     <span class="footer-action" id="import" @click="importSave()">import </span>
@@ -60,7 +61,7 @@ function openSettings () {
   .footer-action:hover {
     cursor: pointer;
   }
-  #reset {
+  #reset, #cheater {
     color: red;
   }
   #reset:hover {

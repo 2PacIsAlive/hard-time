@@ -101,9 +101,9 @@
     else return days.toFixed(1) + " days"
   }
 
-  window.addEventListener('keydown', doCommand)
+  document.addEventListener('keydown', doCommand)
   onUnmounted(() => {
-    window.removeEventListener('keydown', doCommand)
+    document.removeEventListener('keydown', doCommand)
   })
 
   const timer = setInterval(() => {

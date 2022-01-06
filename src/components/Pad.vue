@@ -1,13 +1,16 @@
 <script setup lang="ts">
-import { ref, computed } from 'vue'
+import { ref, computed, onUnmounted } from 'vue'
 import { useStore } from '../store'
-import { NButton, NIcon, useLoadingBar, NSpace, NCard, NGrid, NGi, NStatistic, NRow, NCol, NDivider, NPopover } from 'naive-ui'
+import { NButton, NIcon, useLoadingBar, NSpace, NCard, NGrid, NGi, NStatistic, NRow, NCol, NDivider, NPopover, useMessage } from 'naive-ui'
 import { LogoBitcoin, EarOutline, CarOutline, CarSportOutline, RocketOutline, PeopleOutline, BarbellOutline, SparklesOutline, DiceOutline, FastFoodOutline, AirplaneOutline } from '@vicons/ionicons5'
 // @ts-ignore
 import Possession from './Possession.vue'
+import { KONAMI_CODE } from './cheats/konamiCode'
 
 const store = useStore(),
+  message = useMessage(),
   loadingBar = useLoadingBar(),
+  currentKonamiPos = ref(0),
   loadingBegForCredits = ref(false),
   loadingLoiter = ref(false),
   formattedMoney = computed(() =>
@@ -74,6 +77,29 @@ function buySpaceship(): void {
     store.menuOptions[5].disabled = false
   }
 }
+
+function konamiCodeListener(event: any) {
+  if (store.settings.cheatsEnabled) {
+    if (event.key === KONAMI_CODE[currentKonamiPos.value++]) {
+      if (currentKonamiPos.value === KONAMI_CODE.length) {
+        message.success('you cheated')
+        store.money += 100
+        store.stats['street cred'] += 100
+        store.stats.strength += 100
+        store.stats.dexterity += 100
+        store.stats.luck += 100
+        currentKonamiPos.value = 0
+      }
+    } else {
+        currentKonamiPos.value = 0
+    }
+  }
+}
+
+document.addEventListener('keydown', konamiCodeListener)
+onUnmounted(() => {
+	document.removeEventListener('keydown', konamiCodeListener)
+})
 </script>
 
 <template>

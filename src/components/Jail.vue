@@ -1,10 +1,11 @@
 <script setup lang="ts">
 import { computed, ref, onUnmounted } from 'vue'
 import { useStore } from '../store'
-import { useLoadingBar, NSpace, NButton } from 'naive-ui'
+import { useLoadingBar, NSpace, NButton, useMessage } from 'naive-ui'
 import { KONAMI_CODE } from './cheats/konamiCode'
 
 const store = useStore(),
+  message = useMessage(),
   loadingBar = useLoadingBar(),
   currentKonamiPos = ref(0),
   timeFormatToggle = ref(true),
@@ -40,10 +41,11 @@ function msToTime (ms: number) {
   else return days.toFixed(4) + " days"
 }
 
-function konamiCodeListener(event: any) {
+function konamiCodeJail(event: any) {
   if (store.settings.cheatsEnabled) {
     if (event.key === KONAMI_CODE[currentKonamiPos.value++]) {
       if (currentKonamiPos.value === KONAMI_CODE.length) {
+          message.success('you cheated')
           leaveJail()
           currentKonamiPos.value = 0
       }
@@ -79,9 +81,9 @@ const fullSentence = setInterval(() => {
     leaveJail()
 }, 1)
 
-document.addEventListener('keydown', konamiCodeListener)
+document.addEventListener('keydown', konamiCodeJail, true)
 onUnmounted(() => {
-	window.removeEventListener('keydown', konamiCodeListener)
+	document.removeEventListener('keydown', konamiCodeJail, true)
 })
 </script>
 
