@@ -9,12 +9,14 @@
   },
   "dependencies": {
     "@vueuse/sound": "^1.1.7",
+    "color": "^4.1.0",
     "pinia": "^2.0.6",
     "sentiment": "^5.0.2",
     "swarm-numberformat": "^0.4.0",
     "vue": "^3.2.16"
   },
   "devDependencies": {
+    "@types/color": "^3.0.2",
     "@types/howler": "^2.2.4",
     "@types/sentiment": "^5.0.1",
     "@vicons/ionicons5": "^0.11.0",

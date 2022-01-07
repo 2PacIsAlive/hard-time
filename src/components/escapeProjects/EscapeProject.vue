@@ -5,6 +5,8 @@
   // @ts-ignore
   import BefriendGuards from './BefriendGuards.vue'
   // @ts-ignore
+  import StudyPrisonSchematics from './StudyPrisonSchematics.vue'
+  // @ts-ignore
   import GameError from '../GameError.vue'
 
   const store = useStore(),
@@ -26,7 +28,8 @@
 <template>
   <n-space align="center" justify="center" vertical size="large">
     <p>you are attempting to <span style="color: red">{{ store.escapeProject.name }}</span></p>
-    <befriend-guards v-if="store.escapeProject.name === 'befriend the guards'"/>
+    <befriend-guards v-if="store.escapeProject.name === 'befriend the guards'" />
+    <study-prison-schematics v-else-if="store.escapeProject.name === 'study prison schematics'" />
     <template v-else>
       <game-error msg="unknown escape project type" />
       <n-button @click="finish()">finish</n-button>

@@ -2,6 +2,7 @@ import {
   befriendGuardsProject,
   digProject,
   arrangeAGetaway,
+  studyPrisonSchematics,
 } from '../escapeProjects'
 
 export const californiaStatePrison: Jail = {
@@ -11,10 +12,12 @@ export const californiaStatePrison: Jail = {
       maxRequiredCorrectAnswers: 5,
       minTimeSeconds: 15,
     }),
-    digProject({
-
+    studyPrisonSchematics({
+      tiles: 6,
+      minDelay: 350,
+      maxSequenceLength: 5
     }),
-    arrangeAGetaway({
+    digProject({
 
     }),
   ],

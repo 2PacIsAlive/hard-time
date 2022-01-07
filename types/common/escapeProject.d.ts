@@ -21,3 +21,14 @@ interface ArrangeGetawaySettings {
 interface BuildARaftSettings {
 
 }
+
+interface StudyPrisonSchematicsSettings {
+  tiles: number
+  minDelay: number
+  maxSequenceLength: number
+}
+
+interface Tile {
+  color: any // TODO why does Color not work?
+  playing: boolean
+}
