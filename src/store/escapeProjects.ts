@@ -32,3 +32,10 @@ export function buildARaft(settings: BuildARaftSettings) {
     settings
   )
 }
+
+export function studyPrisonSchematics(settings: StudyPrisonSchematicsSettings) {
+  return escapeProject('study prison schematics',
+    'you studied the blueprints',
+    settings
+  )
+}

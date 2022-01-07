@@ -38,11 +38,8 @@
       (store.stats['street cred'] * .1)))
     ),
     jail = computed(() => {
-      console.log(store.currentWorld)
       const world = store.worlds[store.currentWorld]
-      console.log(world.currentCity)
       const city = world.cities[world.currentCity]
-      console.log(city.currentJail)
       return city.jails[city.currentJail]
     })
 
