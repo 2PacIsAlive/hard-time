@@ -172,12 +172,6 @@
 </template>
 
 <style scoped>
-.light-green {
-  background-color: rgba(0, 128, 0, 0.12);
-}
-.green {
-  background-color: rgba(0, 128, 0, 0.24);
-}
 .flex-grid {
   display: flex;
   flex-wrap: wrap;

@@ -2,9 +2,12 @@
 import { ref, computed, onUnmounted } from 'vue'
 import { useStore } from '../store'
 import { NButton, NIcon, useLoadingBar, NSpace, NCard, NGrid, NGi, NStatistic, NRow, NCol, NDivider, NPopover, useMessage } from 'naive-ui'
-import { LogoBitcoin, EarOutline, CarOutline, CarSportOutline, RocketOutline, PeopleOutline, BarbellOutline, SparklesOutline, DiceOutline, FastFoodOutline, AirplaneOutline } from '@vicons/ionicons5'
+import { LogoBitcoin, EarOutline, CarOutline, CarSportOutline, RocketOutline, FastFoodOutline, AirplaneOutline } from '@vicons/ionicons5'
 // @ts-ignore
 import Possession from './Possession.vue'
+// @ts-ignore
+import StatDescription from './StatDescription.vue'
+import * as stats from '../store/stats'
 import { KONAMI_CODE } from './cheats/konamiCode'
 
 const store = useStore(),
@@ -104,133 +107,78 @@ onUnmounted(() => {
 
 <template>
   <div id="pad">
-    <n-space align="center" justify="center" vertical size="large">
-      <h1>{{ formattedMoney }}</h1>
-      <n-grid x-gap="40" cols="3" item-responsive>
-        <n-gi span="1 400:3 600:1 800:1">
-          <n-divider>actions</n-divider>
-          <n-row>
-            <n-button block class="centered-button" :loading="loadingLoiter" :disabled="loadingLoiter" @click="loiter()">
-              <template #icon>
-                <n-icon>
-                  <ear-outline />
-                </n-icon>
-              </template>
-              loiter (+1 street cred)
-            </n-button> 
-          </n-row>
-          <n-row v-if="store.cars.length > 0 && store.money >= store.cars[0].cost / 10">
-            <n-button block class="centered-button" :disabled="store.cars[0].cost > store.money" @click="buyCar">
-              <template #icon>
-                <n-icon>
-                  <car-outline v-if="store.cars[0].cost <= 0.000005" />
-                  <car-sport-outline v-else />
-                </n-icon>
-              </template>
-              buy a new car (-₿{{ store.cars[0].cost.toFixed(8) }})
-            </n-button> 
-          </n-row>
-          <n-row v-if="store.money >= store.donutShop.cost / 10">
-            <n-button block class="centered-button" :disabled="store.donutShop.cost > store.money" @click="buyDonutShop">
-              <template #icon>
-                <n-icon>
-                  <fast-food-outline />
-                </n-icon>
-              </template>
-              open a donut shop (-₿{{ store.donutShop.cost.toFixed(8) }})
-            </n-button> 
-          </n-row>
-          <n-row v-if="store.planes.length > 0 && store.money >= store.planes[0].cost / 10">
-            <n-button block class="centered-button" :disabled="store.planes[0].cost > store.money" @click="buyPlane">
-              <template #icon>
-                <n-icon>
-                  <airplane-outline />
-                </n-icon>
-              </template>
-              buy a plane (-₿{{ store.planes[0].cost.toFixed(8) }})
-            </n-button> 
-          </n-row>
-          <n-row v-if="store.spaceships.length > 0 && store.money >= store.spaceships[0].cost / 10">
-            <n-button block class="centered-button" :disabled="store.spaceships[0].cost > store.money" @click="buySpaceship">
-              <template #icon>
-                <n-icon>
-                  <rocket-outline />
-                </n-icon>
-              </template>
-              buy a spaceship (-₿{{ store.spaceships[0].cost.toFixed(8) }})
-            </n-button>
-          </n-row>
-        </n-gi>
-        <n-gi span="1 400:3 600:1 800:1" style="margin-bottom:15%;">
-          <n-divider>stats</n-divider>
-          <n-row align-items="center" justify-content="center">
-            <n-col :span="12">
-              <n-popover placement="top-start" trigger="hover">
-                <template #trigger>
-                  <n-statistic label="street cred" :value="store.stats['street cred'].toFixed(0)">
-                    <template #prefix>
-                      <n-icon>
-                        <people-outline />
-                      </n-icon>
-                    </template>
-                  </n-statistic>
-                </template>
-                be cool, watch your back
-              </n-popover>
-            </n-col>
-            <n-col :span="12">
-              <n-popover placement="top-start" trigger="hover">
-                <template #trigger>
-                  <n-statistic label="strength" :value="store.stats['strength'].toFixed(0)">
-                    <template #prefix>
-                      <n-icon>
-                        <barbell-outline />
-                      </n-icon>
-                    </template>
-                  </n-statistic>  
-                </template>
-                stay tough, they are watching
-              </n-popover>          
-            </n-col>
-            <n-col :span="12">
-              <n-popover placement="top-start" trigger="hover">
-                <template #trigger>
-                  <n-statistic label="dexterity" :value="store.stats['dexterity'].toFixed(0)">
-                    <template #prefix>
-                      <n-icon>
-                        <sparkles-outline />
-                      </n-icon>
-                    </template>
-                  </n-statistic>
-                </template>
-                move with intent, or else
-              </n-popover> 
-            </n-col>
-            <n-col :span="12">
-              <n-popover placement="top-start" trigger="hover">
-                <template #trigger>
-                  <n-statistic label="luck" :value="store.stats['luck'].toFixed(0)">
-                    <template #prefix>
-                      <n-icon>
-                        <dice-outline />
-                      </n-icon>
-                    </template>
-                  </n-statistic> 
-                </template>
-                call it, friendo
-              </n-popover>            
-            </n-col>
-          </n-row>
-        </n-gi>
-        <n-gi span="1 400:1 600:1 800:1">
-          <n-divider>possessions</n-divider>
-          <possession possession="car" about="allows you to access the streets" :plural="false" />
-          <possession possession="donut shop" :about="formattedDonutShopAbout" :plural="true" />
-          <possession possession="plane" about="allows you to access the skies" :plural="false" />
-          <possession possession="spaceship" about="allows you to access the stars" :plural="false" />
-        </n-gi>
-      </n-grid>
-    </n-space>
+    <h1 style="text-align: center;">{{ formattedMoney }}</h1>
+    <div class="flex-grid">
+      <div class="col">
+        <n-divider>stats</n-divider>
+        <div class="unbreakable-flex-grid">
+          <div v-for="stat in stats" :key="stat.name" class="col">
+            <stat-description :stat="stat" />
+          </div>
+        </div>
+      </div>
+      <div class="col">
+        <n-divider>actions</n-divider>
+        <n-row>
+          <n-button style="padding: 0%;" block class="centered-button" :loading="loadingLoiter" :disabled="loadingLoiter" @click="loiter()">
+            <template #icon>
+              <n-icon>
+                <ear-outline />
+              </n-icon>
+            </template>
+            loiter (+1 street cred)
+          </n-button> 
+        </n-row>
+        <n-row v-if="store.cars.length > 0 && store.money >= store.cars[0].cost / 10">
+          <n-button block class="centered-button" :disabled="store.cars[0].cost > store.money" @click="buyCar">
+            <template #icon>
+              <n-icon>
+                <car-outline v-if="store.cars[0].cost <= 0.000005" />
+                <car-sport-outline v-else />
+              </n-icon>
+            </template>
+            buy a new car (-₿{{ store.cars[0].cost.toFixed(8) }})
+          </n-button> 
+        </n-row>
+        <n-row v-if="store.money >= store.donutShop.cost / 10">
+          <n-button block class="centered-button" :disabled="store.donutShop.cost > store.money" @click="buyDonutShop">
+            <template #icon>
+              <n-icon>
+                <fast-food-outline />
+              </n-icon>
+            </template>
+            open a donut shop (-₿{{ store.donutShop.cost.toFixed(8) }})
+          </n-button> 
+        </n-row>
+        <n-row v-if="store.planes.length > 0 && store.money >= store.planes[0].cost / 10">
+          <n-button block class="centered-button" :disabled="store.planes[0].cost > store.money" @click="buyPlane">
+            <template #icon>
+              <n-icon>
+                <airplane-outline />
+              </n-icon>
+            </template>
+            buy a plane (-₿{{ store.planes[0].cost.toFixed(8) }})
+          </n-button> 
+        </n-row>
+        <n-row v-if="store.spaceships.length > 0 && store.money >= store.spaceships[0].cost / 10">
+          <n-button block class="centered-button" :disabled="store.spaceships[0].cost > store.money" @click="buySpaceship">
+            <template #icon>
+              <n-icon>
+                <rocket-outline />
+              </n-icon>
+            </template>
+            buy a spaceship (-₿{{ store.spaceships[0].cost.toFixed(8) }})
+          </n-button>
+        </n-row>
+      </div>
+      <div class="col">
+        <n-divider>possessions</n-divider>
+        <possession possession="car" about="allows you to access the streets" :plural="false" />
+        <possession possession="donut shop" :about="formattedDonutShopAbout" :plural="true" />
+        <possession possession="plane" about="allows you to access the skies" :plural="false" />
+        <possession possession="spaceship" about="allows you to access the stars" :plural="false" />
+      </div>
+    </div>
   </div>
 </template>
 
@@ -238,5 +186,28 @@ onUnmounted(() => {
 .centered-button {
   margin: 0 auto;
   margin-bottom: 10px;
+}
+
+.unbreakable-flex-grid {
+  display: flex;
+  flex-wrap: wrap;
+}
+
+.flex-grid {
+  display: flex;
+  flex-wrap: wrap;
+}
+
+.col {
+  margin-left: 20px;
+  margin-right: 20px;
+  width: 90%;
+  flex: 1;
+}
+
+@media (max-width: 690px) {
+  .flex-grid {
+    display: block;
+  }
 }
 </style>
