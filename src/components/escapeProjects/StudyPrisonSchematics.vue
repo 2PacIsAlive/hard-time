@@ -83,7 +83,7 @@
 
   function randomColor(): Color {
     const color = Color(niceColors[Math.floor(Math.random() * niceColors.length)])
-    return color.isLight() ? color.darken(0.9) : color
+    return color.isLight() ? color.darken(0.7) : color
   }
 
   function getSequenceLength() {
@@ -143,7 +143,7 @@
       ? 'cursor: pointer;'
       : 'cursor: auto;' // TODO use wait instead?
     return tile.playing 
-      ? style + ` background-color: ${tile.color.lighten(0.66).hex()};` 
+      ? style + ` background-color: ${tile.color.rotate(10).lighten(0.66).hex()};` 
       : style + ` background-color: ${tile.color.hex()};`
   }
 </script>

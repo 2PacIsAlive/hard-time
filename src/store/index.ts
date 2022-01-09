@@ -81,6 +81,8 @@ export const useStore = defineStore('main', {
       starSpawnerStarted: false,
       showImportModal: false,
       showSettingsModal: false,
+      showLoreModal: false,
+      lore: "",
       exportString: "",
       importString: "",
     }
