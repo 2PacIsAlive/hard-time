@@ -98,7 +98,7 @@ function calculateRev(){
   const trueAvgRev = sum/store.donutShop.incomeTracker.length
   let chanceOfPurchase = store.donutShop.demand/100
   if (chanceOfPurchase > 1) chanceOfPurchase = 1
-  if (store.donutShop.unsold < 1) chanceOfPurchase = 0
+  // if (store.donutShop.unsold < 1) chanceOfPurchase = 0
   let avgSales = chanceOfPurchase * (.7*Math.pow(store.donutShop.demand,1.15))*10
   let avgRev = chanceOfPurchase * (.7*Math.pow(store.donutShop.demand,1.15))*store.donutShop.margin*10
   if (store.donutShop.demand > store.donutShop.unsoldClips){ 

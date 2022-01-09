@@ -56,7 +56,7 @@ onUnmounted(() => {
     <h1 style="text-align: center;">donuts sold: {{ store.donutShop.donutsSold }}</h1>
     <h3 style="text-align: center;">shop income: ₿{{ store.donutShop.income.toFixed(9) }}</h3>
     <h3 style="text-align: center;">₿/s: {{ store.donutShop.avgRev.toFixed(9) }}</h3>
-    <h3 style="text-align: center;">donuts/s: {{ store.donutShop.avgSales.toFixed(0) }}</h3>
+    <!-- <h3 style="text-align: center;">donuts/s: {{ store.donutShop.avgSales.toFixed(0) }}</h3> -->
     <div class="flex-grid">
       <div class="col">
         <p>
