@@ -4,6 +4,7 @@ import defaultPlanes from './planes'
 import defaultSpaceships from './spaceships'
 import defaultMenu from './menu'
 import { earth, kepler443b } from './worlds'
+import { marketingProjects } from './marketing'
 
 const saveKey = 'hard-time-savefile'
 
@@ -74,9 +75,23 @@ export const useStore = defineStore('main', {
       planetsAvailable: savedState?.planetsAvailable || 60,
       escapeProject: savedState?.escapeProject || false,
       donutShop: savedState?.donutShop || {
-        cost: 0.00015, // 15k$ if btc 100m
-        output: 0.000000050, // 5$ if btc 100m
+        cost: 0.00015,
+        margin: 0.000000050,
         aiSpeedReduction: 4.5,
+        marketingLevel: 1,
+        marketingEffectiveness: 1,
+        demandBoost: 1,
+        donutsSold: 0, 
+        unsold: 0,
+        income: 0,
+        demand: 1,
+        marketingProjects,
+        autoDonutMakers: 0,
+        autoDonutMakerLevel: 1,
+        autoDonutMakerCost: 0.001,
+        incomeTracker: [],
+        avgRev: 0,
+        avgSales: 0,
       },
       stats: savedState?.stats || {
         'street cred': 0,
@@ -90,6 +105,8 @@ export const useStore = defineStore('main', {
       starSpawnerStarted: false,
       showImportModal: false,
       showSettingsModal: false,
+      showLoreModal: false,
+      lore: "",
       exportString: "",
       importString: "",
     }

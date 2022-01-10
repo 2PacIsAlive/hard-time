@@ -23,6 +23,7 @@ const coloredMap = computed(() => {
     .replace(/\?/g, coloredSpace(exit, 'fuchsia'))
     .replace(/\¿/g, coloredSpace(entrance, 'fuchsia'))
     .replace(/\*/g, coloredSpace('*', '#b39700'))
+    .replace(/\!/g, coloredSpace('!', 'orange'))
 })
 const width = computed(() => 
   map.value.current.split('\n')[0].length
@@ -40,11 +41,12 @@ const { play, sound } = useSound(sfx, {
 })
 
 // const width = 59
-const height = 31
+// const height = 31
 
-const exitSpace = 1798
+// const exitSpace = 1798
 const exit = '?'
 const entrance = '¿'
+const loreTrigger = '!'
 
 const player = '@'
 // const playerDefaultLocation = 1172
@@ -65,7 +67,7 @@ const aiIllegalMoves: string[] = [
   'p', 'P'
 ]
 
-const starSpawnInterval = 30000
+const starSpawnInterval = 60000
 
 let lastAiDirection = 'D'
 const aiPath: Ref<number[]> = ref([])
@@ -100,7 +102,7 @@ function coloredSpace(char: string, color: string): string {
 }
 
 function isLegalMove (char: string, extraIllegals: string[]): boolean {
-  return !(['│','┌','┐','└','┘','─','┤','├','┴','┬','\n'].concat(extraIllegals)
+  return !(['│','┌','┐','└','┘','─','┤','├','┴','┬','\n','!'].concat(extraIllegals)
     .includes(char))
 }
 
@@ -130,6 +132,10 @@ function isExit (char: string): boolean {
 
 function isEntrance (char: string): boolean {
   return char === entrance
+}
+
+function isLoreTrigger (char: string): boolean {
+  return char === loreTrigger
 }
 
 // NOTE: P exit is to the left, p exit is to the right
@@ -168,7 +174,13 @@ function findNextMove (entity: string, direction: string) {
 }
 
 function doMovePlayer (current: number, next: number, nextChar: string): void {
-  if (isLegalMove(nextChar, playerIllegalMoves)) {
+  if (isLoreTrigger(nextChar)) {
+    if (map.value.lore) {
+      store.lore = map.value.lore
+      store.showLoreModal = true
+    }
+  }
+  else if (isLegalMove(nextChar, playerIllegalMoves)) {
     if (isStar(nextChar)) {
       store.stars += 1
       store.money += store.starMoney
@@ -466,10 +478,10 @@ async function dijkstras (startingSpace: number, destinationSpace: number | stri
 }
 
 // TODO this needs to get moved somewhere global
-watch(money, (m: number, prevM: number) => {
-  if (m >= 1000000 && prevM < 1000000)
-    setSpace(exit, exitSpace)
-})
+// watch(money, (m: number, prevM: number) => {
+//   if (m >= 1000000 && prevM < 1000000)
+//     setSpace(exit, exitSpace)
+// })
 
 </script>
 
