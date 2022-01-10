@@ -12,7 +12,8 @@ export const butyrkaPrison: Jail = {
       minTimeSeconds: 15,
     }),
     digProject({
-
+      maxRequiredClicks: 10,
+      minTimeSeconds: 10,
     }),
     arrangeAGetaway({
 

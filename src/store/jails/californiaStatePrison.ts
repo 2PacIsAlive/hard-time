@@ -18,7 +18,8 @@ export const californiaStatePrison: Jail = {
       maxSequenceLength: 5
     }),
     digProject({
-
+      maxRequiredClicks: 10,
+      minTimeSeconds: 10,
     }),
   ],
 }

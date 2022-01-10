@@ -12,22 +12,14 @@ import SettingsModal from './components/SettingsModal.vue'
 import { useStore } from './store'
 import { darkTheme, NConfigProvider, GlobalThemeOverrides, NLoadingBarProvider, NThemeEditor, NGlobalStyle, NModal, NButton, NCard, NMessageProvider, useMessage } from 'naive-ui'
 
-const store = useStore(),
+const store = useStore()
   // message = useMessage(),
-  themeOverrides: GlobalThemeOverrides = {
-    "common": {
-      "primaryColor": "#E31E33FF",
-      "primaryColorHover": "#D32D3FFF",
-      "primaryColorPressed": "#B40D1FFF",
-      "primaryColorSuppl": "#ED142BFF"
-    }
-  }
 
 </script>
 
 <template>
 <n-theme-editor>
-  <n-config-provider :theme="darkTheme" :theme-overrides="themeOverrides">
+  <n-config-provider :theme="darkTheme" :theme-overrides="store.themeOverrides">
     <n-loading-bar-provider>
       <n-message-provider placement="top-right">
         <div class="app">
@@ -71,4 +63,19 @@ body, html {
 #content-wrap {
   flex: 1
 }
+
+#overlay {
+  position: fixed; /* Sit on top of the page content */
+  display: none; /* Hidden by default */
+  width: 100%; /* Full width (cover the whole page) */
+  height: 100%; /* Full height (cover the whole page) */
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background-color: rgba(255, 255, 255, 0.5); /* Black background with opacity */
+  z-index: 2; /* Specify a stack order in case you're using a different order for other elements */
+  cursor: pointer; /* Add a pointer on hover */
+}
+
 </style>

@@ -11,7 +11,8 @@ interface BefriendGuardsSettings {
 }
 
 interface DigProjectSettings {
-
+  maxRequiredClicks: number
+  minTimeSeconds: number
 }
 
 interface ArrangeGetawaySettings {

@@ -12,7 +12,8 @@ export const pelicanBayStatePrison: Jail = {
       minTimeSeconds: 20,
     }),
     digProject({
-
+      maxRequiredClicks: 10,
+      minTimeSeconds: 10,
     }),
     buildARaft({
 

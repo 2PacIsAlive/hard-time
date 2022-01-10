@@ -5,6 +5,8 @@
   // @ts-ignore
   import BefriendGuards from './BefriendGuards.vue'
   // @ts-ignore
+  import DigATunnel from './DigATunnel.vue'
+  // @ts-ignore
   import StudyPrisonSchematics from './StudyPrisonSchematics.vue'
   // @ts-ignore
   import GameError from '../GameError.vue'
@@ -29,6 +31,7 @@
   <n-space align="center" justify="center" vertical size="large">
     <p>you are attempting to <span style="color: red">{{ store.escapeProject.name }}</span></p>
     <befriend-guards v-if="store.escapeProject.name === 'befriend the guards'" />
+    <dig-a-tunnel v-if="store.escapeProject.name === 'dig a tunnel'"/>
     <study-prison-schematics v-else-if="store.escapeProject.name === 'study prison schematics'" />
     <template v-else>
       <game-error msg="unknown escape project type" />
