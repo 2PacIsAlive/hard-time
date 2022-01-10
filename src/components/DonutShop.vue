@@ -54,23 +54,25 @@ onUnmounted(() => {
 <template>
   <div id="pad">
     <h1 style="text-align: center;">donuts sold: {{ store.donutShop.donutsSold }}</h1>
-    <h3 style="text-align: center;">shop income: ₿{{ store.donutShop.income.toFixed(9) }}</h3>
-    <h3 style="text-align: center;">₿/s: {{ store.donutShop.avgRev.toFixed(9) }}</h3>
+    <h3 style="text-align: center;">shop income: ₿{{ store.donutShop.income.toFixed(9) }} <small>({{ store.donutShop.avgRev.toFixed(9) }} ₿/s)</small></h3>
+    <!-- <h3 style="text-align: center;">₿/s: {{ store.donutShop.avgRev.toFixed(9) }}</h3> -->
+    <p style="text-align: center; color: red;">cop speed reduction: {{ store.donutShop.aiSpeedReduction.toFixed(4) }}x</p>
     <!-- <h3 style="text-align: center;">donuts/s: {{ store.donutShop.avgSales.toFixed(0) }}</h3> -->
     <div class="flex-grid">
+      <div class="skinny-col"/>
       <div class="col">
         <p>
           <n-button block @click="makeDonut()">make a donut</n-button>
         </p>
         <div class="flex-grid">
-          <n-button :disabled="store.donutShop.margin <= 0.000000001" @click="lowerPrice()" block class="naked-col" style="margin-right: 6px;">lower the price</n-button>
+          <n-button :disabled="store.donutShop.margin <= 0.000000001" @click="lowerPrice()" block class="naked-col">lower the price</n-button>
           <n-button @click="raisePrice()" block class="naked-col">raise the price</n-button>
         </div>
         <p v-if="store.donutShop.marketingProjects.length > 0">
           <n-button block @disabled="store.money < store.donutShop.marketingProjects[0].cost" @click="buyMarketing()">{{ store.donutShop.marketingProjects[0].name }} (₿{{ store.donutShop.marketingProjects[0].cost.toFixed(9) }})</n-button>
         </p>
         <p>
-          <n-button block @disabled="store.money < store.donutShop.autoDonutMakerCost" @click="buyAutoDonutMaker()">buy an automatic donut maker (₿{{ store.donutShop.autoDonutMakerCost }})</n-button>
+          <n-button block @disabled="store.money < store.donutShop.autoDonutMakerCost" @click="buyAutoDonutMaker()">buy an auto donut maker (₿{{ store.donutShop.autoDonutMakerCost }})</n-button>
         </p>
       </div>
       <div class="col">
@@ -78,9 +80,10 @@ onUnmounted(() => {
         <p>inventory: {{ store.donutShop.unsold }}</p>
         <p>public demand: {{ store.donutShop.demand.toFixed(0) }}%</p>
         <p>marketing level: {{ store.donutShop.marketingLevel }}</p>
-        <p>cop speed reduction: {{ store.donutShop.aiSpeedReduction.toFixed(4) }}x</p>
-        <p>automatic donut makers: {{ store.donutShop.autoDonutMakers }}</p>
+        <p></p>
+        <p>auto donut makers: {{ store.donutShop.autoDonutMakers }}</p>
       </div>
+      <div class="skinny-col"/>
     </div>
   </div>
 </template>
@@ -102,7 +105,12 @@ onUnmounted(() => {
   flex: 1;
 }
 
-@media (max-width: 690px) {
+.skinny-col {
+  width: 30%;
+  flex: 1;
+}
+
+@media (max-width: 690) {
   .flex-grid {
     display: block;
   }
