@@ -67,7 +67,7 @@ const aiIllegalMoves: string[] = [
   'p', 'P'
 ]
 
-const starSpawnInterval = 30000
+const starSpawnInterval = 60000
 
 let lastAiDirection = 'D'
 const aiPath: Ref<number[]> = ref([])

@@ -12,10 +12,9 @@ import SettingsModal from './components/SettingsModal.vue'
 // @ts-ignore
 import LoreModal from './components/LoreModal.vue'
 import { useStore } from './store'
-import { darkTheme, NConfigProvider, GlobalThemeOverrides, NLoadingBarProvider, NThemeEditor, NGlobalStyle, NModal, NButton, NCard, NMessageProvider, useMessage } from 'naive-ui'
+import { darkTheme, NConfigProvider, GlobalThemeOverrides, NLoadingBarProvider, NThemeEditor, NGlobalStyle, NMessageProvider } from 'naive-ui'
 
 const store = useStore(),
-  // message = useMessage(),
   themeOverrides: GlobalThemeOverrides = {
     "common": {
       "primaryColor": "#E31E33FF",
@@ -62,8 +61,6 @@ body, html {
   -moz-osx-font-smoothing: grayscale;
   color: #2c3e50;
   display: flex;
-  /* align-items: center; */
-  /* justify-content: center; */
   height: 100vh;
 }
 
