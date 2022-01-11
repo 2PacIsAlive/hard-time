@@ -106,6 +106,7 @@
     clearInterval(rockInterval)
     clearInterval(prisonerSpawnInterval)
     clearInterval(prisonerMovementInterval)
+    clearInterval(checkIfItBrokeInterval)
     if (jail.value) {
       const eProj = jail.value
         .escapeProjects
@@ -126,6 +127,7 @@
     clearInterval(rockInterval)
     clearInterval(prisonerSpawnInterval)
     clearInterval(prisonerMovementInterval)
+    clearInterval(checkIfItBrokeInterval)
   })
 
   function getAllIndexes(char: string) {
@@ -178,10 +180,15 @@
       })
   }, attackerSpeedMs.value)
 
+  const checkIfItBrokeInterval = setInterval(() => {
+    if (spawns >= attackers.value && map.value.current.indexOf(enemy) === -1) {
+      finish(true)
+    }
+  }, 1000)
 </script>
 
 <template>
-  <p style="text-align: center;">don't let the <span style="color: red;">deranged prisoners</span> get to your cell</p>
+  <p style="text-align: center;">don't let the <span style="color: #B8D634;">deranged prisoners</span> get to your cell</p>
   <pre v-html="coloredMap"></pre>
   <p style="text-align: center;">press spacebar to throw <span style="color: rgb(120, 141, 145);">rocks</span></p>
   <!-- <p>kills: {{ kills }}</p> -->

@@ -9,6 +9,10 @@ import Possession from './Possession.vue'
 import StatDescription from './StatDescription.vue'
 import * as stats from '../store/stats'
 import { KONAMI_CODE } from './cheats/konamiCode'
+import Cash_Register from '../assets/Cash_Register.wav'
+import Airplane_Ding from '../assets/Airplane_Ding.wav'
+import spaceship_wooo from '../assets/spaceship_wooo.wav'
+import { useSound } from '@vueuse/sound'
 
 const store = useStore(),
   message = useMessage(),
@@ -25,7 +29,10 @@ const store = useStore(),
   formattedDonutShopAbout = computed(() =>
     `${store.donutShop.output * store.possessions['donut shop']} ₿/s<br />
     ${store.donutShop.aiSpeedReduction * 100 }% cop speed reduction`
-  )
+  ),
+  cashRegisterSound = useSound(Cash_Register),
+  airplaneDingSound = useSound(Airplane_Ding),
+  spaceshipWoooSound = useSound(spaceship_wooo)
 
 async function begForCredits(): Promise<void> {
   loadingBegForCredits.value = true
@@ -57,6 +64,7 @@ function buyCar(): void {
 }
 
 function buyDonutShop(): void {
+  cashRegisterSound.play()
   store.money -= store.donutShop.cost
   if (store.possessions['donut shop'])
     store.possessions['donut shop'] += 1
@@ -66,6 +74,7 @@ function buyDonutShop(): void {
 }
 
 function buyPlane(): void {
+  airplaneDingSound.play()
   if (store.planes.length > 0) {
     store.possessions.plane = store.planes.shift()
     store.money -= store.possessions.plane.cost
@@ -74,6 +83,7 @@ function buyPlane(): void {
 }
 
 function buySpaceship(): void {
+  spaceshipWoooSound.play()
   if (store.spaceships.length > 0) {
     store.possessions.spaceship = store.spaceships.shift()
     store.money -= store.possessions.spaceship.cost

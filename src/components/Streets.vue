@@ -77,7 +77,7 @@ const playerPath: Ref<number[]> = ref([])
 onMounted(() => {
   document.addEventListener('keydown', doCommand)
   if (!store.aiMovementRoutineStarted) moveAi()
-  if (!store.starSpawnerStarted) spawnNewStarsIntermittently()
+  // if (!store.starSpawnerStarted) spawnNewStarsIntermittently()
 })
 
 onUnmounted(() => {
@@ -493,12 +493,12 @@ async function dijkstras (startingSpace: number, destinationSpace: number | stri
     <pre v-html="coloredMap"></pre>
     <p>nab <span style="color: #b39700">stars</span> to earn dough (arrow keys or wasd)</p>
     <p>use <span style="color: #09f8f6">portals</span> to access other parts of the map</p>
-    auto-shred:
+    <!-- auto-shred:
     <n-button @click="movePlayer()" v-if="!store.playerMovementRoutineStarted" tertiary type="primary">enable</n-button>
     <n-button @click="store.playerMovementRoutineStarted = false" v-else tertiary type="default">disable</n-button>
     <div v-if="store.playerMovementRoutineStarted" id="autoSkillSliderDiv">
       <n-slider v-model:value="store.playerAutoSkill" :marks="autoSkillMarks" step="mark" />
-    </div>
+    </div> -->
   </div>
   <!-- <p>deaths: {{store.deaths}}</p>
   <p>stars: {{store.stars}}</p>
