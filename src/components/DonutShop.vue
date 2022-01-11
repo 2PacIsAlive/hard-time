@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import { ref, onUnmounted } from 'vue'
 import { useStore } from '../store'
-import { NButton, useMessage } from 'naive-ui'
+import { NButton, NPopover, useMessage } from 'naive-ui'
 import { KONAMI_CODE } from './cheats/konamiCode'
 
 const store = useStore(),
@@ -56,7 +56,12 @@ onUnmounted(() => {
     <h1 style="text-align: center;">donuts sold: {{ store.donutShop.donutsSold }}</h1>
     <h3 style="text-align: center;">shop income: ₿{{ store.donutShop.income.toFixed(9) }} <small>({{ store.donutShop.avgRev.toFixed(9) }} ₿/s)</small></h3>
     <!-- <h3 style="text-align: center;">₿/s: {{ store.donutShop.avgRev.toFixed(9) }}</h3> -->
-    <p style="text-align: center; color: red;">cop speed reduction: {{ store.donutShop.aiSpeedReduction.toFixed(4) }}x</p>
+    <n-popover placement="top" trigger="hover">
+      <template #trigger>
+        <p style="text-align: center; color: red;">cop speed reduction: {{ store.donutShop.aiSpeedReduction.toFixed(4) }}x</p>
+      </template>
+      the bigger your inventory, the slower the cops
+    </n-popover>
     <!-- <h3 style="text-align: center;">donuts/s: {{ store.donutShop.avgSales.toFixed(0) }}</h3> -->
     <div class="flex-grid">
       <div class="skinny-col"/>

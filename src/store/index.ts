@@ -5,6 +5,7 @@ import defaultSpaceships from './spaceships'
 import defaultMenu from './menu'
 import { earth, kepler443b } from './worlds'
 import { marketingProjects } from './marketing'
+import { exercises } from './exercises'
 
 const saveKey = 'hard-time-savefile'
 
@@ -54,6 +55,7 @@ export const useStore = defineStore('main', {
       gainz: savedState?.gainz || 1,
       workoutDuration: savedState?.workoutDuration || 3000,
       loiterDuration: savedState?.loiterDuration || 3000,
+      loiterCount: savedState?.loiterCount as number || 0,
       possessions: savedState?.possessions || {},
       workDuration: savedState?.workDuration || 3000,
       lag: 0,
@@ -83,6 +85,10 @@ export const useStore = defineStore('main', {
         incomeTracker: [],
         avgRev: 0,
         avgSales: 0,
+      },
+      gym: savedState?.gym || {
+        exercises,
+        tracker: [],
       },
       stats: savedState?.stats || {
         'street cred': 0,
@@ -126,6 +132,7 @@ export const useStore = defineStore('main', {
         gainz: this.gainz,
         workoutDuration: this.workoutDuration,
         loiterDuration: this.loiterDuration,
+        loiterCount: this.loiterCount,
         possessions: this.possessions,
         stars: this.stars,
         aiStars: this.stars,
@@ -138,6 +145,7 @@ export const useStore = defineStore('main', {
         donutShop: this.donutShop,
         stats: this.stats,
         starMoney: this.starMoney,
+        gym: this.gym,
       })
       return encoded
         ? btoa(unescape(encodeURIComponent(saveString)))

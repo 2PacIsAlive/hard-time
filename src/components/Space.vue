@@ -3,7 +3,7 @@ import { computed, onUnmounted, ref, watch, onActivated, Ref } from 'vue'
 import { useStore } from '../store'
 import { storeToRefs } from 'pinia'
 import { useSound } from '@vueuse/sound'
-import sfx from '../assets/sfx.mp3'
+// import sfx from '../assets/sfx.mp3'
 import { NButton, NSlider, NSpace, NLayout, useMessage } from 'naive-ui'
 import { galaxy } from '../store/maps'
 // @ts-ignore
@@ -12,10 +12,16 @@ import planets from  './planets.json'
 // @ts-ignore
 import PlanetDescription from './PlanetDescription.vue'
 import { earth, kepler443b } from '../store/worlds'
+import Escape_Task_Fail from '../assets/Escape_Task_Fail.mp3'
+import spaceship_rip from '../assets/spaceship_rip.mp3'
 
 const store = useStore()
 const message = useMessage()
-const { money } = storeToRefs(store)
+// const { money } = storeToRefs(store)
+const escapeTaskFailSound = useSound(Escape_Task_Fail)
+const switchPlanetSound = useSound(spaceship_rip, {
+  volume: 0.2
+})
 
 const hoveredPlanet = ref({})
 
@@ -35,16 +41,16 @@ for (let i=0; i<store.planetsAvailable; i++) {
   } 
 }
 
-const playbackRate = ref(1)
-const { play, sound } = useSound(sfx, { 
-  sprite: {
-    // star: [0, 600],
-    // portal: [1000, 400],
-    nextMap: [2000, 4000],
-    // death: [7000, 6000],
-  },
-  playbackRate,
-})
+// const playbackRate = ref(1)
+// const { play, sound } = useSound(sfx, { 
+//   sprite: {
+//     // star: [0, 600],
+//     // portal: [1000, 400],
+//     nextMap: [2000, 4000],
+//     // death: [7000, 6000],
+//   },
+//   playbackRate,
+// })
 
 function coloredSpace(char: string, color: string, onClickFn: string, id: string): string {
   return `<span id="${id}" style="color: ${color}">${char}</span>`
@@ -54,8 +60,12 @@ function handleClick(e: any) {
   if (e.target.id) {
     const planetId = e.target.id.split('-')[1]
     if (planetId in store.worlds) {
-      store.currentWorld = planetId
+      if (planetId !== store.currentWorld) {
+        switchPlanetSound.play()
+        store.currentWorld = planetId
+      }
     } else {
+      escapeTaskFailSound.play() // TODO different sound?
       message.error(`can't reach ${planets[planetId]['Object\n'].toLowerCase()}`)
     }
   }

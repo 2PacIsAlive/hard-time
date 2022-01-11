@@ -9,6 +9,10 @@ import Possession from './Possession.vue'
 import StatDescription from './StatDescription.vue'
 import * as stats from '../store/stats'
 import { KONAMI_CODE } from './cheats/konamiCode'
+import Cash_Register from '../assets/Cash_Register.mp3'
+import Airplane_Ding from '../assets/airplane_ding.mp3'
+import spaceship_wooo from '../assets/spaceship_wooo.mp3'
+import { useSound } from '@vueuse/sound'
 
 const store = useStore(),
   message = useMessage(),
@@ -25,7 +29,10 @@ const store = useStore(),
   formattedDonutShopAbout = computed(() =>
     `${store.donutShop.output * store.possessions['donut shop']} ₿/s<br />
     ${store.donutShop.aiSpeedReduction * 100 }% cop speed reduction`
-  )
+  ),
+  cashRegisterSound = useSound(Cash_Register),
+  airplaneDingSound = useSound(Airplane_Ding),
+  spaceshipWoooSound = useSound(spaceship_wooo)
 
 async function begForCredits(): Promise<void> {
   loadingBegForCredits.value = true
@@ -38,11 +45,23 @@ async function begForCredits(): Promise<void> {
   loadingBar.finish()
 }
 
+const loiterTriggers: {[trigger: number]: LoiterTrigger} = {
+  3: {
+    effect: () => {
+      store.menuOptions[1].disabled = false
+    }
+  }
+}
+
 async function loiter(): Promise<void> {
+  store.loiterCount += 1
+  if (store.loiterCount in loiterTriggers) {
+    loiterTriggers[store.loiterCount].effect()
+  }
   loadingLoiter.value = true
   loadingBar.start()
   await new Promise(resolve => setTimeout(resolve, store.loiterDuration))
-  store.loiterDuration -= store.stats['street cred'] * 50
+  store.loiterDuration -= store.stats['street cred'] * 2
   store.stats['street cred'] += 1
   loadingLoiter.value = false
   loadingBar.finish()
@@ -52,11 +71,12 @@ function buyCar(): void {
   if (store.cars.length > 0) {
     store.possessions.car = store.cars.shift()
     store.money -= store.possessions.car.cost
-    store.menuOptions[1].disabled = false
+    store.menuOptions[2].disabled = false
   }
 }
 
 function buyDonutShop(): void {
+  cashRegisterSound.play()
   store.money -= store.donutShop.cost
   if (store.possessions['donut shop'])
     store.possessions['donut shop'] += 1
@@ -66,6 +86,7 @@ function buyDonutShop(): void {
 }
 
 function buyPlane(): void {
+  airplaneDingSound.play()
   if (store.planes.length > 0) {
     store.possessions.plane = store.planes.shift()
     store.money -= store.possessions.plane.cost
@@ -74,6 +95,7 @@ function buyPlane(): void {
 }
 
 function buySpaceship(): void {
+  spaceshipWoooSound.play()
   if (store.spaceships.length > 0) {
     store.possessions.spaceship = store.spaceships.shift()
     store.money -= store.possessions.spaceship.cost

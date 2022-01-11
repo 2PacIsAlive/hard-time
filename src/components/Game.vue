@@ -26,13 +26,49 @@ import Skies from './Skies.vue'
 import DonutShop from './DonutShop.vue'
 import { NIcon, NSpace, NSwitch, NLayout, NLayoutSider, NMenu, useMessage } from 'naive-ui'
 import { HomeOutline, CaretDownOutline, SkullOutline, SubwayOutline, StorefrontOutline, BarbellOutline, StarOutline, EarthOutline, FastFoodOutline } from '@vicons/ionicons5'
+import { useSound } from '@vueuse/sound'
+import hardTimeTitle from '../assets/hard-time-title.mp3'
+import earthAsViewedFromTheMoon from '../assets/earth_as_viewed_from_the_moon_JAN2022_FOR_HARD_TIME_mastered_warm.mp3'
+import murderMysteries from '../assets/murder-mysteries.mp3'
+import twelvePacs from '../assets/twelvepacs_JULY2016_2019A.mp3'
+import battojutsu2 from '../assets/battojutsu2.mp3'
+import IMNOTAFRAIDOFGHOSTS from '../assets/IMNOTAFRAIDOFGHOSTS.mp3'
+import lurkable from '../assets/lurkable.mp3'
 
 const store = useStore(),
   collapsed = ref(true),
   message = useMessage(),
   autosaveInterval = computed(() => 
     store.settings.autosaveInterval
-  )
+  ),
+  jailLoop = useSound(hardTimeTitle, {
+    // @ts-ignore
+    loop: true
+  }),
+  starsLoop = useSound(earthAsViewedFromTheMoon, {
+    // @ts-ignore
+    loop: true
+  }),
+  streetsLoop = useSound(murderMysteries, {
+    // @ts-ignore
+    loop: true
+  }),
+  skiesLoop = useSound(twelvePacs, {
+    // @ts-ignore
+    loop: true
+  }),
+  padLoop = useSound(battojutsu2, {
+    // @ts-ignore
+    loop: true
+  }),
+  gymLoop = useSound(IMNOTAFRAIDOFGHOSTS, {
+    // @ts-ignore
+    loop: true
+  }),
+  shopLoop = useSound(lurkable, {
+    // @ts-ignore
+    loop: true
+  })
 
 function renderMenuLabel (option: any) {
   return option.disabled
@@ -149,6 +185,79 @@ watch(autosaveInterval, () => {
   clearInterval(saveGameInterval)
   saveGameInterval = setInterval(saveGame, store.settings.autosaveInterval * 1000)
 })
+
+watch(() => store.gameStarted, (newGameStarted) => {
+  if (newGameStarted) {
+    if (!jailLoop.isPlaying.value) {
+      jailLoop.play()
+    }
+  }
+})
+
+watch(() => store.inJail, (newInJail) => {
+  if (newInJail) {
+    starsLoop.stop()
+    streetsLoop.stop()
+    skiesLoop.stop()
+    padLoop.stop()
+    gymLoop.stop()
+    shopLoop.stop()
+    if (!jailLoop.isPlaying.value) {
+      jailLoop.play()
+    }
+  } else {
+    jailLoop.stop()
+    if (!padLoop.isPlaying.value) {
+      padLoop.play()
+    }
+  }
+})
+
+watch(() => store.openScreen, (newScreen) => {
+  starsLoop.stop()
+  streetsLoop.stop()
+  skiesLoop.stop()
+  padLoop.stop()
+  gymLoop.stop()
+  shopLoop.stop()
+  if (!store.inJail) {
+    if (newScreen === 'the pad') {
+      if (!padLoop.isPlaying.value) {
+        padLoop.play()
+      }
+    } else if (newScreen === 'the streets') {
+      if (!streetsLoop.isPlaying.value) {
+        streetsLoop.play()
+      }
+    } else if (newScreen === 'the skies') {
+      if (!skiesLoop.isPlaying.value) {
+        skiesLoop.play()
+      }
+    } else if (newScreen === 'the stars') {
+      if (!starsLoop.isPlaying.value) {
+        starsLoop.play()
+      }
+    } else if (newScreen === 'the gym') {
+      if (!gymLoop.isPlaying.value) {
+        gymLoop.play()
+      }
+    } else if (newScreen === 'the shop') {
+      if (!shopLoop.isPlaying.value) {
+        shopLoop.play()
+      }
+    }
+  }
+}) 
+
+// if (store.inJail && !jailLoop.isPlaying.value) {
+//   jailLoop.play()
+// } else if (store.openScreen === 'the streets' && !streetsLoop.isPlaying.value) {
+//   streetsLoop.play()
+// } else if (store.openScreen === 'the skies' && !skiesLoop.isPlaying.value) {
+//   skiesLoop.play()
+// } else if (store.openScreen === 'the stars' && !starsLoop.isPlaying.value) {
+//   starsLoop.play()
+// }
 
 measureLag()
 gameLoop()
