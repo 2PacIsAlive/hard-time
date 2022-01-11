@@ -1,18 +1,10 @@
 <script setup lang="ts">
 import { useStore } from '../store'
 import { NSpace, NButton } from 'naive-ui'
-import { useSound } from '@vueuse/sound'
-import hardTimeTitle from '../assets/hard-time-title.mp3'
 const store = useStore()
-
-const { play } = useSound(hardTimeTitle, {
-  // @ts-ignore
-  loop: true
-})
 
 function startGame() {
   store.gameStarted = true
-  play()
 }
 </script>
 

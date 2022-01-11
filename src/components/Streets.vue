@@ -326,7 +326,7 @@ async function moveAi() {
           store.playerMovementRoutineStarted = false
           store.aiMovementRoutineStarted = false
           store.deaths += 1
-          store.menuOptions[2].disabled = false
+          // store.menuOptions[2].disabled = false
           map.value.current = map.value.default
           // moveEntity(player, current, store.map.playerDefaultLocation, true)
           store.inJail = true

@@ -45,11 +45,23 @@ async function begForCredits(): Promise<void> {
   loadingBar.finish()
 }
 
+const loiterTriggers: {[trigger: number]: LoiterTrigger} = {
+  3: {
+    effect: () => {
+      store.menuOptions[1].disabled = false
+    }
+  }
+}
+
 async function loiter(): Promise<void> {
+  store.loiterCount += 1
+  if (store.loiterCount in loiterTriggers) {
+    loiterTriggers[store.loiterCount].effect()
+  }
   loadingLoiter.value = true
   loadingBar.start()
   await new Promise(resolve => setTimeout(resolve, store.loiterDuration))
-  store.loiterDuration -= store.stats['street cred'] * 50
+  store.loiterDuration -= store.stats['street cred'] * 2
   store.stats['street cred'] += 1
   loadingLoiter.value = false
   loadingBar.finish()
@@ -59,7 +71,7 @@ function buyCar(): void {
   if (store.cars.length > 0) {
     store.possessions.car = store.cars.shift()
     store.money -= store.possessions.car.cost
-    store.menuOptions[1].disabled = false
+    store.menuOptions[2].disabled = false
   }
 }
 

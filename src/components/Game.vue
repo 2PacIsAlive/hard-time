@@ -26,13 +26,24 @@ import Skies from './Skies.vue'
 import DonutShop from './DonutShop.vue'
 import { NIcon, NSpace, NSwitch, NLayout, NLayoutSider, NMenu, useMessage } from 'naive-ui'
 import { HomeOutline, CaretDownOutline, SkullOutline, SubwayOutline, StorefrontOutline, BarbellOutline, StarOutline, EarthOutline, FastFoodOutline } from '@vicons/ionicons5'
+import { useSound } from '@vueuse/sound'
+import hardTimeTitle from '../assets/hard-time-title.mp3'
+import earthAsViewedFromTheMoon from '../assets/earth_as_viewed_from_the_moon_JAN2022_FOR_HARD_TIME_mastered_warm.wav'
 
 const store = useStore(),
   collapsed = ref(true),
   message = useMessage(),
   autosaveInterval = computed(() => 
     store.settings.autosaveInterval
-  )
+  ),
+  jailLoop = useSound(hardTimeTitle, {
+    // @ts-ignore
+    loop: true
+  }),
+  spaceLoop = useSound(earthAsViewedFromTheMoon, {
+    // @ts-ignore
+    loop: true
+  })
 
 function renderMenuLabel (option: any) {
   return option.disabled
@@ -149,6 +160,24 @@ watch(autosaveInterval, () => {
   clearInterval(saveGameInterval)
   saveGameInterval = setInterval(saveGame, store.settings.autosaveInterval * 1000)
 })
+
+watch(() => store.inJail, (newInJail) => {
+  if (newInJail) {
+    spaceLoop.stop()
+    if (!jailLoop.isPlaying.value) {
+      jailLoop.play()
+    }
+  } else {
+    jailLoop.stop()
+  }
+})
+
+watch(() => store.openScreen, (newScreen) => {
+  spaceLoop.stop()
+  if (newScreen === 'the stars') {
+    spaceLoop.play()
+  }
+}) 
 
 measureLag()
 gameLoop()

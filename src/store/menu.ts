@@ -3,12 +3,12 @@ export default [{
     key: 'the pad',
     disabled: false,
   }, {
-    label: 'the streets',
-    key: 'the streets',
-    disabled: true
-  }, {
     label: 'the gym',
     key: 'the gym',
+    disabled: true
+  }, {
+    label: 'the streets',
+    key: 'the streets',
     disabled: true
   }, {
     label: 'the shop',
