@@ -8,6 +8,8 @@
   import StudyPrisonSchematics from './StudyPrisonSchematics.vue'
   // @ts-ignore
   import GameError from '../GameError.vue'
+  // @ts-ignore
+  import DefendYourCell from './DefendYourCell.vue'
 
   const store = useStore(),
     jail = computed(() => {
@@ -26,10 +28,11 @@
 </script>
 
 <template>
-  <n-space align="center" justify="center" vertical size="large">
+  <n-space align="center" justify="center" vertical size="small">
     <p>you are attempting to <span style="color: red">{{ store.escapeProject.name }}</span></p>
     <befriend-guards v-if="store.escapeProject.name === 'befriend the guards'" />
     <study-prison-schematics v-else-if="store.escapeProject.name === 'study prison schematics'" />
+    <defend-your-cell v-else-if="store.escapeProject.name === 'defend your cell'" />
     <template v-else>
       <game-error msg="unknown escape project type" />
       <n-button @click="finish()">finish</n-button>

@@ -14,6 +14,7 @@ function saveGame () {
 function resetGame () {
   loadingBar.finish()
   store.reset()
+  location.reload()
 }
 
 function exportSave () {

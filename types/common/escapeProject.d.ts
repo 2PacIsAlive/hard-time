@@ -28,6 +28,11 @@ interface StudyPrisonSchematicsSettings {
   maxSequenceLength: number
 }
 
+interface DefendYourCellSettings {
+  attackers: number
+  timeBetweenAttacksMs: number
+}
+
 interface Tile {
   color: any // TODO why does Color not work?
   playing: boolean
