@@ -31,6 +31,7 @@ interface StudyPrisonSchematicsSettings {
 interface DefendYourCellSettings {
   attackers: number
   timeBetweenAttacksMs: number
+  attackerSpeedMs: number
 }
 
 interface Tile {
