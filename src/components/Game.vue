@@ -32,7 +32,8 @@ import earthAsViewedFromTheMoon from '../assets/earth_as_viewed_from_the_moon_JA
 import murderMysteries from '../assets/murder-mysteries.wav'
 import twelvePacs from '../assets/twelvepacs_JULY2016_2019A.wav'
 import battojutsu2 from '../assets/battojutsu2.mp3'
-import IMNOTAFRAIDOFGHOSTS from '../assets/IMNOTAFRAIDOFGHOSTS.wav'
+import IMNOTAFRAIDOFGHOSTS from '../assets/IMNOTAFRAIDOFGHOSTS.mp3'
+import lurkable from '../assets/lurkable.mp3'
 
 const store = useStore(),
   collapsed = ref(true),
@@ -61,6 +62,10 @@ const store = useStore(),
     loop: true
   }),
   gymLoop = useSound(IMNOTAFRAIDOFGHOSTS, {
+    // @ts-ignore
+    loop: true
+  }),
+  shopLoop = useSound(lurkable, {
     // @ts-ignore
     loop: true
   })
@@ -196,6 +201,7 @@ watch(() => store.inJail, (newInJail) => {
     skiesLoop.stop()
     padLoop.stop()
     gymLoop.stop()
+    shopLoop.stop()
     if (!jailLoop.isPlaying.value) {
       jailLoop.play()
     }
@@ -213,6 +219,7 @@ watch(() => store.openScreen, (newScreen) => {
   skiesLoop.stop()
   padLoop.stop()
   gymLoop.stop()
+  shopLoop.stop()
   if (!store.inJail) {
     if (newScreen === 'the pad') {
       if (!padLoop.isPlaying.value) {
@@ -233,6 +240,10 @@ watch(() => store.openScreen, (newScreen) => {
     } else if (newScreen === 'the gym') {
       if (!gymLoop.isPlaying.value) {
         gymLoop.play()
+      }
+    } else if (newScreen === 'the shop') {
+      if (!shopLoop.isPlaying.value) {
+        shopLoop.play()
       }
     }
   }
