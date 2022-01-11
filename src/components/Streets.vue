@@ -322,7 +322,7 @@ async function moveAi() {
         if (isPlayer(nextChar)) {
           aiPath.value = []
           // @ts-ignore
-          play({id: 'death'})
+          // play({id: 'death'})
           store.playerMovementRoutineStarted = false
           store.aiMovementRoutineStarted = false
           store.deaths += 1

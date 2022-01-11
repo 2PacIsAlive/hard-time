@@ -19,7 +19,7 @@ function updateExerciseEfficacies() {
   for (let i=0; i<store.gym.exercises.length; i++) {
     if (store.gym.tracker.includes(i)) {
       const occurances = countOccurrences(store.gym.tracker, i)
-      store.gym.exercises[i].currentEfficacy = Math.max(1, store.gym.exercises[i].defaultEfficacy - occurances)
+      store.gym.exercises[i].currentEfficacy = Math.max(0, store.gym.exercises[i].defaultEfficacy - occurances)
     } else {
       store.gym.exercises[i].currentEfficacy = store.gym.exercises[i].defaultEfficacy
     }
@@ -31,7 +31,7 @@ async function workout(exercise: Exercise, exerciseIndex: number): Promise<void>
   loadingBar.start()
   await new Promise(resolve => setTimeout(resolve, exercise.duration))
   store.stats.strength += exercise.currentEfficacy
-  store.gym.exercises[exerciseIndex].duration -= store.strength * 2
+  store.gym.exercises[exerciseIndex].duration -= store.strength / 4
   if (store.gym.tracker.length >= 10) store.gym.tracker.shift()
   store.gym.tracker.push(exerciseIndex)
   updateExerciseEfficacies()
@@ -43,8 +43,9 @@ async function workout(exercise: Exercise, exerciseIndex: number): Promise<void>
 <template>
   <div>
     <p style="text-align: center">
-      <stat-description :stat="Strength" />
+      <stat-description :center-tooltip="true" :stat="Strength" />
     </p>
+    <p style="text-align: center">don't overdo it, you'll get sore</p>
     <div class="flex-grid">
       <div class="col">
 

@@ -29,6 +29,10 @@ import { HomeOutline, CaretDownOutline, SkullOutline, SubwayOutline, StorefrontO
 import { useSound } from '@vueuse/sound'
 import hardTimeTitle from '../assets/hard-time-title.mp3'
 import earthAsViewedFromTheMoon from '../assets/earth_as_viewed_from_the_moon_JAN2022_FOR_HARD_TIME_mastered_warm.wav'
+import murderMysteries from '../assets/murder-mysteries.wav'
+import twelvePacs from '../assets/twelvepacs_JULY2016_2019A.wav'
+import battojutsu2 from '../assets/battojutsu2.mp3'
+import IMNOTAFRAIDOFGHOSTS from '../assets/IMNOTAFRAIDOFGHOSTS.wav'
 
 const store = useStore(),
   collapsed = ref(true),
@@ -40,7 +44,23 @@ const store = useStore(),
     // @ts-ignore
     loop: true
   }),
-  spaceLoop = useSound(earthAsViewedFromTheMoon, {
+  starsLoop = useSound(earthAsViewedFromTheMoon, {
+    // @ts-ignore
+    loop: true
+  }),
+  streetsLoop = useSound(murderMysteries, {
+    // @ts-ignore
+    loop: true
+  }),
+  skiesLoop = useSound(twelvePacs, {
+    // @ts-ignore
+    loop: true
+  }),
+  padLoop = useSound(battojutsu2, {
+    // @ts-ignore
+    loop: true
+  }),
+  gymLoop = useSound(IMNOTAFRAIDOFGHOSTS, {
     // @ts-ignore
     loop: true
   })
@@ -161,23 +181,72 @@ watch(autosaveInterval, () => {
   saveGameInterval = setInterval(saveGame, store.settings.autosaveInterval * 1000)
 })
 
+watch(() => store.gameStarted, (newGameStarted) => {
+  if (newGameStarted) {
+    if (!jailLoop.isPlaying.value) {
+      jailLoop.play()
+    }
+  }
+})
+
 watch(() => store.inJail, (newInJail) => {
   if (newInJail) {
-    spaceLoop.stop()
+    starsLoop.stop()
+    streetsLoop.stop()
+    skiesLoop.stop()
+    padLoop.stop()
+    gymLoop.stop()
     if (!jailLoop.isPlaying.value) {
       jailLoop.play()
     }
   } else {
     jailLoop.stop()
+    if (!padLoop.isPlaying.value) {
+      padLoop.play()
+    }
   }
 })
 
 watch(() => store.openScreen, (newScreen) => {
-  spaceLoop.stop()
-  if (newScreen === 'the stars') {
-    spaceLoop.play()
+  starsLoop.stop()
+  streetsLoop.stop()
+  skiesLoop.stop()
+  padLoop.stop()
+  gymLoop.stop()
+  if (!store.inJail) {
+    if (newScreen === 'the pad') {
+      if (!padLoop.isPlaying.value) {
+        padLoop.play()
+      }
+    } else if (newScreen === 'the streets') {
+      if (!streetsLoop.isPlaying.value) {
+        streetsLoop.play()
+      }
+    } else if (newScreen === 'the skies') {
+      if (!skiesLoop.isPlaying.value) {
+        skiesLoop.play()
+      }
+    } else if (newScreen === 'the stars') {
+      if (!starsLoop.isPlaying.value) {
+        starsLoop.play()
+      }
+    } else if (newScreen === 'the gym') {
+      if (!gymLoop.isPlaying.value) {
+        gymLoop.play()
+      }
+    }
   }
 }) 
+
+// if (store.inJail && !jailLoop.isPlaying.value) {
+//   jailLoop.play()
+// } else if (store.openScreen === 'the streets' && !streetsLoop.isPlaying.value) {
+//   streetsLoop.play()
+// } else if (store.openScreen === 'the skies' && !skiesLoop.isPlaying.value) {
+//   skiesLoop.play()
+// } else if (store.openScreen === 'the stars' && !starsLoop.isPlaying.value) {
+//   starsLoop.play()
+// }
 
 measureLag()
 gameLoop()
