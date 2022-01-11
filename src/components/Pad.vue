@@ -171,7 +171,7 @@ onUnmounted(() => {
           </n-button>
         </n-row>
       </div>
-      <div class="col">
+      <div class="col" v-if="Object.keys(store.possessions).length > 0">
         <n-divider>possessions</n-divider>
         <possession possession="car" about="allows you to access the streets" :plural="false" />
         <possession possession="donut shop" :about="formattedDonutShopAbout" :plural="true" />

@@ -23,7 +23,7 @@
     correctAnswers = ref(0),
     timeElapsed = ref(0),
     timeLimit = computed(() =>
-      (store.escapeProject.settings.minTimeSeconds || 10) +
+      (store.escapeProject?.settings?.minTimeSeconds || 10) +
       (store.stats['street cred'] * .5)
     ),
     timeRemainingPercentage = computed(() => 
@@ -34,7 +34,7 @@
     ),
     requiredCorrectAnswers = computed(() => 
       Math.max(1, 
-      Math.floor(store.escapeProject.settings.maxRequiredCorrectAnswers - 
+      Math.floor((store.escapeProject?.settings?.maxRequiredCorrectAnswers || 5) - 
       (store.stats['street cred'] * .1)))
     ),
     jail = computed(() => {

@@ -98,10 +98,10 @@ function calculateRev(){
   const trueAvgRev = sum/store.donutShop.incomeTracker.length
   let chanceOfPurchase = store.donutShop.demand/100
   if (chanceOfPurchase > 1) chanceOfPurchase = 1
-  // if (store.donutShop.unsold < 1) chanceOfPurchase = 0
+  if (store.donutShop.unsold < 1) chanceOfPurchase = 0
   let avgSales = chanceOfPurchase * (.7*Math.pow(store.donutShop.demand,1.15))*10
   let avgRev = chanceOfPurchase * (.7*Math.pow(store.donutShop.demand,1.15))*store.donutShop.margin*10
-  if (store.donutShop.demand > store.donutShop.unsoldClips){ 
+  if (store.donutShop.demand > store.donutShop.unsold){ 
     avgRev = trueAvgRev
     avgSales = avgRev/store.donutShop.margin
   } 
@@ -187,7 +187,7 @@ gameLoop()
         <Gym class="game-screen" v-else-if="store.openScreen === 'the gym'" />
         <Skies class="small-med-game-screen" v-else-if="store.openScreen === 'the skies'" />
         <Space class="game-screen" v-else-if="store.openScreen === 'the stars'" />
-        <DonutShop class="game-screen" v-else-if="store.openScreen === 'the shop'" />
+        <DonutShop class="small-med-game-screen" v-else-if="store.openScreen === 'the shop'" />
         <game-error v-else msg="unknown open screen" />
       </n-layout>
     </n-layout>
