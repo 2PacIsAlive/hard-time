@@ -9,9 +9,9 @@ import Possession from './Possession.vue'
 import StatDescription from './StatDescription.vue'
 import * as stats from '../store/stats'
 import { KONAMI_CODE } from './cheats/konamiCode'
-import Cash_Register from '../assets/Cash_Register.wav'
-import Airplane_Ding from '../assets/airplane_ding.wav'
-import spaceship_wooo from '../assets/spaceship_wooo.wav'
+import Cash_Register from '../assets/Cash_Register.mp3'
+import Airplane_Ding from '../assets/airplane_ding.mp3'
+import spaceship_wooo from '../assets/spaceship_wooo.mp3'
 import { useSound } from '@vueuse/sound'
 
 const store = useStore(),
