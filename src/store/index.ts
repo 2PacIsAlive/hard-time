@@ -104,6 +104,7 @@ export const useStore = defineStore('main', {
       showImportModal: false,
       showSettingsModal: false,
       showLoreModal: false,
+      showCreditsModal: false,
       lore: "",
       exportString: "",
       importString: "",

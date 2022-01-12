@@ -35,6 +35,10 @@ function importSave () {
 function openSettings () {
   store.showSettingsModal = true
 }
+
+function openCredits () {
+  store.showCreditsModal = true
+}
 </script>
 
 <template>
@@ -42,6 +46,7 @@ function openSettings () {
     <span>lag: {{ store.lag.toFixed(0).padStart(2, '0') }}ms </span>
     <span id="cheater" v-if="store.settings.cheatsEnabled">cheater </span>
     <span class="footer-action" id="settings" @click="openSettings()">settings </span>
+    <span class="footer-action" id="credits" @click="openCredits()">credits </span>
     <span class="footer-action" id="export" @click="exportSave()">export </span>
     <span class="footer-action" id="import" @click="importSave()">import </span>
     <span class="footer-action" id="reset" @click="resetGame()">reset </span>
@@ -91,5 +96,11 @@ function openSettings () {
   }
   #settings:hover {
     color: rgb(90, 23, 121);
+  }
+  #credits {
+    color: rgb(211, 43, 113);
+  }
+  #credits:hover {
+    color: rgb(129, 28, 70);
   }
 </style>
