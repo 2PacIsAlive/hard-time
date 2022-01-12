@@ -491,8 +491,9 @@ async function dijkstras (startingSpace: number, destinationSpace: number | stri
     <p id="run" v-else-if="aiExists && !aiSearching">you should probably run</p>
     <p v-else>you are safe for now</p>
     <pre v-html="coloredMap"></pre>
-    <p>nab <span style="color: #b39700">stardust</span> to earn ₿ (arrow keys or wasd)</p>
+    <p>nab <span style="color: #b39700">stardust</span> to earn money</p>
     <p>use <span style="color: #09f8f6">portals</span> to access other parts of the map</p>
+    <p>use arrow keys or wasd to move</p>
     <!-- auto-shred:
     <n-button @click="movePlayer()" v-if="!store.playerMovementRoutineStarted" tertiary type="primary">enable</n-button>
     <n-button @click="store.playerMovementRoutineStarted = false" v-else tertiary type="default">disable</n-button>

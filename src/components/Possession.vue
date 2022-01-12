@@ -28,9 +28,11 @@ defineProps<{
         :label="plural 
           ? `${possession}s` 
           : possession" 
-        :value="plural 
-          ? store.possessions[possession] 
-          : store.possessions[possession].name"
+        :value="possession === 'donut shop' 
+          ? `${store.donutShop.unsold} donuts`
+          : plural 
+            ? store.possessions[possession] 
+            : store.possessions[possession].name"
       >
         <template #prefix>
           <n-icon>

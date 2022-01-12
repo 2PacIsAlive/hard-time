@@ -117,10 +117,10 @@ const loiterTriggers: {[trigger: number]: LoiterTrigger} = {
       store.showLoreModal = true
     }
   },
-  26: {
+  24: {
     effect: () => {
       store.lore = 'you found another crypto wallet'
-      store.money += 0.00001500
+      store.money += 0.00020000
       store.showLoreModal = true
     }
   },
@@ -187,9 +187,7 @@ function buyCar(): void {
 function buyDonutShop(): void {
   cashRegisterSound.play()
   store.money -= store.donutShop.cost
-  if (store.possessions['donut shop'])
-    store.possessions['donut shop'] += 1
-  else store.possessions['donut shop'] = 1
+  store.possessions['donut shop'] = true
   store.donutShop.cost *= 1.75
   store.menuOptions[3].disabled = false
 }
@@ -215,7 +213,7 @@ function buySpaceship(): void {
 function gamble () {
   store.stats.luck += 1
   const gambleAmount = store.money / 10
-  if (Math.random() < .4 + (store.stats.luck / 10000)) {
+  if (Math.random() < .43 + (store.stats.luck / 10000)) {
     store.money += gambleAmount
     message.success(`you won ${gambleAmount.toFixed(8)}`)
   } else {
@@ -328,7 +326,7 @@ onUnmounted(() => {
       <div class="col" v-if="Object.keys(store.possessions).length > 0">
         <n-divider>possessions</n-divider>
         <possession possession="car" about="allows you to access the streets" :plural="false" />
-        <possession possession="donut shop" :about="formattedDonutShopAbout" :plural="true" />
+        <possession possession="donut shop" about="slow down the cops and earn some dough on the side" :plural="false" />
         <possession possession="plane" about="allows you to access the skies" :plural="false" />
         <possession possession="spaceship" about="allows you to access the stars" :plural="false" />
       </div>

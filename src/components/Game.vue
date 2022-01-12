@@ -196,58 +196,66 @@ watch(() => store.gameStarted, (newGameStarted) => {
 
 watch(() => store.inJail, (newInJail) => {
   if (newInJail) {
-    starsLoop.stop()
-    streetsLoop.stop()
-    skiesLoop.stop()
-    padLoop.stop()
-    gymLoop.stop()
-    shopLoop.stop()
-    if (!jailLoop.isPlaying.value) {
+    stopMusic()
+    if (store.settings.musicEnabled && !jailLoop.isPlaying.value) {
       jailLoop.play()
     }
   } else {
     jailLoop.stop()
-    if (!padLoop.isPlaying.value) {
+    if (store.settings.musicEnabled && !padLoop.isPlaying.value) {
       padLoop.play()
     }
   }
 })
 
-watch(() => store.openScreen, (newScreen) => {
+function startMusic (screen: string) {
+  stopMusic()
+  if (store.settings.musicEnabled && !store.inJail) {
+    if (screen === 'the pad') {
+      if (!padLoop.isPlaying.value) {
+        padLoop.play()
+      }
+    } else if (screen === 'the streets') {
+      if (!streetsLoop.isPlaying.value) {
+        streetsLoop.play()
+      }
+    } else if (screen === 'the skies') {
+      if (!skiesLoop.isPlaying.value) {
+        skiesLoop.play()
+      }
+    } else if (screen === 'the stars') {
+      if (!starsLoop.isPlaying.value) {
+        starsLoop.play()
+      }
+    } else if (screen === 'the gym') {
+      if (!gymLoop.isPlaying.value) {
+        gymLoop.play()
+      }
+    } else if (screen === 'the shop') {
+      if (!shopLoop.isPlaying.value) {
+        shopLoop.play()
+      }
+    }
+  }
+}
+
+function stopMusic() {
   starsLoop.stop()
   streetsLoop.stop()
   skiesLoop.stop()
   padLoop.stop()
   gymLoop.stop()
   shopLoop.stop()
-  if (!store.inJail) {
-    if (newScreen === 'the pad') {
-      if (!padLoop.isPlaying.value) {
-        padLoop.play()
-      }
-    } else if (newScreen === 'the streets') {
-      if (!streetsLoop.isPlaying.value) {
-        streetsLoop.play()
-      }
-    } else if (newScreen === 'the skies') {
-      if (!skiesLoop.isPlaying.value) {
-        skiesLoop.play()
-      }
-    } else if (newScreen === 'the stars') {
-      if (!starsLoop.isPlaying.value) {
-        starsLoop.play()
-      }
-    } else if (newScreen === 'the gym') {
-      if (!gymLoop.isPlaying.value) {
-        gymLoop.play()
-      }
-    } else if (newScreen === 'the shop') {
-      if (!shopLoop.isPlaying.value) {
-        shopLoop.play()
-      }
-    }
-  }
+}
+
+watch(() => store.openScreen, (newScreen) => {
+  startMusic(newScreen)
 }) 
+
+watch (() => store.settings.musicEnabled, (enabled) => {
+  if (enabled) startMusic(store.openScreen)
+  else stopMusic()
+})
 
 // if (store.inJail && !jailLoop.isPlaying.value) {
 //   jailLoop.play()
