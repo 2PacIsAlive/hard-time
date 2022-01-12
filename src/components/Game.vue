@@ -25,7 +25,7 @@ import Skies from './Skies.vue'
 // @ts-ignore
 import DonutShop from './DonutShop.vue'
 import { NIcon, NSpace, NSwitch, NLayout, NLayoutSider, NMenu, useMessage } from 'naive-ui'
-import { HomeOutline, CaretDownOutline, SkullOutline, SubwayOutline, StorefrontOutline, BarbellOutline, StarOutline, EarthOutline, FastFoodOutline } from '@vicons/ionicons5'
+import { HomeOutline, CaretDownOutline, SkullOutline, SubwayOutline, StorefrontOutline, BarbellOutline, TelescopeOutline, EarthOutline, FastFoodOutline } from '@vicons/ionicons5'
 import { useSound } from '@vueuse/sound'
 import hardTimeTitle from '../assets/hard-time-title.mp3'
 import earthAsViewedFromTheMoon from '../assets/earth_as_viewed_from_the_moon_JAN2022_FOR_HARD_TIME_mastered_warm.mp3'
@@ -36,7 +36,7 @@ import IMNOTAFRAIDOFGHOSTS from '../assets/IMNOTAFRAIDOFGHOSTS.mp3'
 import lurkable from '../assets/lurkable.mp3'
 
 const store = useStore(),
-  collapsed = ref(true),
+  collapsed = ref(false),
   message = useMessage(),
   autosaveInterval = computed(() => 
     store.settings.autosaveInterval
@@ -80,7 +80,7 @@ function renderMenuIcon (option: any) {
   let icon = HomeOutline
   if (option.key === 'the streets') icon = SkullOutline
   else if (option.key === 'the gym') icon = BarbellOutline
-  else if (option.key === 'the stars') icon = StarOutline
+  else if (option.key === 'the stars') icon = TelescopeOutline
   else if (option.key === 'the skies') icon = EarthOutline
   else if (option.key === 'the shop') icon = FastFoodOutline
   return option.disabled
@@ -155,7 +155,7 @@ function sellDonuts(donutsDemanded: number): void {
       store.donutShop.unsold = 0
     } else {
       const transaction = donutsDemanded * store.donutShop.margin
-      store.money = (Math.floor((store.money + transaction)*100))/100
+      store.money = store.money + transaction
       store.donutShop.income += transaction
       store.donutShop.donutsSold += donutsDemanded
       store.donutShop.unsold = store.donutShop.unsold - donutsDemanded
@@ -196,58 +196,66 @@ watch(() => store.gameStarted, (newGameStarted) => {
 
 watch(() => store.inJail, (newInJail) => {
   if (newInJail) {
-    starsLoop.stop()
-    streetsLoop.stop()
-    skiesLoop.stop()
-    padLoop.stop()
-    gymLoop.stop()
-    shopLoop.stop()
-    if (!jailLoop.isPlaying.value) {
+    stopMusic()
+    if (store.settings.musicEnabled && !jailLoop.isPlaying.value) {
       jailLoop.play()
     }
   } else {
     jailLoop.stop()
-    if (!padLoop.isPlaying.value) {
+    if (store.settings.musicEnabled && !padLoop.isPlaying.value) {
       padLoop.play()
     }
   }
 })
 
-watch(() => store.openScreen, (newScreen) => {
+function startMusic (screen: string) {
+  stopMusic()
+  if (store.settings.musicEnabled && !store.inJail) {
+    if (screen === 'the pad') {
+      if (!padLoop.isPlaying.value) {
+        padLoop.play()
+      }
+    } else if (screen === 'the streets') {
+      if (!streetsLoop.isPlaying.value) {
+        streetsLoop.play()
+      }
+    } else if (screen === 'the skies') {
+      if (!skiesLoop.isPlaying.value) {
+        skiesLoop.play()
+      }
+    } else if (screen === 'the stars') {
+      if (!starsLoop.isPlaying.value) {
+        starsLoop.play()
+      }
+    } else if (screen === 'the gym') {
+      if (!gymLoop.isPlaying.value) {
+        gymLoop.play()
+      }
+    } else if (screen === 'the shop') {
+      if (!shopLoop.isPlaying.value) {
+        shopLoop.play()
+      }
+    }
+  }
+}
+
+function stopMusic() {
   starsLoop.stop()
   streetsLoop.stop()
   skiesLoop.stop()
   padLoop.stop()
   gymLoop.stop()
   shopLoop.stop()
-  if (!store.inJail) {
-    if (newScreen === 'the pad') {
-      if (!padLoop.isPlaying.value) {
-        padLoop.play()
-      }
-    } else if (newScreen === 'the streets') {
-      if (!streetsLoop.isPlaying.value) {
-        streetsLoop.play()
-      }
-    } else if (newScreen === 'the skies') {
-      if (!skiesLoop.isPlaying.value) {
-        skiesLoop.play()
-      }
-    } else if (newScreen === 'the stars') {
-      if (!starsLoop.isPlaying.value) {
-        starsLoop.play()
-      }
-    } else if (newScreen === 'the gym') {
-      if (!gymLoop.isPlaying.value) {
-        gymLoop.play()
-      }
-    } else if (newScreen === 'the shop') {
-      if (!shopLoop.isPlaying.value) {
-        shopLoop.play()
-      }
-    }
-  }
+}
+
+watch(() => store.openScreen, (newScreen) => {
+  startMusic(newScreen)
 }) 
+
+watch (() => store.settings.musicEnabled, (enabled) => {
+  if (enabled) startMusic(store.openScreen)
+  else stopMusic()
+})
 
 // if (store.inJail && !jailLoop.isPlaying.value) {
 //   jailLoop.play()

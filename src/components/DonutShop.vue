@@ -74,10 +74,10 @@ onUnmounted(() => {
           <n-button @click="raisePrice()" block class="naked-col">raise the price</n-button>
         </div>
         <p v-if="store.donutShop.marketingProjects.length > 0">
-          <n-button block @disabled="store.money < store.donutShop.marketingProjects[0].cost" @click="buyMarketing()">{{ store.donutShop.marketingProjects[0].name }} (₿{{ store.donutShop.marketingProjects[0].cost.toFixed(9) }})</n-button>
+          <n-button block :disabled="store.money < store.donutShop.marketingProjects[0].cost" @click="buyMarketing()">{{ store.donutShop.marketingProjects[0].name }} (₿{{ store.donutShop.marketingProjects[0].cost.toFixed(9) }})</n-button>
         </p>
-        <p>
-          <n-button block @disabled="store.money < store.donutShop.autoDonutMakerCost" @click="buyAutoDonutMaker()">buy an auto donut maker (₿{{ store.donutShop.autoDonutMakerCost }})</n-button>
+        <p v-if="store.money >= store.donutShop.autoDonutMakerCost / 10">
+          <n-button block :disabled="store.money < store.donutShop.autoDonutMakerCost" @click="buyAutoDonutMaker()">buy an auto donut maker (₿{{ store.donutShop.autoDonutMakerCost }})</n-button>
         </p>
       </div>
       <div class="col">
