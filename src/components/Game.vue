@@ -155,7 +155,7 @@ function sellDonuts(donutsDemanded: number): void {
       store.donutShop.unsold = 0
     } else {
       const transaction = donutsDemanded * store.donutShop.margin
-      store.money = (Math.floor((store.money + transaction)*100))/100
+      store.money = store.money + transaction
       store.donutShop.income += transaction
       store.donutShop.donutsSold += donutsDemanded
       store.donutShop.unsold = store.donutShop.unsold - donutsDemanded
