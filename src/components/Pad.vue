@@ -292,7 +292,7 @@ onUnmounted(() => {
             buy a new car (-₿{{ store.cars[0].cost.toFixed(8) }})
           </n-button> 
         </n-row>
-        <n-row v-if="store.money >= store.donutShop.cost / 10">
+        <n-row v-if="!('donut shop' in store.possessions)">
           <n-button block class="centered-button" :disabled="store.donutShop.cost > store.money" @click="buyDonutShop">
             <template #icon>
               <n-icon>
