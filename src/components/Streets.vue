@@ -257,7 +257,7 @@ function findStars(aiSpace: number, playerSpace: number, avoidAi: boolean): numb
 
 async function movePlayer() {
   if (!store.playerMovementRoutineStarted) {
-    console.log('STARTING PLAYER MOVEMENT ROUTINE')
+    // console.log('STARTING PLAYER MOVEMENT ROUTINE')
     store.playerMovementRoutineStarted = true
     while (store.playerMovementRoutineStarted) {
       const avoidAi = store.playerAutoSkill > 33 
@@ -282,14 +282,14 @@ async function movePlayer() {
 }
 
 async function moveAi() {
-  console.log('STARTING AI MOVEMENT ROUTINE')
-  while (1==1) {
-    store.aiMovementRoutineStarted = true
+  // console.log('STARTING AI MOVEMENT ROUTINE')
+  store.aiMovementRoutineStarted = true
+  while (store.aiMovementRoutineStarted) {
     // aiPath.value.forEach((space, i) => {
     //   if (i !== aiPath.value.length-1 && store.map.current[space] === ' ') setSpace('.', space)
     // })
     if ((map.value.current.match(aiRegex)||[]).length > 1) {
-      console.log('something fucky happened', aiPath.value)
+      console.log('something bad happened', aiPath.value)
       aiPath.value = []
       setSpace(' ', map.value.current.indexOf(ai))
     }
@@ -491,7 +491,7 @@ async function dijkstras (startingSpace: number, destinationSpace: number | stri
     <p id="run" v-else-if="aiExists && !aiSearching">you should probably run</p>
     <p v-else>you are safe for now</p>
     <pre v-html="coloredMap"></pre>
-    <p>nab <span style="color: #b39700">stars</span> to earn dough (arrow keys or wasd)</p>
+    <p>nab <span style="color: #b39700">stardust</span> to earn ₿ (arrow keys or wasd)</p>
     <p>use <span style="color: #09f8f6">portals</span> to access other parts of the map</p>
     <!-- auto-shred:
     <n-button @click="movePlayer()" v-if="!store.playerMovementRoutineStarted" tertiary type="primary">enable</n-button>

@@ -2,7 +2,7 @@
 import { ref, computed, onUnmounted } from 'vue'
 import { useStore } from '../store'
 import { NButton, NIcon, useLoadingBar, NSpace, NCard, NGrid, NGi, NStatistic, NRow, NCol, NDivider, NPopover, useMessage } from 'naive-ui'
-import { LogoBitcoin, EarOutline, CarOutline, CarSportOutline, RocketOutline, FastFoodOutline, AirplaneOutline } from '@vicons/ionicons5'
+import { LogoBitcoin, DiceOutline, EarOutline, CarOutline, CarSportOutline, RocketOutline, FastFoodOutline, AirplaneOutline } from '@vicons/ionicons5'
 // @ts-ignore
 import Possession from './Possession.vue'
 // @ts-ignore
@@ -12,6 +12,7 @@ import { KONAMI_CODE } from './cheats/konamiCode'
 import Cash_Register from '../assets/Cash_Register.mp3'
 import Airplane_Ding from '../assets/airplane_ding.mp3'
 import spaceship_wooo from '../assets/spaceship_wooo.mp3'
+import car_beep from '../assets/car_beep.mp3'
 import { useSound } from '@vueuse/sound'
 
 const store = useStore(),
@@ -21,7 +22,7 @@ const store = useStore(),
   loadingBegForCredits = ref(false),
   loadingLoiter = ref(false),
   formattedMoney = computed(() =>
-    `₿${store.money}`
+    `₿${store.money.toFixed(8)}`
   ),
   formattedPay = computed(() =>
     `₿${store.pay}`
@@ -32,7 +33,8 @@ const store = useStore(),
   ),
   cashRegisterSound = useSound(Cash_Register),
   airplaneDingSound = useSound(Airplane_Ding),
-  spaceshipWoooSound = useSound(spaceship_wooo)
+  spaceshipWoooSound = useSound(spaceship_wooo),
+  carBeepSound = useSound(car_beep)
 
 async function begForCredits(): Promise<void> {
   loadingBegForCredits.value = true
@@ -46,21 +48,127 @@ async function begForCredits(): Promise<void> {
 }
 
 const loiterTriggers: {[trigger: number]: LoiterTrigger} = {
-  3: {
+  1: {
+    effect: () => {
+      store.lore = 'you got in a fight. you lost'
+      store.showLoreModal = true
+    }
+  },
+  2: {
+    effect: () => {
+      store.lore = 'you met some punks hanging around, they bought you a donut'
+      store.showLoreModal = true
+    }
+  },
+  5: {
     effect: () => {
       store.menuOptions[1].disabled = false
+      store.lore = 'you found someone\'s gym pass'
+      store.showLoreModal = true
     }
-  }
+  },
+  6: {
+    effect: () => {
+      const wonFight = store.stats.strength >= 1
+      if (wonFight) store.money += 0.00000050
+      store.lore = `you got in a fight. you ${wonFight ? 'won' : 'lost'}`
+      store.showLoreModal = true    }
+  },
+  8: {
+    effect: () => {
+      store.lore = 'you found a crypto wallet on the sidewalk'
+      store.money = 0.00000125
+      store.gambleEnabled = true
+      store.showLoreModal = true
+    }
+  },
+  10: {
+    effect: () => {
+      const wonFight = store.stats.strength >= 20
+      if (wonFight) store.money += 0.00000500
+      store.lore = `you got in a fight. you ${wonFight ? 'won' : 'lost'}`
+      store.showLoreModal = true
+    }
+  },
+  12: {
+    effect: () => {
+      store.lore = 'you ran into mike, the donut shop owner. he likes the cut of your jib',
+      store.showLoreModal = true
+    }
+  },
+  13: {
+    effect: () => {
+      store.lore = 'you helped mike with some chores around his shop, he gave you some money'
+      store.money += 0.00000500
+      store.showLoreModal = true
+    }
+  },
+  17: {
+    effect: () => {
+      store.lore = 'you ran into mike, he\'s closing the shop' 
+      store.showLoreModal = true
+    }
+  },
+  20: {
+    effect: () => {
+      const wonFight = store.stats.strength >= 40
+      if (wonFight) store.money += 0.00001000
+      store.lore = `you got in a fight. you ${wonFight ? 'won' : 'lost'}`
+      store.showLoreModal = true
+    }
+  },
+  26: {
+    effect: () => {
+      store.lore = 'you found another crypto wallet'
+      store.money += 0.00001500
+      store.showLoreModal = true
+    }
+  },
+  30: {
+    effect: () => {
+      const wonFight = store.stats.strength >= 60
+      if (wonFight) store.money += 0.00001000
+      store.lore = `you got in a fight. you ${wonFight ? 'won' : 'lost'}`
+      store.showLoreModal = true
+    }
+  },
+  33: {
+    effect: () => {
+      store.lore = 'the streets seem quiet these days'
+      store.showLoreModal = true
+    }
+  },
+  40: {
+    effect: () => {
+      const wonFight = store.stats.strength >= 80
+      if (wonFight) store.money += 0.00006000
+      store.lore = `you got in a fight. you ${wonFight ? 'won' : 'lost'}`
+      store.showLoreModal = true
+    }
+  },
+  47: {
+    effect: () => {
+      store.lore = 'the streets seem mad quiet these days'
+      store.showLoreModal = true
+    }
+  },
+  100: {
+    effect: () => {
+      store.lore = 'you found another crypto wallet'
+      store.money += 0.001
+      store.showLoreModal = true
+    }
+  },
 }
 
 async function loiter(): Promise<void> {
   store.loiterCount += 1
-  if (store.loiterCount in loiterTriggers) {
-    loiterTriggers[store.loiterCount].effect()
-  }
   loadingLoiter.value = true
   loadingBar.start()
   await new Promise(resolve => setTimeout(resolve, store.loiterDuration))
+  if (store.loiterCount in loiterTriggers) {
+    loiterTriggers[store.loiterCount].effect()
+  }
   store.loiterDuration -= store.stats['street cred'] * 2
   store.stats['street cred'] += 1
   loadingLoiter.value = false
@@ -68,6 +176,7 @@ async function loiter(): Promise<void> {
 }
 
 function buyCar(): void {
+  carBeepSound.play()
   if (store.cars.length > 0) {
     store.possessions.car = store.cars.shift()
     store.money -= store.possessions.car.cost
@@ -103,6 +212,19 @@ function buySpaceship(): void {
   }
 }
 
+function gamble () {
+  store.stats.luck += 1
+  const gambleAmount = store.money / 10
+  if (Math.random() < .4 + (store.stats.luck / 10000)) {
+    store.money += gambleAmount
+    message.success(`you won ${gambleAmount.toFixed(8)}`)
+  } else {
+    store.money -= gambleAmount
+    message.error(`you lost ${gambleAmount.toFixed(8)}`)
+  }
+}
+
+
 function konamiCodeListener(event: any) {
   if (store.settings.cheatsEnabled) {
     if (event.key === KONAMI_CODE[currentKonamiPos.value++]) {
@@ -129,7 +251,7 @@ onUnmounted(() => {
 
 <template>
   <div id="pad">
-    <h1 style="text-align: center;">{{ formattedMoney }}</h1>
+    <h1 v-if="store.money > 0" style="text-align: center;">{{ formattedMoney }}</h1>
     <div class="flex-grid">
       <div class="col">
         <n-divider>stats</n-divider>
@@ -149,6 +271,16 @@ onUnmounted(() => {
               </n-icon>
             </template>
             loiter (+1 street cred)
+          </n-button> 
+        </n-row>
+        <n-row>
+          <n-button v-if="store.gambleEnabled" style="padding: 0%;" block class="centered-button" :disabled="store.money <= 0.00000001" @click="gamble()">
+            <template #icon>
+              <n-icon>
+                <dice-outline />
+              </n-icon>
+            </template>
+            gamble (+/- ₿{{ (store.money / 10).toFixed(8) }})
           </n-button> 
         </n-row>
         <n-row v-if="store.cars.length > 0 && store.money >= store.cars[0].cost / 10">

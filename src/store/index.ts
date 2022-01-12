@@ -54,7 +54,7 @@ export const useStore = defineStore('main', {
       strength: savedState?.strength || 0,
       gainz: savedState?.gainz || 1,
       workoutDuration: savedState?.workoutDuration || 3000,
-      loiterDuration: savedState?.loiterDuration || 3000,
+      loiterDuration: savedState?.loiterDuration || 2000,
       loiterCount: savedState?.loiterCount as number || 0,
       possessions: savedState?.possessions || {},
       workDuration: savedState?.workDuration || 3000,
@@ -97,6 +97,7 @@ export const useStore = defineStore('main', {
         luck: 0,
       },
       starMoney: savedState?.starMoney || 0.0000032,
+      gambleEnabled: savedState?.gambleEnabled || false,
       aiMovementRoutineStarted: false,
       playerMovementRoutineStarted: false,
       starSpawnerStarted: false,
@@ -146,6 +147,7 @@ export const useStore = defineStore('main', {
         stats: this.stats,
         starMoney: this.starMoney,
         gym: this.gym,
+        gambleEnabled: this.gambleEnabled,
       })
       return encoded
         ? btoa(unescape(encodeURIComponent(saveString)))

@@ -49,7 +49,7 @@ export function studyPrisonSchematics(settings: StudyPrisonSchematicsSettings) {
 
 export function defendYourCell(settings: DefendYourCellSettings) {
   return escapeProject('defend your cell',
-    'you kept yourself safe',
+    'you protected ya neck',
     settings
   )
 }

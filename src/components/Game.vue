@@ -25,7 +25,7 @@ import Skies from './Skies.vue'
 // @ts-ignore
 import DonutShop from './DonutShop.vue'
 import { NIcon, NSpace, NSwitch, NLayout, NLayoutSider, NMenu, useMessage } from 'naive-ui'
-import { HomeOutline, CaretDownOutline, SkullOutline, SubwayOutline, StorefrontOutline, BarbellOutline, StarOutline, EarthOutline, FastFoodOutline } from '@vicons/ionicons5'
+import { HomeOutline, CaretDownOutline, SkullOutline, SubwayOutline, StorefrontOutline, BarbellOutline, TelescopeOutline, EarthOutline, FastFoodOutline } from '@vicons/ionicons5'
 import { useSound } from '@vueuse/sound'
 import hardTimeTitle from '../assets/hard-time-title.mp3'
 import earthAsViewedFromTheMoon from '../assets/earth_as_viewed_from_the_moon_JAN2022_FOR_HARD_TIME_mastered_warm.mp3'
@@ -36,7 +36,7 @@ import IMNOTAFRAIDOFGHOSTS from '../assets/IMNOTAFRAIDOFGHOSTS.mp3'
 import lurkable from '../assets/lurkable.mp3'
 
 const store = useStore(),
-  collapsed = ref(true),
+  collapsed = ref(false),
   message = useMessage(),
   autosaveInterval = computed(() => 
     store.settings.autosaveInterval
@@ -80,7 +80,7 @@ function renderMenuIcon (option: any) {
   let icon = HomeOutline
   if (option.key === 'the streets') icon = SkullOutline
   else if (option.key === 'the gym') icon = BarbellOutline
-  else if (option.key === 'the stars') icon = StarOutline
+  else if (option.key === 'the stars') icon = TelescopeOutline
   else if (option.key === 'the skies') icon = EarthOutline
   else if (option.key === 'the shop') icon = FastFoodOutline
   return option.disabled
