@@ -213,7 +213,7 @@ function buySpaceship(): void {
 function gamble () {
   store.stats.luck += 1
   const gambleAmount = store.money / 10
-  if (Math.random() < .43 + (store.stats.luck / 10000)) {
+  if (Math.random() < .43 + (store.stats.luck / 100000)) {
     store.money += gambleAmount
     message.success(`you won ${gambleAmount.toFixed(8)}`)
   } else {
@@ -233,6 +233,7 @@ function konamiCodeListener(event: any) {
         store.stats.strength += 100
         store.stats.dexterity += 100
         store.stats.luck += 100
+        store.gambleEnabled = true
         currentKonamiPos.value = 0
       }
     } else {
@@ -261,7 +262,7 @@ onUnmounted(() => {
       </div>
       <div class="col">
         <n-divider>actions</n-divider>
-        <n-row>
+        <n-row v-if="store.stats['street cred'] < 100">
           <n-button style="padding: 0%;" block class="centered-button" :loading="loadingLoiter" :disabled="loadingLoiter" @click="loiter()">
             <template #icon>
               <n-icon>
@@ -278,7 +279,7 @@ onUnmounted(() => {
                 <dice-outline />
               </n-icon>
             </template>
-            gamble (+/- ₿{{ (store.money / 10).toFixed(8) }})
+            gamble online (+/- ₿{{ (store.money / 10).toFixed(8) }})
           </n-button> 
         </n-row>
         <n-row v-if="store.cars.length > 0 && store.money >= store.cars[0].cost / 10">
