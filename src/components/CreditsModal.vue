@@ -8,7 +8,10 @@ const store = useStore()
 <template>
   <n-modal v-model:show="store.showCreditsModal">
     <n-card style="width: 600px;" title="" :bordered="false" hoverable size="large">
-      <p>developed by @infinitestack, @guppy, @ROFLobster, @Bo, and @vonHubl <br/>for <a href="https://itch.io/jam/new-years-incremental-game-jam">new years igj 2022</a></p>
+      <p>
+        developed by @infinitestack, @guppy, @ROFLobster, @Bo, and @vonHubl <br/>
+        for <a target="_blank" rel="noopener noreferrer" href="https://itch.io/jam/new-years-incremental-game-jam">new years igj 2022</a>
+      </p>
       <p>original sfx and soundtrack by @vonHubl, @ROFLobster, and @infinitestack</p>
       <p>special thanks to frank lantz</p>
       <template #footer>

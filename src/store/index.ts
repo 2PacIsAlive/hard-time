@@ -81,7 +81,7 @@ export const useStore = defineStore('main', {
         marketingProjects,
         autoDonutMakers: 0,
         autoDonutMakerLevel: 1,
-        autoDonutMakerCost: 0.001,
+        autoDonutMakerCost: 0.0005,
         incomeTracker: [],
         avgRev: 0,
         avgSales: 0,
