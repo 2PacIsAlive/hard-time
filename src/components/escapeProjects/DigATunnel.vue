@@ -1,5 +1,5 @@
 <script setup lang="ts">
-  import { ref, onUnmounted, computed, Ref } from 'vue'
+  import { computed, onUnmounted, ref, watch, onActivated, Ref } from 'vue'
   import { useStore } from '../../store'
   import { NSpace, NInput, NButton, NIcon, NProgress, NPopover, useMessage, NUl } from 'naive-ui'
   import { PencilOutline, PeopleOutline } from '@vicons/ionicons5'
@@ -8,18 +8,23 @@
   import Escape_Task_Success from '../../assets/Escape_Task_Success.mp3'
   import REQ_Attempt_Fail from '../../assets/REQ_Attempt_Fail.mp3'
   import REQ_Attempt_Success from '../../assets/REQ_Attempt_Success.mp3'
+  import shovel_dirt from '../../assets/shovel_dirt.mp3'
+  import shovel_ping from '../../assets/shovel_ping.mp3'
   
-
   const store = useStore(),
     message = useMessage(),
     reqAttemptFailSound = useSound(REQ_Attempt_Fail),
+    AttemptDirtDigSound = useSound(shovel_dirt),
+    AttemptConcDigSound = useSound(shovel_ping),
     reqAttemptSuccessSound = useSound(REQ_Attempt_Success),    
     escapeTaskFailSound = useSound(Escape_Task_Fail),
     escapeTaskSuccessSound = useSound(Escape_Task_Success),
+    timeFormatToggle = ref(true),
+    started = ref(false),
     timeElapsed = ref(0),
     timeLimit = computed(() =>
       (store.escapeProject.settings.minTimeSeconds || 10) +
-      (store.stats['street cred'] * .5)
+      (store.stats['strength'] * .5)
     ),
     timeRemainingPercentage = computed(() => 
       100 - (timeElapsed.value / timeLimit.value) * 100
@@ -30,7 +35,7 @@
     requiredClicks = computed(() => 
       Math.max(1, 
       Math.floor(store.escapeProject.settings.maxRequiredClicks - 
-      (store.stats['street cred'] * .1)))
+      (store.stats['strength'] * .1)))
     ),
     jail = computed(() => {
       console.log(store.currentWorld)
@@ -68,76 +73,103 @@
     else return days.toFixed(1) + " days"
   }
 
+  let rand = 0;
+  function isRedLight(){
+    //0 luck means 50% of the time guards are distracted/
+    if (rand <= .5+(store.stats.luck/1000)){
+      //distracted
+      isRed.value = false
+    }
+    else{
+      isRed.value = true
+    }
+    if (started.value === false){
+      isRed.value = false
+    }
+    return isRed;
+  }
 
   //Handle the click of the Dig button
   let clickCount = 0
   function handleClick() {
-    //TODO: Could have it slow you down to be "quiet". If you click too fast you get kicked out. 
-    //Maybe you click the overlay object, it's too fast? 
-    overlayOn()
+    started.value = true
     clickCount = clickCount+1;
+    changeBgColor();
     console.log(clickCount);
-    if (clickCount >= requiredClicks.value){
+    if(isRed.value == true){
+      finish(false);
+    }
+    else if (clickCount >= requiredClicks.value){
        removeEventListener("click", handleClick);
        finish(true);
     }
   }
+
+  let isRed=ref(false);
   const timer = setInterval(() => {
-    if (timeElapsed.value >= timeLimit.value) finish(false)
-    else timeElapsed.value += 1
+    if (started.value == false) console.log("haven't started")
+    else if (timeElapsed.value >= timeLimit.value) finish(false)
+    else (timeElapsed.value += 1)
+      rand = Math.random()
+      isRedLight()
   }, 1000)
 
-
-  //Style of the block of color that flashes as you approach daylight
-  let overlayR = 0
-  let overlayG = 0
-  let overlayB = 0
-  function overlayOn() {
-      //TODO: There's gotta be an easier way to do this
-      overlayR += Math.round((clickCount/requiredClicks.value) * 255);
-      overlayG += Math.round((clickCount/requiredClicks.value) * 255);
-      overlayB += Math.round((clickCount/requiredClicks.value) * 255); 
-      let overlayOpacity = (clickCount/requiredClicks.value) * 1;
-      //TODO: what a mess
-      let overlayColor = "rgb("+overlayR+","+overlayG+","+overlayB+")"
-      store.themeOverrides.common.bodyColor = overlayColor;
-      console.log(overlayColor);
-      //TODO why are these errors?
-      //document.getElementById("overlay").style.display = "block"
-      //document.getElementById("overlay").style.backgroundColor = overlayColor
-      //setTimeout(() => overlayOff(), 100);
+  let bgR = 16
+  let bgG = 16
+  let bgB = 20
+  let bgO = 1;
+  function changeBgColor() {
+      let clickPercentDone = ((clickCount/requiredClicks.value)*100)
+      //for the first 20% go from org color to grey
+      if (clickPercentDone <= 20){
+       AttemptConcDigSound.play()
+       bgR += 50/(.2*requiredClicks.value);
+       bgG += 50/(.2*requiredClicks.value);
+       bgB += 50/(.2*requiredClicks.value); 
+      }
+      //for next 50% go to brown
+      //else if (clickPercentDone > 20 && clickPercentDone < 80) {
+      else{
+       AttemptDirtDigSound.play()  
+       bgR -= (bgR-58)/(.8*requiredClicks.value); 
+       bgG -= (bgG-34)/(.8*requiredClicks.value); 
+       bgB -= (bgB-1)/(.8*requiredClicks.value); 
+      }
+      //for the last clicks go to white
+      // else {
+      //  bgO -= .1
+      //  //(.3*requiredClicks.value)*.1;
+      // }
+      //#915D2FFF
+      let bgC = "rgba("+bgR+","+bgG+","+bgB+","+bgO+")"
+      console.log(bgC)
+      store.themeOverrides.common.bodyColor = bgC;
   } 
-
-  //Quickly remove the block of color from the screen. 
-  // function overlayOff() {
-  //   if(document.getElementById("overlay")){
-  //     document.getElementById("overlay").style.display = "none";
-  //   }
-  // }
 
 </script>
 
 <template>
-  <!-- <div id="overlay" @click="on()"></div> -->
-  <!-- <div style="background-color:rgb(21, 255, 0)"> -->
-  <!-- <n-button @click="on()">Dig!</n-button> -->
   <div>
-  <n-button block style="text-align: center; margin-top: 20px;" @click="handleClick()">Dig!</n-button>
+  <n-space align="center" justify="center" vertical size="large">
+    <p>i'll keep watch. the guards are:</p>
+    <p><span :style="`font-size:large;color:${isRed?'red':'green'};`">{{isRed?"WATCHING":"distracted"}}</span></p> 
+  </n-space>
+  <n-button block style="text-align: center; margin-top: 20px;" @click="handleClick()">dig</n-button>
   <n-space align="center" justify="center" vertical size="large">
     <p>
       <n-popover placement="right" trigger="hover">
         <template #trigger>
         </template>
-        max(1, floor({{ store.escapeProject.settings.maxRequiredCorrectAnswers }} - street cred * .1))
+        max(1, floor({{ store.escapeProject.settings.maxRequiredCorrectAnswers }} - strength * .1))
       </n-popover>
     </p>
-    <n-popover placement="right" trigger="hover">
+    <n-popover v-if="started" placement="right" trigger="hover">
       <template #trigger>
         <n-progress color="#D32D3FFF" type="circle" :percentage="timeRemainingPercentage">
           <span style="text-align: center;">{{ timeRemainingFormatted }}</span>
         </n-progress>      
       </template>
-      {{ store.escapeProject.settings.minTimeSeconds }} + street cred * .5
+      {{ store.escapeProject.settings.minTimeSeconds }} + strength * .5
     </n-popover>
 
     <!-- <span style="font-variant-numeric: tabular-nums">
