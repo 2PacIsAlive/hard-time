@@ -3,13 +3,13 @@
   import { PeopleOutline, BarbellOutline, SparklesOutline, DiceOutline } from '@vicons/ionicons5'
   import { useStore } from '../store'
 
-  defineProps<{ stat: Stat }>()
+  defineProps<{ stat: Stat, centerTooltip?: boolean }>()
 
   const store = useStore()
 </script>
 
 <template>
-  <n-popover placement="top-start" trigger="hover">
+  <n-popover :placement="centerTooltip ? 'top' : 'top-start'" trigger="hover">
     <template #trigger>
       <n-statistic :label="stat.name" :value="store.stats[stat.name].toFixed(0)">
         <template #prefix>

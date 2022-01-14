@@ -1,4 +1,10 @@
-export function escapeProject (name: string, result: string, settings: any): EscapeProject {
+export function escapeProject (name: string, result: string, 
+  settings: BefriendGuardsSettings 
+  | DigProjectSettings 
+  | ArrangeGetawaySettings 
+  | StudyPrisonSchematicsSettings 
+  | DefendYourCellSettings
+  ): EscapeProject {
   return {
     name, result, settings,
     complete: false
@@ -26,16 +32,16 @@ export function arrangeAGetaway(settings: ArrangeGetawaySettings) {
   )
 }
 
-export function buildARaft(settings: BuildARaftSettings) {
-  return escapeProject('build a raft',
-    'you built a raft, hope it floats',
+export function studyPrisonSchematics(settings: StudyPrisonSchematicsSettings) {
+  return escapeProject('study prison schematics',
+    'you studied the blueprints',
     settings
   )
 }
 
-export function studyPrisonSchematics(settings: StudyPrisonSchematicsSettings) {
-  return escapeProject('study prison schematics',
-    'you studied the blueprints',
+export function defendYourCell(settings: DefendYourCellSettings) {
+  return escapeProject('defend your cell',
+    'you protected ya neck',
     settings
   )
 }

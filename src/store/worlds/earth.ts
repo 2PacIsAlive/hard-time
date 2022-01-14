@@ -43,6 +43,8 @@ export const earth: World = {
       ],
       currentMap: 0,
       currentJail: 0,
+      difficulty: 'hard',
+      difficultyColor: 'orange'
     },
     'los angeles': {
       color: '#ff006e',
@@ -59,6 +61,8 @@ export const earth: World = {
       ],
       currentMap: 0,
       currentJail: 0,
+      difficulty: 'easy',
+      difficultyColor: 'green'
     }, 
     'moscow': {
       color: '#ffbe0b',
@@ -75,6 +79,8 @@ export const earth: World = {
       ],
       currentMap: 0,
       currentJail: 0,
+      difficulty: 'legendary',
+      difficultyColor: 'red',
     },
   }                    
 }

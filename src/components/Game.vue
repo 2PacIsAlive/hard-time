@@ -25,14 +25,50 @@ import Skies from './Skies.vue'
 // @ts-ignore
 import DonutShop from './DonutShop.vue'
 import { NIcon, NSpace, NSwitch, NLayout, NLayoutSider, NMenu, useMessage } from 'naive-ui'
-import { HomeOutline, CaretDownOutline, SkullOutline, SubwayOutline, StorefrontOutline, BarbellOutline, StarOutline, EarthOutline, FastFoodOutline } from '@vicons/ionicons5'
+import { HomeOutline, CaretDownOutline, SkullOutline, SubwayOutline, StorefrontOutline, BarbellOutline, TelescopeOutline, EarthOutline, FastFoodOutline } from '@vicons/ionicons5'
+import { useSound } from '@vueuse/sound'
+import hardTimeTitle from '../assets/hard-time-title.mp3'
+import earthAsViewedFromTheMoon from '../assets/earth_as_viewed_from_the_moon_JAN2022_FOR_HARD_TIME_mastered_warm.mp3'
+import murderMysteries from '../assets/murder-mysteries.mp3'
+import twelvePacs from '../assets/twelvepacs_JULY2016_2019A.mp3'
+import battojutsu2 from '../assets/battojutsu2.mp3'
+import IMNOTAFRAIDOFGHOSTS from '../assets/IMNOTAFRAIDOFGHOSTS.mp3'
+import lurkable from '../assets/lurkable.mp3'
 
 const store = useStore(),
-  collapsed = ref(true),
+  collapsed = ref(false),
   message = useMessage(),
   autosaveInterval = computed(() => 
     store.settings.autosaveInterval
-  )
+  ),
+  jailLoop = useSound(hardTimeTitle, {
+    // @ts-ignore
+    loop: true
+  }),
+  starsLoop = useSound(earthAsViewedFromTheMoon, {
+    // @ts-ignore
+    loop: true
+  }),
+  streetsLoop = useSound(murderMysteries, {
+    // @ts-ignore
+    loop: true
+  }),
+  skiesLoop = useSound(twelvePacs, {
+    // @ts-ignore
+    loop: true
+  }),
+  padLoop = useSound(battojutsu2, {
+    // @ts-ignore
+    loop: true
+  }),
+  gymLoop = useSound(IMNOTAFRAIDOFGHOSTS, {
+    // @ts-ignore
+    loop: true
+  }),
+  shopLoop = useSound(lurkable, {
+    // @ts-ignore
+    loop: true
+  })
 
 function renderMenuLabel (option: any) {
   return option.disabled
@@ -44,7 +80,7 @@ function renderMenuIcon (option: any) {
   let icon = HomeOutline
   if (option.key === 'the streets') icon = SkullOutline
   else if (option.key === 'the gym') icon = BarbellOutline
-  else if (option.key === 'the stars') icon = StarOutline
+  else if (option.key === 'the stars') icon = TelescopeOutline
   else if (option.key === 'the skies') icon = EarthOutline
   else if (option.key === 'the shop') icon = FastFoodOutline
   return option.disabled
@@ -98,10 +134,10 @@ function calculateRev(){
   const trueAvgRev = sum/store.donutShop.incomeTracker.length
   let chanceOfPurchase = store.donutShop.demand/100
   if (chanceOfPurchase > 1) chanceOfPurchase = 1
-  // if (store.donutShop.unsold < 1) chanceOfPurchase = 0
+  if (store.donutShop.unsold < 1) chanceOfPurchase = 0
   let avgSales = chanceOfPurchase * (.7*Math.pow(store.donutShop.demand,1.15))*10
   let avgRev = chanceOfPurchase * (.7*Math.pow(store.donutShop.demand,1.15))*store.donutShop.margin*10
-  if (store.donutShop.demand > store.donutShop.unsoldClips){ 
+  if (store.donutShop.demand > store.donutShop.unsold){ 
     avgRev = trueAvgRev
     avgSales = avgRev/store.donutShop.margin
   } 
@@ -119,7 +155,7 @@ function sellDonuts(donutsDemanded: number): void {
       store.donutShop.unsold = 0
     } else {
       const transaction = donutsDemanded * store.donutShop.margin
-      store.money = (Math.floor((store.money + transaction)*100))/100
+      store.money = store.money + transaction
       store.donutShop.income += transaction
       store.donutShop.donutsSold += donutsDemanded
       store.donutShop.unsold = store.donutShop.unsold - donutsDemanded
@@ -149,6 +185,87 @@ watch(autosaveInterval, () => {
   clearInterval(saveGameInterval)
   saveGameInterval = setInterval(saveGame, store.settings.autosaveInterval * 1000)
 })
+
+watch(() => store.gameStarted, (newGameStarted) => {
+  if (newGameStarted) {
+    if (!jailLoop.isPlaying.value) {
+      jailLoop.play()
+    }
+  }
+})
+
+watch(() => store.inJail, (newInJail) => {
+  if (newInJail) {
+    stopMusic()
+    if (store.settings.musicEnabled && !jailLoop.isPlaying.value) {
+      jailLoop.play()
+    }
+  } else {
+    jailLoop.stop()
+    if (store.settings.musicEnabled && !padLoop.isPlaying.value) {
+      padLoop.play()
+    }
+  }
+})
+
+function startMusic (screen: string) {
+  stopMusic()
+  if (store.settings.musicEnabled && !store.inJail) {
+    if (screen === 'the pad') {
+      if (!padLoop.isPlaying.value) {
+        padLoop.play()
+      }
+    } else if (screen === 'the streets') {
+      if (!streetsLoop.isPlaying.value) {
+        streetsLoop.play()
+      }
+    } else if (screen === 'the skies') {
+      if (!skiesLoop.isPlaying.value) {
+        skiesLoop.play()
+      }
+    } else if (screen === 'the stars') {
+      if (!starsLoop.isPlaying.value) {
+        starsLoop.play()
+      }
+    } else if (screen === 'the gym') {
+      if (!gymLoop.isPlaying.value) {
+        gymLoop.play()
+      }
+    } else if (screen === 'the shop') {
+      if (!shopLoop.isPlaying.value) {
+        shopLoop.play()
+      }
+    }
+  }
+}
+
+function stopMusic() {
+  starsLoop.stop()
+  streetsLoop.stop()
+  skiesLoop.stop()
+  padLoop.stop()
+  gymLoop.stop()
+  shopLoop.stop()
+}
+
+watch(() => store.openScreen, (newScreen) => {
+  startMusic(newScreen)
+}) 
+
+watch (() => store.settings.musicEnabled, (enabled) => {
+  if (enabled) startMusic(store.openScreen)
+  else stopMusic()
+})
+
+// if (store.inJail && !jailLoop.isPlaying.value) {
+//   jailLoop.play()
+// } else if (store.openScreen === 'the streets' && !streetsLoop.isPlaying.value) {
+//   streetsLoop.play()
+// } else if (store.openScreen === 'the skies' && !skiesLoop.isPlaying.value) {
+//   skiesLoop.play()
+// } else if (store.openScreen === 'the stars' && !starsLoop.isPlaying.value) {
+//   starsLoop.play()
+// }
 
 measureLag()
 gameLoop()
@@ -187,7 +304,7 @@ gameLoop()
         <Gym class="game-screen" v-else-if="store.openScreen === 'the gym'" />
         <Skies class="small-med-game-screen" v-else-if="store.openScreen === 'the skies'" />
         <Space class="game-screen" v-else-if="store.openScreen === 'the stars'" />
-        <DonutShop class="game-screen" v-else-if="store.openScreen === 'the shop'" />
+        <DonutShop class="small-med-game-screen" v-else-if="store.openScreen === 'the shop'" />
         <game-error v-else msg="unknown open screen" />
       </n-layout>
     </n-layout>

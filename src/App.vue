@@ -11,6 +11,8 @@ import ImportModal from './components/ImportModal.vue'
 import SettingsModal from './components/SettingsModal.vue'
 // @ts-ignore
 import LoreModal from './components/LoreModal.vue'
+// @ts-ignore
+import CreditsModal from './components/CreditsModal.vue'
 import { useStore } from './store'
 import { darkTheme, NConfigProvider, GlobalThemeOverrides, NLoadingBarProvider, NThemeEditor, NGlobalStyle, NMessageProvider } from 'naive-ui'
 
@@ -30,6 +32,7 @@ const store = useStore()
           <import-modal />
           <settings-modal />
           <lore-modal />
+          <credits-modal />
         </div>
       </n-message-provider>
     </n-loading-bar-provider>

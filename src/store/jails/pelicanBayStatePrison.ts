@@ -1,22 +1,19 @@
 import {
-  befriendGuardsProject,
+  defendYourCell,
   digProject,
-  buildARaft,
 } from '../escapeProjects'
 
 export const pelicanBayStatePrison: Jail = {
   name: 'pelican bay state prison',
   escapeProjects: [
-    befriendGuardsProject({
-      maxRequiredCorrectAnswers: 8,
-      minTimeSeconds: 20,
+    defendYourCell({
+      attackers: 5,
+      timeBetweenAttacksMs: 2000,
+      attackerSpeedMs: 300,
     }),
     digProject({
       maxRequiredClicks: 10,
       minTimeSeconds: 10,
-    }),
-    buildARaft({
-
     }),
   ],
 }

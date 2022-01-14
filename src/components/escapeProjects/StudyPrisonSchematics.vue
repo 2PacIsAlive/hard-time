@@ -9,7 +9,7 @@
   import REQ_Attempt_Success from '../../assets/REQ_Attempt_Success.mp3'
   import niceColors from './niceColors'
   import Color from 'color'
-  import SOPHIE_fx_55 from '../../assets/sound_tile.wav'
+  import SOPHIE_fx_55 from '../../assets/sound_tile.mp3'
 
   const store = useStore(),
     message = useMessage(),

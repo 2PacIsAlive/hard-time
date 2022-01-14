@@ -11,7 +11,7 @@ const store = useStore()
     <n-card style="width: 400px;" title="settings:" :bordered="false" hoverable size="large">
       <n-grid x-gap="40" :cols="2">
         <n-gi span="1">
-          <div class="row">
+          <!-- <div class="row">
             music volume:
             <n-slider 
               v-model:value="store.settings.musicVolume" 
@@ -30,7 +30,7 @@ const store = useStore()
               :step="0.01"
               :disabled="!store.settings.sfxEnabled"
             />
-          </div>
+          </div> -->
           <div class="row">
             autosave interval (seconds):
             <n-slider 

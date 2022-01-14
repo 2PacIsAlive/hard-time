@@ -19,14 +19,16 @@ interface ArrangeGetawaySettings {
 
 }
 
-interface BuildARaftSettings {
-
-}
-
 interface StudyPrisonSchematicsSettings {
   tiles: number
   minDelay: number
   maxSequenceLength: number
+}
+
+interface DefendYourCellSettings {
+  attackers: number
+  timeBetweenAttacksMs: number
+  attackerSpeedMs: number
 }
 
 interface Tile {

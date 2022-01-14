@@ -77,7 +77,7 @@ const playerPath: Ref<number[]> = ref([])
 onMounted(() => {
   document.addEventListener('keydown', doCommand)
   if (!store.aiMovementRoutineStarted) moveAi()
-  if (!store.starSpawnerStarted) spawnNewStarsIntermittently()
+  // if (!store.starSpawnerStarted) spawnNewStarsIntermittently()
 })
 
 onUnmounted(() => {
@@ -178,6 +178,21 @@ function doMovePlayer (current: number, next: number, nextChar: string): void {
     if (map.value.lore) {
       store.lore = map.value.lore
       store.showLoreModal = true
+      if (map.value.loreEffect) { // holy hackathon batman
+        if (map.value.loreEffect === 'increase auto donut maker level by 1') {
+          store.donutShop.autoDonutMakerLevel += 1
+        } else if (map.value.loreEffect === 'increase auto donut maker level by 10') {
+          store.donutShop.autoDonutMakerLevel += 10
+        } else if (map.value.loreEffect === 'increase auto donut maker level by 100') {
+          store.donutShop.autoDonutMakerLevel += 100
+        } else if (map.value.loreEffect === 'increase dexterity by 1') {
+          store.stats.dexterity += 1
+        } else if (map.value.loreEffect === 'increase dexterity by 10') {
+          store.stats.dexterity += 10
+        } else if (map.value.loreEffect === 'increase dexterity by 100') {
+          store.stats.dexterity += 100
+        }
+      }
     }
   }
   else if (isLegalMove(nextChar, playerIllegalMoves)) {
@@ -257,7 +272,7 @@ function findStars(aiSpace: number, playerSpace: number, avoidAi: boolean): numb
 
 async function movePlayer() {
   if (!store.playerMovementRoutineStarted) {
-    console.log('STARTING PLAYER MOVEMENT ROUTINE')
+    // console.log('STARTING PLAYER MOVEMENT ROUTINE')
     store.playerMovementRoutineStarted = true
     while (store.playerMovementRoutineStarted) {
       const avoidAi = store.playerAutoSkill > 33 
@@ -282,14 +297,14 @@ async function movePlayer() {
 }
 
 async function moveAi() {
-  console.log('STARTING AI MOVEMENT ROUTINE')
-  while (1==1) {
-    store.aiMovementRoutineStarted = true
+  // console.log('STARTING AI MOVEMENT ROUTINE')
+  store.aiMovementRoutineStarted = true
+  while (store.aiMovementRoutineStarted) {
     // aiPath.value.forEach((space, i) => {
     //   if (i !== aiPath.value.length-1 && store.map.current[space] === ' ') setSpace('.', space)
     // })
     if ((map.value.current.match(aiRegex)||[]).length > 1) {
-      console.log('something fucky happened', aiPath.value)
+      console.log('something bad happened', aiPath.value)
       aiPath.value = []
       setSpace(' ', map.value.current.indexOf(ai))
     }
@@ -322,11 +337,11 @@ async function moveAi() {
         if (isPlayer(nextChar)) {
           aiPath.value = []
           // @ts-ignore
-          play({id: 'death'})
+          // play({id: 'death'})
           store.playerMovementRoutineStarted = false
           store.aiMovementRoutineStarted = false
           store.deaths += 1
-          store.menuOptions[2].disabled = false
+          // store.menuOptions[2].disabled = false
           map.value.current = map.value.default
           // moveEntity(player, current, store.map.playerDefaultLocation, true)
           store.inJail = true
@@ -476,13 +491,6 @@ async function dijkstras (startingSpace: number, destinationSpace: number | stri
     }
   }
 }
-
-// TODO this needs to get moved somewhere global
-// watch(money, (m: number, prevM: number) => {
-//   if (m >= 1000000 && prevM < 1000000)
-//     setSpace(exit, exitSpace)
-// })
-
 </script>
 
 <template>
@@ -491,14 +499,15 @@ async function dijkstras (startingSpace: number, destinationSpace: number | stri
     <p id="run" v-else-if="aiExists && !aiSearching">you should probably run</p>
     <p v-else>you are safe for now</p>
     <pre v-html="coloredMap"></pre>
-    <p>nab <span style="color: #b39700">stars</span> to earn dough (arrow keys or wasd)</p>
+    <p>nab <span style="color: #b39700">stardust</span> to earn money</p>
     <p>use <span style="color: #09f8f6">portals</span> to access other parts of the map</p>
-    auto-shred:
+    <p>use arrow keys or wasd to move</p>
+    <!-- auto-shred:
     <n-button @click="movePlayer()" v-if="!store.playerMovementRoutineStarted" tertiary type="primary">enable</n-button>
     <n-button @click="store.playerMovementRoutineStarted = false" v-else tertiary type="default">disable</n-button>
     <div v-if="store.playerMovementRoutineStarted" id="autoSkillSliderDiv">
       <n-slider v-model:value="store.playerAutoSkill" :marks="autoSkillMarks" step="mark" />
-    </div>
+    </div> -->
   </div>
   <!-- <p>deaths: {{store.deaths}}</p>
   <p>stars: {{store.stars}}</p>

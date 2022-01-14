@@ -1,8 +1,8 @@
 import {
   befriendGuardsProject,
   digProject,
-  arrangeAGetaway,
   studyPrisonSchematics,
+  defendYourCell,
 } from '../escapeProjects'
 
 export const californiaStatePrison: Jail = {
@@ -16,6 +16,11 @@ export const californiaStatePrison: Jail = {
       tiles: 6,
       minDelay: 350,
       maxSequenceLength: 5
+    }),
+    defendYourCell({
+      attackers: 6,
+      timeBetweenAttacksMs: 1000,
+      attackerSpeedMs: 250,
     }),
     digProject({
       maxRequiredClicks: 10,

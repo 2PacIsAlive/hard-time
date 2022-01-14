@@ -12,9 +12,8 @@ export const Luck = {
   impacts: [
     'befriend the guards',
     'dig a hole',
-    'arrange a getaway',
-    'build a raft',
     'study prison schematics',
+    'defend your cell',
   ]
 }
 
@@ -31,7 +30,7 @@ export const Strength = {
   description: 'do you even lift bro',
   impacts: [
     'dig a hole',
-    'build a raft',
+    'defend your cell',
   ]
 }
 

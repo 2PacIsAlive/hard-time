@@ -1,0 +1,3 @@
+interface LoiterTrigger {
+  effect: () => void
+}

@@ -1,7 +1,6 @@
 import {
   befriendGuardsProject,
-  digProject,
-  buildARaft,
+  studyPrisonSchematics,
 } from '../escapeProjects'
 
 export const alcatraz: Jail = {
@@ -9,14 +8,12 @@ export const alcatraz: Jail = {
   escapeProjects: [
     befriendGuardsProject({
       maxRequiredCorrectAnswers: 8,
-      minTimeSeconds: 20,
+      minTimeSeconds: 30,
     }),
-    digProject({
-      maxRequiredClicks: 10,
-      minTimeSeconds: 10,
-    }),
-    buildARaft({
-
+    studyPrisonSchematics({
+      tiles: 7,
+      minDelay: 350,
+      maxSequenceLength: 4
     }),
   ],
 }

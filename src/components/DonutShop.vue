@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import { ref, onUnmounted } from 'vue'
 import { useStore } from '../store'
-import { NButton, useMessage } from 'naive-ui'
+import { NButton, NPopover, useMessage } from 'naive-ui'
 import { KONAMI_CODE } from './cheats/konamiCode'
 
 const store = useStore(),
@@ -56,7 +56,12 @@ onUnmounted(() => {
     <h1 style="text-align: center;">donuts sold: {{ store.donutShop.donutsSold }}</h1>
     <h3 style="text-align: center;">shop income: ₿{{ store.donutShop.income.toFixed(9) }} <small>({{ store.donutShop.avgRev.toFixed(9) }} ₿/s)</small></h3>
     <!-- <h3 style="text-align: center;">₿/s: {{ store.donutShop.avgRev.toFixed(9) }}</h3> -->
-    <p style="text-align: center; color: red;">cop speed reduction: {{ store.donutShop.aiSpeedReduction.toFixed(4) }}x</p>
+    <n-popover placement="top" trigger="hover">
+      <template #trigger>
+        <p style="text-align: center; color: red;">cop speed reduction: {{ store.donutShop.aiSpeedReduction.toFixed(4) }}x</p>
+      </template>
+      the bigger your inventory, the slower the cops
+    </n-popover>
     <!-- <h3 style="text-align: center;">donuts/s: {{ store.donutShop.avgSales.toFixed(0) }}</h3> -->
     <div class="flex-grid">
       <div class="skinny-col"/>
@@ -69,10 +74,10 @@ onUnmounted(() => {
           <n-button @click="raisePrice()" block class="naked-col">raise the price</n-button>
         </div>
         <p v-if="store.donutShop.marketingProjects.length > 0">
-          <n-button block @disabled="store.money < store.donutShop.marketingProjects[0].cost" @click="buyMarketing()">{{ store.donutShop.marketingProjects[0].name }} (₿{{ store.donutShop.marketingProjects[0].cost.toFixed(9) }})</n-button>
+          <n-button block :disabled="store.money < store.donutShop.marketingProjects[0].cost" @click="buyMarketing()">{{ store.donutShop.marketingProjects[0].name }} (₿{{ store.donutShop.marketingProjects[0].cost.toFixed(9) }})</n-button>
         </p>
-        <p>
-          <n-button block @disabled="store.money < store.donutShop.autoDonutMakerCost" @click="buyAutoDonutMaker()">buy an auto donut maker (₿{{ store.donutShop.autoDonutMakerCost }})</n-button>
+        <p v-if="store.money >= store.donutShop.autoDonutMakerCost / 10">
+          <n-button block :disabled="store.money < store.donutShop.autoDonutMakerCost" @click="buyAutoDonutMaker()">buy an auto donut maker (₿{{ store.donutShop.autoDonutMakerCost }})</n-button>
         </p>
       </div>
       <div class="col">
@@ -80,8 +85,9 @@ onUnmounted(() => {
         <p>inventory: {{ store.donutShop.unsold }}</p>
         <p>public demand: {{ store.donutShop.demand.toFixed(0) }}%</p>
         <p>marketing level: {{ store.donutShop.marketingLevel }}</p>
-        <p></p>
-        <p>auto donut makers: {{ store.donutShop.autoDonutMakers }}</p>
+        <p v-if="store.donutShop.autoDonutMakers > 0">auto donut makers: {{ store.donutShop.autoDonutMakers }}</p>
+        <p v-if="store.donutShop.autoDonutMakerLevel > 1">auto donut maker level: {{ store.donutShop.autoDonutMakerLevel }}</p>
+        <!-- <p v-if="store.donutShop.donutFactories > 0">donut factories: {{ store.donutShop.donutFactories }}</p> -->
       </div>
       <div class="skinny-col"/>
     </div>

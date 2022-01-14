@@ -5,8 +5,9 @@ import defaultSpaceships from './spaceships'
 import defaultMenu from './menu'
 import { earth, kepler443b } from './worlds'
 import { marketingProjects } from './marketing'
+import { exercises } from './exercises'
 
-const saveKey = 'hard-time-savefile'
+const saveKey = 'hard-time-savefile-v0'
 
 function getWorld(name: string) {
   // TODO
@@ -62,7 +63,8 @@ export const useStore = defineStore('main', {
       strength: savedState?.strength || 0,
       gainz: savedState?.gainz || 1,
       workoutDuration: savedState?.workoutDuration || 3000,
-      loiterDuration: savedState?.loiterDuration || 3000,
+      loiterDuration: savedState?.loiterDuration || 2000,
+      loiterCount: savedState?.loiterCount as number || 0,
       possessions: savedState?.possessions || {},
       workDuration: savedState?.workDuration || 3000,
       lag: 0,
@@ -88,10 +90,14 @@ export const useStore = defineStore('main', {
         marketingProjects,
         autoDonutMakers: 0,
         autoDonutMakerLevel: 1,
-        autoDonutMakerCost: 0.001,
+        autoDonutMakerCost: 0.0005,
         incomeTracker: [],
         avgRev: 0,
         avgSales: 0,
+      },
+      gym: savedState?.gym || {
+        exercises,
+        tracker: [],
       },
       stats: savedState?.stats || {
         'street cred': 0,
@@ -100,12 +106,14 @@ export const useStore = defineStore('main', {
         luck: 0,
       },
       starMoney: savedState?.starMoney || 0.0000032,
+      gambleEnabled: savedState?.gambleEnabled || false,
       aiMovementRoutineStarted: false,
       playerMovementRoutineStarted: false,
       starSpawnerStarted: false,
       showImportModal: false,
       showSettingsModal: false,
       showLoreModal: false,
+      showCreditsModal: false,
       lore: "",
       exportString: "",
       importString: "",
@@ -135,6 +143,7 @@ export const useStore = defineStore('main', {
         gainz: this.gainz,
         workoutDuration: this.workoutDuration,
         loiterDuration: this.loiterDuration,
+        loiterCount: this.loiterCount,
         possessions: this.possessions,
         stars: this.stars,
         aiStars: this.stars,
@@ -147,6 +156,8 @@ export const useStore = defineStore('main', {
         donutShop: this.donutShop,
         stats: this.stats,
         starMoney: this.starMoney,
+        gym: this.gym,
+        gambleEnabled: this.gambleEnabled,
       })
       return encoded
         ? btoa(unescape(encodeURIComponent(saveString)))
