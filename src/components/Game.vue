@@ -240,6 +240,7 @@ function startMusic (screen: string) {
 }
 
 function stopMusic() {
+  jailLoop.stop()
   starsLoop.stop()
   streetsLoop.stop()
   skiesLoop.stop()

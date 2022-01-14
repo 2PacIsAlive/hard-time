@@ -20,7 +20,7 @@ export function befriendGuardsProject(settings: BefriendGuardsSettings) {
 
 export function digProject(settings: DigProjectSettings) {
   return escapeProject('dig a tunnel', 
-    'you dug a few holes', 
+    'you dug a tunnel', 
     settings
   )
 }

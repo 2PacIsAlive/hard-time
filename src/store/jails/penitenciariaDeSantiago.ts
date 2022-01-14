@@ -8,15 +8,12 @@ export const penitenciariaDeSantiago: Jail = {
   name: 'penitenciaría de santiago',
   escapeProjects: [
     befriendGuardsProject({
-      maxRequiredCorrectAnswers: 5,
-      minTimeSeconds: 15,
+      maxRequiredCorrectAnswers: 10,
+      minTimeSeconds: 30,
     }),
     digProject({
-      maxRequiredClicks: 10,
-      minTimeSeconds: 10,
-    }),
-    arrangeAGetaway({
-
+      maxRequiredClicks: 20,
+      minTimeSeconds: 20,
     }),
   ],
 }

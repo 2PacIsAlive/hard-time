@@ -10,7 +10,7 @@ export const californiaStatePrison: Jail = {
   escapeProjects: [
     befriendGuardsProject({
       maxRequiredCorrectAnswers: 5,
-      minTimeSeconds: 15,
+      minTimeSeconds: 30,
     }),
     studyPrisonSchematics({
       tiles: 6,
@@ -18,13 +18,13 @@ export const californiaStatePrison: Jail = {
       maxSequenceLength: 5
     }),
     defendYourCell({
-      attackers: 6,
-      timeBetweenAttacksMs: 1000,
+      attackers: 4,
+      timeBetweenAttacksMs: 1250,
       attackerSpeedMs: 250,
     }),
     digProject({
-      maxRequiredClicks: 10,
-      minTimeSeconds: 10,
+      maxRequiredClicks: 5,
+      minTimeSeconds: 20,
     }),
   ],
 }
