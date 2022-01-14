@@ -1,4 +1,7 @@
 <script setup lang="ts">
+// lots of code in here adapted from https://www.decisionproblem.com/paperclips/main.js?v3
+// thank you frank!
+
 import { h, ref, watch, computed } from 'vue'
 import { useStore } from '../store'
 // @ts-ignore
@@ -19,6 +22,8 @@ import Space from './Space.vue'
 import GameError from './GameError.vue'
 // @ts-ignore
 import Skies from './Skies.vue'
+// @ts-ignore
+import DonutShop from './DonutShop.vue'
 import { NIcon, NSpace, NSwitch, NLayout, NLayoutSider, NMenu, useMessage } from 'naive-ui'
 import { HomeOutline, CaretDownOutline, SkullOutline, SubwayOutline, StorefrontOutline, BarbellOutline, StarOutline, EarthOutline, FastFoodOutline } from '@vicons/ionicons5'
 
@@ -73,11 +78,66 @@ function saveGame(): void {
   }
 }
 
+function updateDemandCurve() {
+  const marketing = (Math.pow(1.1,(store.donutShop.marketingLevel-1)))
+  const demand = (((.000008/store.donutShop.margin) * marketing * store.donutShop.marketingEffectiveness) * store.donutShop.demandBoost)
+  // demand = demand + ((demand/10)*prestigeU) // TODO use num worlds visited or something here?
+  store.donutShop.demand = demand + (demand/10)
+}
+
+function calculateRev(){
+  const incomeLastSecond = store.money - store.lastMoney
+  store.donutShop.incomeTracker.push(incomeLastSecond)
+  if (store.donutShop.incomeTracker.length > 5) {
+    store.donutShop.incomeTracker.splice(0,1)
+  }
+  let sum = 0
+  for (let i=0; i<store.donutShop.incomeTracker.length; i++){
+    sum = sum + store.donutShop.incomeTracker[i]
+  }
+  const trueAvgRev = sum/store.donutShop.incomeTracker.length
+  let chanceOfPurchase = store.donutShop.demand/100
+  if (chanceOfPurchase > 1) chanceOfPurchase = 1
+  // if (store.donutShop.unsold < 1) chanceOfPurchase = 0
+  let avgSales = chanceOfPurchase * (.7*Math.pow(store.donutShop.demand,1.15))*10
+  let avgRev = chanceOfPurchase * (.7*Math.pow(store.donutShop.demand,1.15))*store.donutShop.margin*10
+  if (store.donutShop.demand > store.donutShop.unsoldClips){ 
+    avgRev = trueAvgRev
+    avgSales = avgRev/store.donutShop.margin
+  } 
+  store.donutShop.avgSales = avgSales
+  store.donutShop.avgRev = avgRev
+}
+
+function sellDonuts(donutsDemanded: number): void {
+  if (store.donutShop.unsold > 0) {
+    if (donutsDemanded > store.donutShop.unsold){
+      const transaction = store.donutShop.unsold * store.donutShop.margin
+      store.money += transaction
+      store.donutShop.income += transaction
+      store.donutShop.donutsSold += store.donutShop.unsold
+      store.donutShop.unsold = 0
+    } else {
+      const transaction = donutsDemanded * store.donutShop.margin
+      store.money = (Math.floor((store.money + transaction)*100))/100
+      store.donutShop.income += transaction
+      store.donutShop.donutsSold += donutsDemanded
+      store.donutShop.unsold = store.donutShop.unsold - donutsDemanded
+    }
+  } 
+}
+
 async function gameLoop() {
   while (1==1) {
     store.lastMoney = store.money
     if (store.possessions['donut shop']) {
-      store.money += store.possessions['donut shop'] * store.donutShop.output
+      updateDemandCurve()
+      store.donutShop.unsold += store.donutShop.autoDonutMakers * store.donutShop.autoDonutMakerLevel 
+      store.donutShop.aiSpeedReduction = Math.min(10, Math.pow(1.2, store.donutShop.unsold * .001))
+      if (store.donutShop.unsold > 0 && Math.random() < (store.donutShop.demand/100)){
+        sellDonuts(Math.floor(.7 * Math.pow(store.donutShop.demand, 1.15)));
+      }
+      calculateRev()
     }
     // TODO do we really want to cap this at 1s?
     await new Promise(resolve => setTimeout(resolve, 1000))
@@ -127,6 +187,7 @@ gameLoop()
         <Gym class="game-screen" v-else-if="store.openScreen === 'the gym'" />
         <Skies class="small-med-game-screen" v-else-if="store.openScreen === 'the skies'" />
         <Space class="game-screen" v-else-if="store.openScreen === 'the stars'" />
+        <DonutShop class="game-screen" v-else-if="store.openScreen === 'the shop'" />
         <game-error v-else msg="unknown open screen" />
       </n-layout>
     </n-layout>
