@@ -33,7 +33,7 @@
   <n-space align="center" justify="center" vertical size="small">
     <p>you are attempting to <span style="color: red">{{ store.escapeProject.name }}</span></p>
     <befriend-guards v-if="store.escapeProject.name === 'befriend the guards'" />
-    <dig-a-tunnel v-if="store.escapeProject.name === 'dig a tunnel'"/>
+    <dig-a-tunnel v-else-if="store.escapeProject.name === 'dig a tunnel'"/>
     <study-prison-schematics v-else-if="store.escapeProject.name === 'study prison schematics'" />
     <defend-your-cell v-else-if="store.escapeProject.name === 'defend your cell'" />
     <template v-else>
