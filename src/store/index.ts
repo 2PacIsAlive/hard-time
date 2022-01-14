@@ -7,7 +7,7 @@ import { earth, kepler443b } from './worlds'
 import { marketingProjects } from './marketing'
 import { exercises } from './exercises'
 
-const saveKey = 'hard-time-savefile'
+const saveKey = 'hard-time-savefile-v0'
 
 function getWorld(name: string) {
   // TODO

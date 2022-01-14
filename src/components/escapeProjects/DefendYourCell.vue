@@ -36,9 +36,10 @@
     attackers = computed(() => 
       store.escapeProject?.settings?.attackers || 10
     ),
-    attackerSpeedMs = computed(() => 
-      store.escapeProject?.settings?.attackerSpeedMs || 100
-    ),
+    attackerSpeedMs = computed(() => {
+      const speed = store.escapeProject?.settings?.attackerSpeedMs || 100
+      return speed + store.stats.strength / 10
+    }),
     kills = ref(0)
 
   const map: Ref<GameMap> = ref(defendYourCell)

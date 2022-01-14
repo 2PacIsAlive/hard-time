@@ -18,10 +18,6 @@ interface ArrangeGetawaySettings {
 
 }
 
-interface BuildARaftSettings {
-
-}
-
 interface StudyPrisonSchematicsSettings {
   tiles: number
   minDelay: number

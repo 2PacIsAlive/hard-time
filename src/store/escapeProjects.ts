@@ -2,7 +2,6 @@ export function escapeProject (name: string, result: string,
   settings: BefriendGuardsSettings 
   | DigProjectSettings 
   | ArrangeGetawaySettings 
-  | BuildARaftSettings 
   | StudyPrisonSchematicsSettings 
   | DefendYourCellSettings
   ): EscapeProject {
@@ -29,13 +28,6 @@ export function digProject(settings: DigProjectSettings) {
 export function arrangeAGetaway(settings: ArrangeGetawaySettings) {
   return escapeProject('arrange a getaway',
     'you made some calls',
-    settings
-  )
-}
-
-export function buildARaft(settings: BuildARaftSettings) {
-  return escapeProject('build a raft',
-    'you built a raft, hope it floats',
     settings
   )
 }
