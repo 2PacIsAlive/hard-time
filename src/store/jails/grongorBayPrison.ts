@@ -6,7 +6,7 @@ import {
 } from '../escapeProjects'
 
 export const grongorBayPrison: Jail = {
-  name: 'california state prison',
+  name: 'grongor bay prison',
   escapeProjects: [
     befriendGuardsProject({
       maxRequiredCorrectAnswers: 50,
