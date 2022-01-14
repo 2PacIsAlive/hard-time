@@ -23,6 +23,15 @@ export const useStore = defineStore('main', {
       : undefined
     // all these properties will have their type inferred automatically
     return {
+      themeOverrides:  {
+        "common": {
+          "bodyColor": "#101014",
+          "primaryColor": "#E31E33FF",
+          "primaryColorHover": "#D32D3FFF",
+          "primaryColorPressed": "#B40D1FFF",
+          "primaryColorSuppl": "#ED142BFF"
+        }
+      },
       gameStarted: savedState?.gameStarted || false,
       settings: savedState?.settings || {
         musicVolume: 1,

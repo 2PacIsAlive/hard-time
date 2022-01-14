@@ -16,21 +16,12 @@ import CreditsModal from './components/CreditsModal.vue'
 import { useStore } from './store'
 import { darkTheme, NConfigProvider, GlobalThemeOverrides, NLoadingBarProvider, NThemeEditor, NGlobalStyle, NMessageProvider } from 'naive-ui'
 
-const store = useStore(),
-  themeOverrides: GlobalThemeOverrides = {
-    "common": {
-      "primaryColor": "#E31E33FF",
-      "primaryColorHover": "#D32D3FFF",
-      "primaryColorPressed": "#B40D1FFF",
-      "primaryColorSuppl": "#ED142BFF"
-    }
-  }
-
+const store = useStore()
 </script>
 
 <template>
 <n-theme-editor>
-  <n-config-provider :theme="darkTheme" :theme-overrides="themeOverrides">
+  <n-config-provider :theme="darkTheme" :theme-overrides="store.themeOverrides">
     <n-loading-bar-provider>
       <n-message-provider placement="top-right">
         <div class="app">
@@ -74,4 +65,5 @@ body, html {
 #content-wrap {
   flex: 1
 }
+
 </style>
