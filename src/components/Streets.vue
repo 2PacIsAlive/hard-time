@@ -246,7 +246,7 @@ function prevMap () {
 // TODO this is super flawed, need to find a better way of doing this
 function isAiPathAccurate (playerSpace: number) {
   if (aiPath.value.length < 1) return false
-  else return Math.abs(playerSpace - aiPath.value[0]) <= 100
+  else return true // Math.abs(playerSpace - aiPath.value[0]) <= 100
 }
 
 function findStars(aiSpace: number, playerSpace: number, avoidAi: boolean): number[] {
