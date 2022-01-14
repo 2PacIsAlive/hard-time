@@ -476,13 +476,6 @@ async function dijkstras (startingSpace: number, destinationSpace: number | stri
     }
   }
 }
-
-// TODO this needs to get moved somewhere global
-// watch(money, (m: number, prevM: number) => {
-//   if (m >= 1000000 && prevM < 1000000)
-//     setSpace(exit, exitSpace)
-// })
-
 </script>
 
 <template>
