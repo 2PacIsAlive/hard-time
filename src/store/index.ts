@@ -105,7 +105,7 @@ export const useStore = defineStore('main', {
         dexterity: 0,
         luck: 0,
       },
-      starMoney: savedState?.starMoney || 0.0000032,
+      starMoney: savedState?.starMoney || 0.00036,
       gambleEnabled: savedState?.gambleEnabled || false,
       aiMovementRoutineStarted: false,
       playerMovementRoutineStarted: false,

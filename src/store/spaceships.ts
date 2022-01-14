@@ -6,7 +6,7 @@ export interface Spaceship {
 
 const allSpaceships: Spaceship[] = [{
   name: 'gravlab X-042',
-  cost: 3,
+  cost: .1,
 }]
 
 export default allSpaceships
