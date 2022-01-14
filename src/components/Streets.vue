@@ -490,7 +490,7 @@ async function dijkstras (startingSpace: number, destinationSpace: number | stri
 <template>
   <div id="streets">
     <p v-if="aiExists && aiSearching">the <span style="color: red">cops</span> are looking for you</p>
-    <p id="run" v-else-if="aiExists && !aiSearching">you should probably run</p>
+    <p id="run" v-else-if="aiExists && !aiSearching">the<span style="color: red">cops</span> are out to get you... unless you get them first</p>
     <p v-else>you are safe for now</p>
     <pre v-html="coloredMap"></pre>
     <p>nab <span style="color: #b39700">stardust</span> to earn money</p>
