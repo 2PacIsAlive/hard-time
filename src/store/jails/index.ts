@@ -7,3 +7,15 @@ export { penitenciariaDeSantiago } from './penitenciariaDeSantiago'
 export { sanPedroPrison } from './sanPedroPrison'
 export { laSabaneta } from './laSabaneta'
 export { samaraPenitentiary } from './samaraPenitentiary'
+
+export { grongorBayPrison } from './grongorBayPrison'
+export { zeusColony } from './zeusColony'
+export { theMenagerie } from './theMenagerie'
+
+export { zornkristCompound } from './zornkristCompound'
+export { namreebPenitentary } from './namreebPenitentary'
+export { crabsClaw } from './crabsClaw'
+
+export { theAbyss } from './theAbyss'
+export { thePanopticon } from './thePanopticon'
+export { dysonsContainment } from './dysonsContainment'

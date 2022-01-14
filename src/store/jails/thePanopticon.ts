@@ -1,18 +1,19 @@
 import {
   befriendGuardsProject,
   digProject,
+  arrangeAGetaway,
 } from '../escapeProjects'
 
-export const laSabaneta: Jail = {
-  name: 'la sabaneta',
+export const thePanopticon: Jail = {
+  name: 'the panopticon',
   escapeProjects: [
     befriendGuardsProject({
-      maxRequiredCorrectAnswers: 10,
+      maxRequiredCorrectAnswers: 100,
       minTimeSeconds: 30,
     }),
     digProject({
-      maxRequiredClicks: 16,
-      minTimeSeconds: 16,
+      maxRequiredClicks: 75,
+      minTimeSeconds: 60,
     }),
   ],
 }

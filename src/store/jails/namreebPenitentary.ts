@@ -4,11 +4,11 @@ import {
   arrangeAGetaway,
 } from '../escapeProjects'
 
-export const blackDolphinPrison: Jail = {
-  name: 'black dolphin prison',
+export const namreebPenitentary: Jail = {
+  name: 'namreeb penitentary',
   escapeProjects: [
     digProject({
-      maxRequiredClicks: 30,
+      maxRequiredClicks: 40,
       minTimeSeconds: 30,
     }),
   ],

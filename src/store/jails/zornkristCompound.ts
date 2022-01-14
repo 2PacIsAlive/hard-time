@@ -4,21 +4,21 @@ import {
   defendYourCell,
 } from '../escapeProjects'
 
-export const butyrkaPrison: Jail = {
-  name: 'butyrka prison',
+export const zornkristCompound: Jail = {
+  name: 'zornkrist compound',
   escapeProjects: [
     befriendGuardsProject({
-      maxRequiredCorrectAnswers: 25,
+      maxRequiredCorrectAnswers: 50,
       minTimeSeconds: 10,
     }),
     digProject({
-      maxRequiredClicks: 10,
-      minTimeSeconds: 10,
+      maxRequiredClicks: 45,
+      minTimeSeconds: 37,
     }),
     defendYourCell({
       attackers: 5,
-      timeBetweenAttacksMs: 5000,
-      attackerSpeedMs: 400,
+      timeBetweenAttacksMs: 1000,
+      attackerSpeedMs: 200,
     }),
   ],
 }
