@@ -67,6 +67,7 @@ function getCurrentCityStyle() {
 <template>
   <div id="skies">
     <p>you are in <span :style="getCurrentCityStyle()">{{ store.worlds[store.currentWorld].currentCity }}</span></p>
+    <p>difficulty: <span :style="`color: ${store.worlds[store.currentWorld].cities[store.worlds[store.currentWorld].currentCity].difficultyColor};`">{{ store.worlds[store.currentWorld].cities[store.worlds[store.currentWorld].currentCity].difficulty }}</span></p>
     <pre v-html="coloredMap" @click="handleClick" @mouseover="handleMouseover" @mouseleave="handleMouseover"></pre>
     <city-description :city="store.worlds[store.currentWorld].cities[hoveredCity]" :name="hoveredCity" v-if="hoveredCity">
       {{ hoveredCity }}

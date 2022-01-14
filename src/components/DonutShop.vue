@@ -85,8 +85,9 @@ onUnmounted(() => {
         <p>inventory: {{ store.donutShop.unsold }}</p>
         <p>public demand: {{ store.donutShop.demand.toFixed(0) }}%</p>
         <p>marketing level: {{ store.donutShop.marketingLevel }}</p>
-        <p></p>
-        <p>auto donut makers: {{ store.donutShop.autoDonutMakers }}</p>
+        <p v-if="store.donutShop.autoDonutMakers > 0">auto donut makers: {{ store.donutShop.autoDonutMakers }}</p>
+        <p v-if="store.donutShop.autoDonutMakerLevel > 1">auto donut maker level: {{ store.donutShop.autoDonutMakerLevel }}</p>
+        <!-- <p v-if="store.donutShop.donutFactories > 0">donut factories: {{ store.donutShop.donutFactories }}</p> -->
       </div>
       <div class="skinny-col"/>
     </div>

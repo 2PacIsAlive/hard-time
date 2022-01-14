@@ -178,6 +178,21 @@ function doMovePlayer (current: number, next: number, nextChar: string): void {
     if (map.value.lore) {
       store.lore = map.value.lore
       store.showLoreModal = true
+      if (map.value.loreEffect) { // holy hackathon batman
+        if (map.value.loreEffect === 'increase auto donut maker level by 1') {
+          store.donutShop.autoDonutMakerLevel += 1
+        } else if (map.value.loreEffect === 'increase auto donut maker level by 10') {
+          store.donutShop.autoDonutMakerLevel += 10
+        } else if (map.value.loreEffect === 'increase auto donut maker level by 100') {
+          store.donutShop.autoDonutMakerLevel += 100
+        } else if (map.value.loreEffect === 'increase dexterity by 1') {
+          store.stats.dexterity += 1
+        } else if (map.value.loreEffect === 'increase dexterity by 10') {
+          store.stats.dexterity += 10
+        } else if (map.value.loreEffect === 'increase dexterity by 100') {
+          store.stats.dexterity += 100
+        }
+      }
     }
   }
   else if (isLegalMove(nextChar, playerIllegalMoves)) {

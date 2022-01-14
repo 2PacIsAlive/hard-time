@@ -42,6 +42,8 @@ export const kepler443b: World = {
       ],
       currentMap: 0,
       currentJail: 0,
+      difficulty: 'tough',
+      difficultyColor: 'yellow',
     },
     'porto ganoli': {
       color: '#4f8af0',
@@ -58,6 +60,8 @@ export const kepler443b: World = {
       ],
       currentMap: 0,
       currentJail: 0,
+      difficulty: 'brutal',
+      difficultyColor: 'orange',
     }, 
     'fort krastos': {
       color: '#e010eb',
@@ -74,6 +78,8 @@ export const kepler443b: World = {
       ],
       currentMap: 0,
       currentJail: 0,
+      difficulty: 'insane',
+      difficultyColor: 'red'
     },
   }                    
 }

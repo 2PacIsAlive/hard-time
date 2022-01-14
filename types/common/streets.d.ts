@@ -3,4 +3,5 @@ interface GameMap {
   default: string
   aiSpeed: number
   lore?: string
+  loreEffect?: string
 }

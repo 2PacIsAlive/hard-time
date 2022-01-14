@@ -51,4 +51,5 @@ export default {
 └─────────────────────────────────────────────────┘`,
   aiSpeed: 60,
   lore: intro,
+  loreEffect: 'increase dexterity by 1',
 }

@@ -87,7 +87,7 @@ export default {
 │       ┌──┐ │       ┌──┐ │       ┌──┐ │
 ├───────┤  │ └───────┤  │ ├───────┤  │ │
 │       └──┘         └──┘ │       └──┘ │
-│                         │? C         │
+│!                        │? C         │
 └─────────────────────────┴────────────┘`,
   default: `┌────────────┬─────────────────────────┐
 │           @│                         │
@@ -121,7 +121,9 @@ export default {
 │       ┌──┐ │       ┌──┐ │       ┌──┐ │
 ├───────┤  │ └───────┤  │ ├───────┤  │ │
 │       └──┘         └──┘ │       └──┘ │
-│                         │? C         │
+│!                        │? C         │
 └─────────────────────────┴────────────┘`,
-  aiSpeed: 60,
+  aiSpeed: 60,  
+  lore: 'you found a schematics for a more powerful automatic donut maker',
+  loreEffect: 'increase auto donut maker level by 1'
 }
