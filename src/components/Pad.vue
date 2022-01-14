@@ -2,7 +2,7 @@
 import { ref, computed, onUnmounted } from 'vue'
 import { useStore } from '../store'
 import { NButton, NIcon, useLoadingBar, NSpace, NCard, NGrid, NGi, NStatistic, NRow, NCol, NDivider, NPopover, useMessage } from 'naive-ui'
-import { LogoBitcoin, DiceOutline, EarOutline, CarOutline, CarSportOutline, RocketOutline, FastFoodOutline, AirplaneOutline } from '@vicons/ionicons5'
+import { LogoBitcoin, DiceOutline, WalkOutline, CarOutline, CarSportOutline, RocketOutline, FastFoodOutline, AirplaneOutline } from '@vicons/ionicons5'
 // @ts-ignore
 import Possession from './Possession.vue'
 // @ts-ignore
@@ -213,7 +213,7 @@ function buySpaceship(): void {
 function gamble () {
   store.stats.luck += 1
   const gambleAmount = store.money / 10
-  if (Math.random() < .43 + (store.stats.luck / 10000)) {
+  if (Math.random() < .43 + (store.stats.luck / 100000)) {
     store.money += gambleAmount
     message.success(`you won ${gambleAmount.toFixed(8)}`)
   } else {
@@ -233,6 +233,7 @@ function konamiCodeListener(event: any) {
         store.stats.strength += 100
         store.stats.dexterity += 100
         store.stats.luck += 100
+        store.gambleEnabled = true
         currentKonamiPos.value = 0
       }
     } else {
@@ -261,11 +262,11 @@ onUnmounted(() => {
       </div>
       <div class="col">
         <n-divider>actions</n-divider>
-        <n-row>
+        <n-row v-if="store.stats['street cred'] < 100">
           <n-button style="padding: 0%;" block class="centered-button" :loading="loadingLoiter" :disabled="loadingLoiter" @click="loiter()">
             <template #icon>
               <n-icon>
-                <ear-outline />
+                <walk-outline />
               </n-icon>
             </template>
             loiter (+1 street cred)
@@ -278,7 +279,7 @@ onUnmounted(() => {
                 <dice-outline />
               </n-icon>
             </template>
-            gamble (+/- ₿{{ (store.money / 10).toFixed(8) }})
+            gamble online (+/- ₿{{ (store.money / 10).toFixed(8) }})
           </n-button> 
         </n-row>
         <n-row v-if="store.cars.length > 0 && store.money >= store.cars[0].cost / 10">
@@ -292,7 +293,7 @@ onUnmounted(() => {
             buy a new car (-₿{{ store.cars[0].cost.toFixed(8) }})
           </n-button> 
         </n-row>
-        <n-row v-if="!('donut shop' in store.possessions)">
+        <n-row v-if="!('donut shop' in store.possessions) && store.money >= store.donutShop.cost / 10">
           <n-button block class="centered-button" :disabled="store.donutShop.cost > store.money" @click="buyDonutShop">
             <template #icon>
               <n-icon>

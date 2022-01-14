@@ -7,7 +7,7 @@ import { earth, kepler443b } from './worlds'
 import { marketingProjects } from './marketing'
 import { exercises } from './exercises'
 
-const saveKey = 'hard-time-savefile'
+const saveKey = 'hard-time-savefile-v0'
 
 function getWorld(name: string) {
   // TODO
@@ -81,7 +81,7 @@ export const useStore = defineStore('main', {
         marketingProjects,
         autoDonutMakers: 0,
         autoDonutMakerLevel: 1,
-        autoDonutMakerCost: 0.001,
+        autoDonutMakerCost: 0.0005,
         incomeTracker: [],
         avgRev: 0,
         avgSales: 0,

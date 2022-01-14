@@ -11,7 +11,7 @@ function startGame() {
 <template>
   <n-space align="center" justify="center" vertical size="large">
     <p>they will never stop chasing us</p>
-    <n-button @click="startGame()" quaternary type="primary">serve undue time</n-button>
+    <n-button @click="startGame()" secondary type="primary">serve undue time</n-button>
   </n-space>
 </template>
 
