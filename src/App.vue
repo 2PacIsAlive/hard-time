@@ -14,13 +14,13 @@ import LoreModal from './components/LoreModal.vue'
 // @ts-ignore
 import CreditsModal from './components/CreditsModal.vue'
 import { useStore } from './store'
-import { darkTheme, NConfigProvider, GlobalThemeOverrides, NLoadingBarProvider, NThemeEditor, NGlobalStyle, NMessageProvider } from 'naive-ui'
+import { darkTheme, NConfigProvider, GlobalThemeOverrides, NLoadingBarProvider, NGlobalStyle, NMessageProvider } from 'naive-ui'
 
 const store = useStore()
 </script>
 
 <template>
-<n-theme-editor>
+<!-- <n-theme-editor> -->
   <n-config-provider :theme="darkTheme" :theme-overrides="store.themeOverrides">
     <n-loading-bar-provider>
       <n-message-provider placement="top-right">
@@ -38,7 +38,7 @@ const store = useStore()
     </n-loading-bar-provider>
     <n-global-style />
   </n-config-provider>
-  </n-theme-editor>
+  <!-- </n-theme-editor> -->
 </template>
 
 <style>
